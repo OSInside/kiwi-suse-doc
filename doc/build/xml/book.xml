@@ -9,7 +9,7 @@
     <title>Preface</title>
     <note>
       <para>KIWI NG vs. KIWI Legacy</para>
-      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.20.2- the command line
+      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.20.3- the command line
                 utility to build Linux system appliances. KIWI NG is stable and all
                 new features, bugfixes, and improvements will be developed here.
                 Versions older or equal to v7.x.x are out of maintenance and do
@@ -152,7 +152,7 @@
       </para>
       <para>This document describes how to start working with KIWI NG, an OS appliance
                 builder.
-                This description applies for version 9.20.2.</para>
+                This description applies for version 9.20.3.</para>
     </note>
     <section xml:id="before-you-start">
       <title>Before you start</title>
@@ -294,7 +294,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
       <para>This document provides a conceptual overview about the steps
                 of creating an image with KIWI NG. It also explains the terminology
                 regarding the concept and process when building system images
-                with KIWI NG 9.20.2.</para>
+                with KIWI NG 9.20.3.</para>
     </note>
     <section xml:id="basic-workflow" xml:base="overview/workflow">
       <title>Basic Workflow</title>
@@ -314,7 +314,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                 complete the system usually reboots and enters a configuration procedure
                 upon start-up. The configuration may be fully automatic or it may include
                 user interaction.</para>
-        <para>This description applies for version 9.20.2.</para>
+        <para>This description applies for version 9.20.3.</para>
       </note>
       <para>A system image (usually called “image”), is a <emphasis>complete installation</emphasis> of a Linux
             system within a file. The image represents an operational system and,
@@ -513,7 +513,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
         <emphasis role="bold">Abstract</emphasis>
       </para>
       <para>The following sections describe the concept and general workflow
-                of building appliances with KIWI NG 9.20.2.</para>
+                of building appliances with KIWI NG 9.20.3.</para>
     </note>
     <section xml:id="xml-description" xml:base="working_with_kiwi/xml_description">
       <title>The Image Description</title>
@@ -5676,7 +5676,7 @@ end</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.20.2 inside of the Open Build Service.
+                KIWI NG in version 9.20.3 inside of the Open Build Service.
                 A tutorial on the Open Buildservice itself can be found here:
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
       </note>
@@ -6365,7 +6365,7 @@ name="images"&gt;</literal>:</para>
     <title>Command Line</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) commands
-                for version 9.20.2.</para>
+                for version 9.20.3.</para>
     </note>
     <section xml:id="kiwi-ng" xml:base="commands/kiwi">
       <title>kiwi-ng</title>
@@ -7258,7 +7258,7 @@ kiwi-ng image info help</screen>
       </para>
       <para>This document describes the development process of KIWI NG
                 and how you can be part of it. This description applies
-                to version 9.20.2.</para>
+                to version 9.20.3.</para>
     </note>
     <section xml:id="using-kiwi-ng-in-a-python-project" xml:base="development/kiwi_from_python">
       <title>Using KIWI NG in a Python Project</title>
@@ -7268,7 +7268,7 @@ kiwi-ng image info help</screen>
         </para>
         <para>KIWI NG is provided as python module under the <emphasis role="bold">kiwi</emphasis> namespace.
                 It is available for the python 3 version. The following
-                description applies for KIWI NG version 9.20.2.</para>
+                description applies for KIWI NG version 9.20.3.</para>
       </note>
       <para>KIWI NG can also function as a module for other Python projects.
             The following example demonstrates how to read an existing image
@@ -7438,7 +7438,7 @@ $ kiwi-ng relax justdoit --now</screen>
         <para>Depending on the demand for custom plugins, the interface
                 to hook in code into other parts of the KIWI NG processing
                 needs to be extended.</para>
-        <para>This description applies for version 9.20.2.</para>
+        <para>This description applies for version 9.20.3.</para>
       </note>
       <section xml:id="the-extension-section">
         <title>The &lt;extension&gt; Section</title>
@@ -7854,7 +7854,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
   <chapter xml:id="api" xml:base="api">
     <title>Python API</title>
     <note>
-      <para>This API documentation covers KIWI NG 9.20.2</para>
+      <para>This API documentation covers KIWI NG 9.20.3</para>
     </note>
     <section xml:id="kiwi-package" xml:base="api/kiwi">
       <title>kiwi Package</title>
