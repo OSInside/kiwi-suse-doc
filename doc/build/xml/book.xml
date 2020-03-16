@@ -9429,6 +9429,33 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_exclude_list_for_non_physical_devices">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_exclude_list_for_non_physical_devices</property>
+                  </term>
+                  <listitem>
+                    <para>Provides the list of folders that are not associated
+                                with a physical device. KIWI returns the basename of
+                                the folders typically used as mountpoint for those
+                                devices.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>list of file and directory names</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_exclude_list_for_root_data_sync">
                   <term>
                     <property>kiwi.defaults.Defaults.get_exclude_list_for_root_data_sync</property>
