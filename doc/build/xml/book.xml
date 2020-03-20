@@ -28051,7 +28051,7 @@ end</screen>
                     <property>kiwi.system.setup.SystemSetup.create_fstab</property>
                   </term>
                   <listitem>
-                    <para>Create etc/fstab from given list of entries</para>
+                    <para>Create etc/fstab from given Fstab object</para>
                     <para>Custom fstab modifications are possible and handled
                                 in the following order:</para>
                     <procedure>
@@ -28079,7 +28079,7 @@ end</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>entries</literal> () – list of line entries for fstab</para>
+                          <para><literal>fstab</literal> () – instance of Fstab</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
