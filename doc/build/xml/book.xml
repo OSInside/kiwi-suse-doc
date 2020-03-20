@@ -20319,18 +20319,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </listitem>
               </itemizedlist>
               <variablelist>
-                <varlistentry xml:id="kiwi.container.setup.base.ContainerSetupBase.create_fstab">
-                  <term>
-                    <property>kiwi.container.setup.base.ContainerSetupBase.create_fstab</property>
-                  </term>
-                  <listitem>
-                    <para>Container boot mount setup</para>
-                    <para>Initialize an empty fstab file, mount processes in a
-                                container are controlled by the container infrastructure</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
                 <varlistentry xml:id="kiwi.container.setup.base.ContainerSetupBase.deactivate_bootloader_setup">
                   <term>
                     <property>kiwi.container.setup.base.ContainerSetupBase.deactivate_bootloader_setup</property>
