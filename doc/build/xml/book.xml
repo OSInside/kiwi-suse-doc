@@ -10382,6 +10382,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_profile_file">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_profile_file</property>
+                  </term>
+                  <listitem>
+                    <para>Return name of profile file for given root directory</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_publisher">
                   <term>
                     <property>kiwi.defaults.Defaults.get_publisher</property>
@@ -15993,6 +16003,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_root_partition_uuid">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_root_partition_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Return preserved PARTUUID</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.XMLState.get_rpm_check_signatures">
                   <term>
                     <property>kiwi.xml_state.XMLState.get_rpm_check_signatures</property>
@@ -16792,6 +16812,24 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.set_root_partition_uuid">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.set_root_partition_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Store PARTUUID provided in uuid as state information</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>uuid</literal> () – PARTUUID</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -17407,7 +17445,8 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.boot.image.dracut.BootImageDracut.create_initrd</property>
                   </term>
                   <listitem>
-                    <para>Call dracut as chroot operation to create the initrd and move
+                    <para>Create kiwi .profile environment to be included in dracut initrd.
+                                Call dracut as chroot operation to create the initrd and move
                                 the result into the image build target directory</para>
                     <variablelist role="field_list">
                       <varlistentry>
@@ -17517,9 +17556,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   <listitem>
                     <para>Prepare dracut caller environment</para>
                     <itemizedlist>
-                      <listitem>
-                        <para>Create kiwi .profile environment to be included in dracut initrd</para>
-                      </listitem>
                       <listitem>
                         <para>Setup machine_id(s) to be generic and rebuild by dracut on boot</para>
                       </listitem>
@@ -27638,15 +27674,9 @@ end</screen>
                     <para>Create bash quoted profile</para>
                     <variablelist role="field_list">
                       <varlistentry>
-                        <term>Returns</term>
+                        <term>Parameters</term>
                         <listitem>
-                          <para>profile dump for bash</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para/>
+                          <para><literal>filename</literal> () – file path name</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -28425,25 +28455,6 @@ end</screen>
                     <para>Those &lt;repository&gt; sections which are marked with the
                                 imageinclude attribute should be permanently added to
                                 the image repository configuration</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.system.setup.SystemSetup.import_shell_environment">
-                  <term>
-                    <property>kiwi.system.setup.SystemSetup.import_shell_environment</property>
-                  </term>
-                  <listitem>
-                    <para>Create profile environment to let scripts consume
-                                information from the XML description.</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>profile</literal> () – instance of <literal>Profile</literal></para>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
