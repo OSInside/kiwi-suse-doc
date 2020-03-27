@@ -5258,6 +5258,169 @@ UNIONFS_CONFIG=/dev/ram2,/dev/ram1,overlay</screen>
         </step>
       </procedure>
     </section>
+    <section xml:id="building-wsl-build" xml:base="building/build_wsl_container">
+      <title>Build a WSL Container Image</title>
+      <formalpara role="sidebar">
+        <title>Abstract</title>
+        <para>This page explains how to build a WSL/Appx container image.
+                WSL stands for Windows Subsystem Linux and is a zip based
+                container format consumable by Windows 10 with enabled
+                WSL functionality.</para>
+      </formalpara>
+      <para>KIWI NG is capable of building WSL images using the <command>appx</command>
+            utility. Make sure you have installed a package that provides
+            this command on your build host.</para>
+      <para>Once the build host has the <command>appx</command> installed, the
+            following image type setup is required in the XML description
+            <literal>config.xml</literal>:</para>
+      <screen language="xml">&lt;type image="appx" metadata_path="/meta/data"/&gt;</screen>
+      <para>The <literal>/meta/data</literal> path specifies a path that provides
+            additional information required for the <command>WSL-DistroLauncher</command>.
+            This component consists out of a Windows(<literal>exe</literal>) executable file and
+            an <literal>AppxManifest.xml</literal> file which references other files
+            like icons and resource configurations for the startup of the
+            container under Windows.</para>
+      <note>
+        <para>
+          <emphasis role="bold">/meta/data</emphasis>
+        </para>
+        <para>Except for the root filesystem tarball KIWI NG is not
+                responsible for providing the meta data required for
+                the <command>WSL-DistroLauncher</command>. It is expected that
+                the given metadata path contains all the needed information.
+                Typically this information is delivered in a package
+                provided by the Distribution and installed on the
+                build host</para>
+      </note>
+      <section xml:id="setup-of-the-wsl-distrolauncher">
+        <title>Setup of the WSL-DistroLauncher</title>
+        <para>The contents of the <literal>AppxManifest.xml</literal> will be changed by KIWI NG
+                if a <literal>containerconfig</literal> section is provided in the XML description.
+                In the context of a WSL image the following container configuration
+                parameters are taken into account:</para>
+        <screen language="xml">&lt;containerconfig name="my-wsl-container"&gt;
+    &lt;history
+        created_by="Organisation"
+        author="Name"
+        application_id="AppIdentification"
+        package_version="https://docs.microsoft.com/en-us/windows/uwp/publish/package-version-numbering"
+        launcher="WSL-DistroLauncher-exe-file"
+    &gt;Container Description Text&lt;/history&gt;
+&lt;/containerconfig&gt;</screen>
+        <para>All information provided here including the entire section is optional.
+                If not provided the existing <literal>AppxManifest.xml</literal> stays untouched.</para>
+        <variablelist>
+          <varlistentry>
+            <term>created_by</term>
+            <listitem>
+              <para>Provides the name of a publisher organisation. An appx container
+                            needs to be signed off with a digital signature. If the image is
+                            build in the Open Build Service (OBS) this happens automatically.
+                            Outside of OBS one needs to make sure the given publisher organisation
+                            name matches the certificate used for signing.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>author</term>
+            <listitem>
+              <para>Provides the name of the author and maintainer of this container</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>application_id</term>
+            <listitem>
+              <para>Provides an ID name for the container. The name must start with
+                            a letter and only allows alphanumeric characters. KIWI NG will not
+                            validate the given name string because there is no common criteria
+                            between the container architectures. KIWI NG just accepts any text.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>package_version</term>
+            <listitem>
+              <para>Provides the version identification for the container. KIWI NG
+                            validates this against the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://docs.microsoft.com/en-us/windows/uwp/publish/package-version-numbering">Microsoft Package Version Numbering</link> rules.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>launcher</term>
+            <listitem>
+              <para>Provides the binary file name of the launcher <literal>.exe</literal> file.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <warning>
+          <para>There is no validation by KIWI NG if the contents of <literal>AppxManifest.xml</literal>
+                    are valid or complete to run the container. Users will find out at
+                    call time, not before</para>
+        </warning>
+        <para>The following example shows how to build a WSL image based on
+                openSUSE TW:</para>
+        <procedure>
+          <step>
+            <para>Make sure you have checked out the example image descriptions,
+                        see <xref linkend="example-descriptions"/>.</para>
+          </step>
+          <step>
+            <para>Include the <literal>Virtualization/WSL</literal> repository to your list:</para>
+            <screen language="bash">$ zypper addrepo http://download.opensuse.org/repositories/Virtualization:/WSL/&lt;DIST&gt; WSL</screen>
+            <para>where the placeholder <literal>&lt;DIST&gt;</literal> is the preferred distribution.</para>
+          </step>
+          <step>
+            <para>Install <command>fb-util-for-appx</command> utility and a package that
+                        provides the <command>WSL-DistroLauncher</command> metadata. See the
+                        above note about <literal>/meta/data</literal></para>
+            <screen language="bash">$ zypper in fb-util-for-appx DISTRO_APPX_METADATA_PACKAGE</screen>
+            <note>
+              <para>If you are building in the Open Build Service make sure
+                            to add the packages from the zypper call above to your
+                            project config via <command>osc meta -e prjconf</command> and
+                            a line of the form <literal>support: PACKAGE_NAME</literal> for
+                            each package that needs to be installed on the Open Build
+                            Service worker that runs the KIWI NG build process.</para>
+            </note>
+          </step>
+          <step>
+            <para>Setup the image type:</para>
+            <para>Edit the XML description file:
+                        <literal>kiwi-descriptions/suse/x86_64/suse-tumbleweed-JeOS/config.xml</literal>
+                        and add the following type and containerconfig:</para>
+            <screen language="xml">&lt;type image="appx" metadata_path="/meta/data"&gt;
+    &lt;containerconfig name="Tumbleweed"&gt;
+        &lt;history
+            created_by="SUSE"
+            author="KIWI-Team"
+            application_id="tumbleweed"
+            package_version="2003.12.0.0"
+            launcher="openSUSE-Tumbleweed.exe"
+        &gt;TW JeOS text based&lt;/history&gt;
+    &lt;/containerconfig&gt;
+&lt;/type&gt;</screen>
+            <warning>
+              <para>If the configured metadata path does not exist the build
+                            will fail. Furthermore there is no validation by KIWI NG
+                            that the contents of the metadata path are valid or
+                            complete with respect to the requirements of the
+                            <command>WSL-DistroLauncher</command></para>
+            </warning>
+          </step>
+          <step>
+            <para>Build the image with KIWI NG:</para>
+            <screen language="bash">$ sudo kiwi-ng --type appx system build \
+    --description kiwi-descriptions/suse/x86_64/suse-tumbleweed-JeOS \
+    --target-dir /tmp/myimage</screen>
+          </step>
+        </procedure>
+      </section>
+      <section xml:id="testing-the-wsl-image">
+        <title>Testing the WSL image</title>
+        <para>For testing the image a Windows 10 system is required. As a first step
+                the optional feature named <literal>Microsoft-Windows-Subsystem-Linux</literal>
+                must be enabled. For further details on how to setup the Windows machine
+                see the following documentation:
+                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://docs.microsoft.com/en-us/windows/wsl/about">Windows Subsystem for Linux</link></para>
+      </section>
+    </section>
     <section xml:id="container-building" xml:base="building/build_containerized">
       <title>Building in a Self-Contained Environment</title>
       <note>
@@ -13553,6 +13716,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </listitem>
               </itemizedlist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_appx_naming_conventions_valid">
+                  <term>
+                    <property>kiwi.runtime_checker.RuntimeChecker.check_appx_naming_conventions_valid</property>
+                  </term>
+                  <listitem>
+                    <para>When building wsl images there are some naming conventions that
+                                must be fulfilled to run the container on Microsoft Windows</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_architecture_supports_iso_firmware_setup">
                   <term>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_architecture_supports_iso_firmware_setup</property>
@@ -19570,12 +19744,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.builder.container.ContainerBuilder.create</property>
                   </term>
                   <listitem>
-                    <para>Builds a container image which is usually a tarball including
-                                container specific metadata.</para>
+                    <para>Builds a container image which is usually a data archive
+                                including container specific metadata.</para>
                     <para>Image types which triggers this builder are:</para>
                     <itemizedlist>
                       <listitem>
                         <para>image=”docker”</para>
+                      </listitem>
+                      <listitem>
+                        <para>image=”oci”</para>
+                      </listitem>
+                      <listitem>
+                        <para>image=”appx”</para>
                       </listitem>
                     </itemizedlist>
                     <variablelist role="field_list">
