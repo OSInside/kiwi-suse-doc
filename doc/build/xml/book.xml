@@ -7505,9 +7505,10 @@ xml_data.export(
             <listitem>
               <para>Registration of the plugin must be done in <literal>setup.py</literal>
                             using the <literal>entry_points</literal> concept from Python’s setuptools.</para>
-              <screen language="python">'entry_points': {
+              <screen language="python">'packages': ['kiwi_plugin'],
+'entry_points': {
     'kiwi.tasks': [
-        'service_command=kiwi.tasks.service_command'
+        'service_command=kiwi_plugin.tasks.service_command'
     ]
 }</screen>
             </listitem>
@@ -7523,22 +7524,25 @@ xml_data.export(
         </note>
         <procedure>
           <step>
-            <para>Create the task plugin directory <literal>kiwi/tasks</literal></para>
+            <para>Assuming the project namespace is <emphasis role="bold">kiwi_relax_plugin</emphasis>.</para>
+            <para>Create the task plugin directory <literal>kiwi_relax_plugin/tasks</literal></para>
           </step>
           <step>
             <para>Create the entry point in <command>setup.py</command>.</para>
             <para>Assuming we want to create the service named <emphasis role="bold">relax</emphasis> providing
                         the command <emphasis role="bold">justdoit</emphasis> this would be the following entry point
                         definition in <literal>setup.py</literal>:</para>
-            <screen language="python">'entry_points': {
+            <screen language="python">'packages': ['kiwi_relax_plugin'],
+'entry_points': {
     'kiwi.tasks': [
-        'relax_justdoit=kiwi.tasks.relax_justdoit'
+        'relax_justdoit=kiwi_relax_plugin.tasks.relax_justdoit'
     ]
 }</screen>
           </step>
           <step>
-            <para>Create the plugin code in the file <literal>kiwi/tasks/relax_justdoit.py</literal>
-                        with the following content:</para>
+            <para>Create the plugin code in the file
+                        <literal>kiwi_relax_plugin/tasks/relax_justdoit.py</literal> with the following
+                        content:</para>
             <screen language="python">"""
 usage: kiwi-ng relax justdoit -h | --help
        kiwi-ng relax justdoit --now
@@ -7558,7 +7562,7 @@ options:
 from kiwi.tasks.base import CliTask
 from kiwi.help import Help
 
-class RelaxJustDoItTask(CliTask):
+class RelaxJustdoitTask(CliTask):
     def process(self):
         self.manual = Help()
         if self.command_args.get('help') is True:
