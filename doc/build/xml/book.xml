@@ -458,9 +458,12 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
             <para>A directory structure with files and subdirectories stored as part
                             of the Image Description. This directory structure is packaged as
                             a file <literal>root.tar.gz</literal> or stored inside a directory named
-                            <literal>root</literal>. The content of the directory structure is copied on top of
-                            the the existing file system (overlayed) of the appliance root.
-                            This also includes permissions and attributes as a supplement.</para>
+                            <literal>root</literal>. Additional overlay directories for selected profiles
+                            are supported too and are taken into account if the directory
+                            name matches the name of the profile. The content of each of the
+                            directory structures is copied on top of the the existing file
+                            system (overlayed) of the appliance root. This also includes
+                            permissions and attributes as a supplement.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -28431,7 +28434,21 @@ end</screen>
                     <para>Copy overlay files from the image description to
                                 the image root tree. Supported are a root/ directory
                                 or a root.tar.gz tarball. The root/ directory takes
-                                precedence over the tarball</para>
+                                precedence over the tarball.</para>
+                    <para>In addition the method also supports profile specific
+                                overlay files which are searched in a directory of the
+                                same name as the profile name.</para>
+                    <para>The overall order for including overlay files is as
+                                follows:</para>
+                    <procedure>
+                      <step>
+                        <para>root/ dir or root.tar.gz</para>
+                      </step>
+                      <step>
+                        <para>PROFILE_NAME/ dir(s) in the order of the selected
+                                        profiles</para>
+                      </step>
+                    </procedure>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Parameters</term>
