@@ -18990,7 +18990,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.bootloader.install.base.BootLoaderInstallBase.install</property>
                   </term>
                   <listitem>
-                    <para>Istall bootloader on self.device</para>
+                    <para>Install bootloader on self.device</para>
                     <para>Implementation in specialized bootloader install class required</para>
                   </listitem>
                 </varlistentry>
