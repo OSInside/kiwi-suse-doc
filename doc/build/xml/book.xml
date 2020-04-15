@@ -9845,30 +9845,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.defaults.Defaults.get_grub_config_tool">
-                  <term>
-                    <property>kiwi.defaults.Defaults.get_grub_config_tool</property>
-                  </term>
-                  <listitem>
-                    <para>Provides full qualified path name to grub mkconfig utility</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Returns</term>
-                        <listitem>
-                          <para>file path name</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para/>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_grub_efi_font_directory">
                   <term>
                     <property>kiwi.defaults.Defaults.get_grub_efi_font_directory</property>
