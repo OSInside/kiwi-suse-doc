@@ -13891,6 +13891,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_syslinux_installed_if_isolinux_is_used">
+                  <term>
+                    <property>kiwi.runtime_checker.RuntimeChecker.check_syslinux_installed_if_isolinux_is_used</property>
+                  </term>
+                  <listitem>
+                    <para>ISO images that are configured to use isolinux
+                                requires the host to provide a set of syslinux
+                                binaries.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_target_directory_not_in_shared_cache">
                   <term>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_target_directory_not_in_shared_cache</property>
