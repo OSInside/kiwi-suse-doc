@@ -10111,6 +10111,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_kis_image_types">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_kis_image_types</property>
+                  </term>
+                  <listitem>
+                    <para>Provides supported kis image types</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>kis image type names</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_live_dracut_module_from_flag">
                   <term>
                     <property>kiwi.defaults.Defaults.get_live_dracut_module_from_flag</property>
@@ -10255,30 +10279,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>mbsize value</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para/>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.defaults.Defaults.get_network_image_types">
-                  <term>
-                    <property>kiwi.defaults.Defaults.get_network_image_types</property>
-                  </term>
-                  <listitem>
-                    <para>Provides supported pxe image types</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Returns</term>
-                        <listitem>
-                          <para>pxe image type names</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -11670,6 +11670,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
         <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiKisBootImageError">
+            <term>
+              <literal>kiwi.exceptions.KiwiKisBootImageError</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Exception raised if a required boot file e.g the kernel could
+                        not be found in the process of building a kis image.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
           <varlistentry xml:id="kiwi.exceptions.KiwiLiveBootImageError">
             <term>
               <literal>kiwi.exceptions.KiwiLiveBootImageError</literal>
@@ -11865,18 +11877,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
               <para>Exception raised if a specified profile does not exist in the
                         XML configuration.</para>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-        <variablelist>
-          <varlistentry xml:id="kiwi.exceptions.KiwiPxeBootImageError">
-            <term>
-              <literal>kiwi.exceptions.KiwiPxeBootImageError</literal>
-            </term>
-            <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
-              <para>Exception raised if a required boot file e.g the kernel could
-                        not be found in the process of building a pxe image.</para>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -20275,17 +20275,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
       </section>
-      <section xml:id="module-kiwi.builder.pxe_kiwi-builder-pxe-module">
-        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.builder.pxe"><literal>kiwi.builder.pxe</literal></link> Module</title>
+      <section xml:id="module-kiwi.builder.kis_kiwi-builder-kis-module">
+        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.builder.kis"><literal>kiwi.builder.kis</literal></link> Module</title>
         <variablelist>
-          <varlistentry xml:id="kiwi.builder.pxe.PxeBuilder">
+          <varlistentry xml:id="kiwi.builder.kis.KisBuilder">
             <term>
-              <literal>kiwi.builder.pxe.PxeBuilder</literal>
+              <literal>kiwi.builder.kis.KisBuilder</literal>
             </term>
             <listitem>
               <para>Bases: </para>
               <para>
-                <emphasis role="bold">Filesystem based PXE image builder.</emphasis>
+                <emphasis role="bold">Filesystem based image builder.</emphasis>
               </para>
               <variablelist role="field_list">
                 <varlistentry>
@@ -20311,17 +20311,19 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.builder.pxe.PxeBuilder.create">
+                <varlistentry xml:id="kiwi.builder.kis.KisBuilder.create">
                   <term>
-                    <property>kiwi.builder.pxe.PxeBuilder.create</property>
+                    <property>kiwi.builder.kis.KisBuilder.create</property>
                   </term>
                   <listitem>
-                    <para>Build a pxe image set consisting out of a boot image(initrd)
+                    <para>Build a component image consisting out of a boot image(initrd)
                                 plus its appropriate kernel files and the root filesystem
-                                image with a checksum. The result can be used within the kiwi
-                                PXE boot infrastructure</para>
+                                image with a checksum.</para>
                     <para>Image types which triggers this builder are:</para>
                     <itemizedlist>
+                      <listitem>
+                        <para>image=”kis”</para>
+                      </listitem>
                       <listitem>
                         <para>image=”pxe”</para>
                       </listitem>
@@ -20330,7 +20332,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Raises</term>
                         <listitem>
-                          <para><xref linkend="kiwi.exceptions.KiwiPxeBootImageError"/> – if no kernel or hipervisor is found
+                          <para><xref linkend="kiwi.exceptions.KiwiKisBootImageError"/> – if no kernel or hipervisor is found
                                             in boot image tree</para>
                         </listitem>
                       </varlistentry>
