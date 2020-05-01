@@ -9446,12 +9446,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.defaults.Defaults.get_default_video_mode</property>
                   </term>
                   <listitem>
-                    <para>Provides 800x600 default video mode as hex value for the kernel</para>
+                    <para>Uses auto mode for default video. See get_video_mode_map
+                                for details on the value depending which bootloader is
+                                used</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>vesa video kernel hex value</para>
+                          <para>auto</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
