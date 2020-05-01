@@ -22029,6 +22029,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.package_manager.base.PackageManagerBase.clean_leftovers">
+                  <term>
+                    <property>kiwi.package_manager.base.PackageManagerBase.clean_leftovers</property>
+                  </term>
+                  <listitem>
+                    <para>Cleans package manager related data not needed in the
+                                resulting image such as custom macros</para>
+                    <para>Implementation in specialized package manager class</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.package_manager.base.PackageManagerBase.cleanup_requests">
                   <term>
                     <property>kiwi.package_manager.base.PackageManagerBase.cleanup_requests</property>
@@ -22364,6 +22376,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                                             configuration</para>
                       </listitem>
                     </itemizedlist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.clean_leftovers">
+                  <term>
+                    <property>kiwi.package_manager.dnf.PackageManagerDnf.clean_leftovers</property>
+                  </term>
+                  <listitem>
+                    <para>Cleans package manager related data not needed in the
+                                resulting image such as custom macros</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -22707,6 +22730,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                                             runtime configuration</para>
                       </listitem>
                     </itemizedlist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.package_manager.zypper.PackageManagerZypper.clean_leftovers">
+                  <term>
+                    <property>kiwi.package_manager.zypper.PackageManagerZypper.clean_leftovers</property>
+                  </term>
+                  <listitem>
+                    <para>Cleans package manager related data not needed in the
+                                resulting image such as custom macros</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -27474,6 +27508,17 @@ end</screen>
                         <para><literal>uri_list</literal> () – a list of Uri references</para>
                       </listitem>
                     </itemizedlist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.prepare.SystemPrepare.clean_package_manager_leftovers">
+                  <term>
+                    <property>kiwi.system.prepare.SystemPrepare.clean_package_manager_leftovers</property>
+                  </term>
+                  <listitem>
+                    <para>This methods cleans some package manager artifacts created
+                                at run time such as macros</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
