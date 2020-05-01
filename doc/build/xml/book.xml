@@ -16073,6 +16073,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_root_filesystem_uuid">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_root_filesystem_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Return preserved UUID</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.XMLState.get_root_partition_uuid">
                   <term>
                     <property>kiwi.xml_state.XMLState.get_root_partition_uuid</property>
@@ -16876,6 +16886,24 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>repo_package_gpgcheck</literal> () – enable/disable package gpg checks</para>
                             </listitem>
                           </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.set_root_filesystem_uuid">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.set_root_filesystem_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Store UUID provided in uuid as state information</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>uuid</literal> () – UUID</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
