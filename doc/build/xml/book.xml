@@ -10212,19 +10212,19 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.defaults.Defaults.get_live_dracut_module_from_flag">
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_live_dracut_modules_from_flag">
                   <term>
-                    <property>kiwi.defaults.Defaults.get_live_dracut_module_from_flag</property>
+                    <property>kiwi.defaults.Defaults.get_live_dracut_modules_from_flag</property>
                   </term>
                   <listitem>
-                    <para>Provides flag_name to dracut module name map</para>
+                    <para>Provides flag_name to dracut modules name map</para>
                     <para>Depending on the value of the flag attribute in the KIWI image
-                                description a specific dracut module needs to be selected</para>
+                                description specific dracut modules need to be selected</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>dracut module name</para>
+                          <para>dracut module names as list</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
