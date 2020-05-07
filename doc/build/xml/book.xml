@@ -304,343 +304,56 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
         <listitem>
           <para>build happens on an incompatible host system distribution
                         compared to the target image distribution. For example
-                        the host system rpm database is incompatible with the image
-                        rpm database and a dump/reload cycle is not possible
-                        between the two versions. Ideally the host system distribution
-                        is the same as the target image distribution.</para>
+                        building an apt/dpkg  based system on an rpm based system.</para>
+        </listitem>
+        <listitem>
+          <para>run more than one build process at the same time on the
+                        same host.</para>
         </listitem>
       </itemizedlist>
       <para>This document describes how to perform the build process in
-                a Docker container using the Dice containment build system
-                written for KIWI NG in order to address the issues listed above.</para>
+                a self contained environment using fast booting virtual
+                machines to address the issues listed above.</para>
       <para>The changes on the machine to become a build host will
-                be reduced to the requirements of Dice and Docker.</para>
+                be reduced to the requirements of the KIWI NG <literal>boxed plugin</literal></para>
     </note>
     <section xml:id="requirements">
       <title>Requirements</title>
-      <para>The following components needs to be installed on the build system:</para>
-      <itemizedlist>
-        <listitem>
-          <para>Dice - a containment build system for KIWI NG.</para>
-        </listitem>
-        <listitem>
-          <para>Docker - a container framework based on the Linux
-                        container support in the kernel.</para>
-        </listitem>
-        <listitem>
-          <para>Docker Image - a docker build container for KIWI NG.</para>
-        </listitem>
-        <listitem>
-          <para>optionally Vagrant - a framework to run, provision and control
-                        virtual machines and container instances. Vagrant has a very nice
-                        interface to provision a machine prior to running the actual build.
-                        It also supports docker as a provider which makes it a perfect fit
-                        for complex provisioning tasks in combination with the Docker
-                        container system.</para>
-        </listitem>
-        <listitem>
-          <para>optionally libvirt - Toolkit to interact with the virtualization
-                        capabilities of Linux. In combination with vagrant, libvirt can
-                        be used as provider for provision and control full virtual
-                        instances running via qemu. As docker shares the host system
-                        kernel and thus any device, because KIWI NG needs to use privileged
-                        docker containers for building images, the more secure but less
-                        performant solution is to use virtual machines to run the KIWI NG
-                        build.</para>
-        </listitem>
-      </itemizedlist>
+      <para>Add the KIWI NG repo from the Open Build Service. For details see
+                <xref linkend="installation-from-obs"/>. The following KIWI NG plugin needs to be
+                installed on the build system:</para>
+      <screen language="bash">$ sudo zypper in python3-kiwi_boxed_plugin</screen>
     </section>
-    <section xml:id="installing-and-setting-up-dice">
-      <title>Installing and Setting up Dice</title>
-      <para>The Dice packages and sources are available at the following locations:</para>
-      <itemizedlist>
-        <listitem>
-          <para>Build service project:
-                        <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="http://download.opensuse.org/repositories/Virtualization:/Appliances:/ContainerBuilder"/></para>
-        </listitem>
-        <listitem>
-          <para>Sources: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/OSInside/dice"/></para>
-        </listitem>
-      </itemizedlist>
-      <screen language="bash">$ sudo zypper in ruby[VERSION]-rubygem-dice</screen>
-    </section>
-    <section xml:id="installing-and-setting-up-docker">
-      <title>Installing and Setting up Docker</title>
-      <para>Docker packages are usually available with the used distribution.</para>
-      <screen language="bash">$ sudo zypper in docker</screen>
-      <para>Make sure that the user, who is intended to build images, is a member
-                of the <literal>docker</literal> group. Run the following command:</para>
-      <screen language="bash">$ sudo useradd -G docker &lt;builduser&gt;</screen>
-      <para>It is required to logout and login again to let this change
-                become active.</para>
-      <para>Once this is done you need to setup the Docker storage backend.
-                By default Docker uses the device mapper to manage the storage for
-                the containers it starts. Unfortunately, this does not work if the
-                container is supposed to build images because it runs into conflicts
-                with tools like <command>kpartx</command> which itself maps devices using
-                the device mapper.</para>
-      <para>Fortunately, there is a solution for Docker which allows us to use
-                Btrfs as the storage backend. The following is only required if your
-                host system root filesystem is not btrfs:</para>
-      <screen language="bash">$ sudo qemu-img create /var/lib/docker-storage.btrfs 20g
-$ sudo mkfs.btrfs /var/lib/docker-storage.btrfs
-$ sudo mkdir -p /var/lib/docker
-$ sudo mount /var/lib/docker-storage.btrfs /var/lib/docker
-
-$ sudo vi /etc/fstab
-
-  /var/lib/docker-storage.btrfs /var/lib/docker btrfs defaults 0 0
-
-$ sudo vi /etc/sysconfig/docker
-
-  DOCKER_OPTS="-s btrfs"</screen>
-      <para>Finally start the docker service:</para>
-      <screen language="bash">$ sudo systemctl restart docker</screen>
-    </section>
-    <section xml:id="installing-and-setting-up-the-build-container">
-      <title>Installing and Setting up the Build Container</title>
-      <para>In order to build in a contained environment Docker has to start a
-                privileged system container. Such a container must be imported before
-                Docker can use it. The build container is provided to you as a
-                service and build with KIWI NG in the project
-                at <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="http://download.opensuse.org/repositories/Virtualization:/Appliances:/Images"/>.
-                The result image is pushed to <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://hub.docker.com/r/opensuse/dice"/>.</para>
-      <para>When building with Dice, the container will be automatically fetched
-                from the docker registry. However this step can also be done prior to
-                calling <command>dice</command> as follows:</para>
-      <screen language="bash">$ docker pull opensuse/dice:latest</screen>
+    <section xml:id="building-with-the-boxbuild-command">
+      <title>Building with the boxbuild command</title>
+      <para>The installation of the KIWI NG boxed plugin has registered a new kiwi
+                command named <literal>boxbuild</literal>. The command implementation uses KVM as
+                virtualization technology and runs the KIWI NG <literal>build</literal> command inside of
+                a KVM controlled virtual machine. For running the build process in a
+                virtual machine it’s required to provide VM images that are suitable
+                to perform this job. We call the VM images <literal>boxes</literal> and they contain
+                kiwi itself as well as all other components needed to build appliances.
+                Those boxes are hosted in the Open Build Service and are publicly
+                available at the <literal>Subprojects</literal> tab in the: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:SelfContained">Virtualization:Appliances:SelfContained</link>
+                project.</para>
+      <para>As a user you don’t need to work with the boxes because this is all done
+                by the plugin and provided as a service by the KIWI NG team. The <literal>boxbuild</literal>
+                command knows where to fetch the box and also cares for an update of the
+                box when it has changed.</para>
+      <para>Building an image with the <literal>boxbuild</literal> command is similar to building with
+                the <literal>build</literal> command. The plugin validates the given command call with the
+                capabilities of the <literal>build</literal> command. Thus one part of the <literal>boxbuild</literal> command
+                is exactly the same as with the <literal>build</literal> command. The separation between
+                <literal>boxbuild</literal> and <literal>build</literal> options is done using the <literal>--</literal> separator like
+                shown in the following example:</para>
+      <screen language="bash">$ sudo kiwi-ng --type iso system boxbuild --box suse -- \
+      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+      --target-dir /tmp/myimage</screen>
       <note>
-        <para>Optional step</para>
-        <para>If a custom or newer version of the Build Container should be used,
-                    it is required to update the registry. This is because Dice always
-                    fetches the latest version of the Build Container from the registry.</para>
-        <procedure>
-          <step>
-            <para>Download the .tar.bz2 file which starts with <literal>Docker-Tumbleweed</literal></para>
-          </step>
-        </procedure>
-        <screen language="bash">$ wget http://download.opensuse.org/repositories/Virtualization:/Appliances:/Images/images/Docker-Tumbleweed.XXXXXXX.docker.tar.xz</screen>
-        <procedure>
-          <step>
-            <para>Import the downloaded tarball with the command <command>docker</command>:</para>
-          </step>
-        </procedure>
-        <screen language="bash">$ docker load -i Docker-Tumbleweed.XXXXXXX.docker.tar</screen>
-        <procedure>
-          <step>
-            <para>Tag the container and push back to the registry</para>
-          </step>
-        </procedure>
-        <screen language="bash">$ docker push opensuse/dice:latest</screen>
+        <para>The provided <literal>--description</literal> and <literal>--target-dir</literal> options are
+                    setup as shared folders between the host and the guest. No other
+                    data will be shared with the host.</para>
       </note>
-    </section>
-    <section xml:id="installing-and-setting-up-vagrant">
-      <title>Installing and Setting up Vagrant</title>
-      <note>
-        <para>Optional step</para>
-        <para>By default Dice shares the KIWI NG image description directory with
-                    the Docker instance. If more data from the host should be shared
-                    with the Docker instance we recommend to use Vagrant for this
-                    provision tasks.</para>
-      </note>
-      <para>Installing Vagrant is well documented at
-                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.vagrantup.com/docs/installation/index.html"/></para>
-      <para>Access to a machine started by Vagrant is done through SSH exclusively.
-                Because of that an initial key setup is required in the Docker image vagrant
-                should start. The KIWI NG Docker image includes the public key of the Vagrant
-                key pair and thus allows access. It is important to understand that the
-                private Vagrant key is not a secure key because the private key is not
-                protected.</para>
-      <para>However, this is not a problem because Vagrant creates a new
-                key pair for each machine it starts. In order to allow Vagrant the initial
-                access and the creation of a new key pair, it’s required to provide access
-                to the insecure Vagrant private key. The following commands should not be
-                executed as root, but as the intended user to build images.</para>
-      <screen language="bash">$ mkdir -p ~/.dice/key
-$ cp -a /usr/share/doc/packages/ruby*-rubygem-dice/key ~/.dice/key</screen>
-    </section>
-    <section xml:id="configuring-dice">
-      <title>Configuring Dice</title>
-      <para>If you build in a contained environment, there is no need to have KIWI NG
-                installed on the host system. KIWI NG is part of the container and is only
-                called there. However, a KIWI NG image description and some metadata
-                defining how to run the container are required as input data.</para>
-    </section>
-    <section xml:id="selecting-a-template">
-      <title>Selecting a Template</title>
-      <para>If you don’t have a KIWI NG description select one from the templates
-                provided at the GitHub project hosting example appliance descriptions.</para>
-      <screen language="bash">$ git clone https://github.com/OSInside/kiwi-descriptions</screen>
-      <para>The descriptions hosted here also provides a default <literal>Dicefile</literal>
-                as part of each image description.</para>
-    </section>
-    <section xml:id="the-dicefile">
-      <title>The Dicefile</title>
-      <para>The Dicefile is the configuration file for the dice buildsystem backend.
-                All it needs to know for a plain docker based build process is the
-                selection of the buildhost to be a Docker container. The Dicefile’s
-                found in the above mentioned appliance descriptions look all like the
-                following:</para>
-      <screen language="ruby">Dice.configure do |config|
-  config.buildhost = :DOCKER
-end</screen>
-    </section>
-    <section xml:id="building-with-dice">
-      <title>Building with Dice</title>
-      <para>If you have choosen to just use the default Dice configuration as
-                provided with the example appliance descriptions, the following example
-                command will build the image:</para>
-      <screen language="bash">$ cd &lt;git-clone-result-kiwi-descriptions&gt;
-
-$ dice build suse/x86_64/suse-leap-15.1-JeOS
-$ dice status suse/x86_64/suse-leap-15.1-JeOS</screen>
-    </section>
-    <section xml:id="buildsystem-backends">
-      <title>Buildsystem Backends</title>
-      <para>Dice currently supports three build system backends:</para>
-      <procedure>
-        <step>
-          <para>Host buildsystem - Dice builds on the host like if you would call
-                        KIWI NG on the host directly.</para>
-        </step>
-        <step>
-          <para>Vagrant Buildsystem - Dice uses Vagrant to run a virtual system which
-                        could also be a container and build the image on this machine.</para>
-        </step>
-        <step>
-          <para>Docker buildsystem - Dice uses Docker directly to run the build in
-                        a container</para>
-        </step>
-      </procedure>
-      <para>The use of the Docker buildsystem has been already explained in the
-                above chapters. The following sections explains the pros and cons of
-                the other two available Buildsystem Backends.</para>
-    </section>
-    <section xml:id="building-with-the-host-buildsystem">
-      <title>Building with the Host Buildsystem</title>
-      <para>Using the Host Buildsystem basically tells Dice to ssh into the
-                specified machine with the specified user and run KIWI NG. This is
-                also the information which needs to be provided in a Dicefile.
-                Using the Host Buildsystem is recommended if there are dedicated
-                build machines available to take over KIWI NG build jobs.</para>
-    </section>
-    <section xml:id="id1">
-      <title>The Dicefile</title>
-      <screen language="ruby">Dice.configure do |config|
-  config.buildhost = "full-qualified-dns-name-or-ip-address"
-  config.ssh_user = "vagrant"
-end</screen>
-      <para>After these changes a <command>dice build</command> command will make use
-                of the Host Buildsystem and starts the KIWI NG build process there.</para>
-      <note>
-        <para>Provisioning of the Host Buildsystem</para>
-        <para>There is no infrastructure in place which manages the machine
-                    specified as config.buildhost. This means it is currently in the
-                    responsibility of the user to make sure the specified machine
-                    exists and is accessible via the configured user. For the future
-                    we plan to implement a Public Cloud Buildsystem which then will
-                    allow provisioning and management of a public cloud instance
-                    e.g on Amazon EC2 in order to run the build. However we are
-                    not there yet.</para>
-      </note>
-    </section>
-    <section xml:id="building-with-the-vagrant-buildsystem">
-      <title>Building with the Vagrant Buildsystem</title>
-      <para>Using the Vagrant Buildsystem should be considered if one or both of the
-                following use cases applies:</para>
-      <procedure>
-        <step>
-          <para>The build task requires additional content or logic before the build
-                        can start. Vagrant serves as provisioning system to share data
-                        from the host with the guest containers.</para>
-        </step>
-        <step>
-          <para>The build task should run in a completely isolated virtual machine
-                        environment. Vagrant in combination with the libvirt provider serves
-                        as both; The tool to interact with the virtualization capabilities
-                        to run and manage virtual machine instances and as provisioning system
-                        to share data from the host with the virtual machines.</para>
-        </step>
-      </procedure>
-    </section>
-    <section xml:id="id2">
-      <title>The Dicefile</title>
-      <para>The Dicefile in the context of Vagrant needs to know the user name to
-                access the instance. The reason for this is, in Vagrant access to the
-                system is handled over SSH.</para>
-      <screen language="ruby">Dice.configure do |config|
-  config.ssh_user = "vagrant"
-end</screen>
-    </section>
-    <section xml:id="the-vagrant-setup-for-the-docker-provider">
-      <title>The Vagrant setup for the Docker Provider</title>
-      <para>The following is an example for the first use case and describes how
-                to configure Dice to use Docker in combination with Vagrant as
-                provisioning system.</para>
-    </section>
-    <section xml:id="the-vagrantfile">
-      <title>The Vagrantfile</title>
-      <para>The existence of a Vagrantfile tells Dice to use Vagrant as Buildsystem.
-                Once you call <command>dice</command> to build the image it will
-                call <command>vagrant</command> to bring up the container. In order to allow this,
-                we have to tell Vagrant to use Docker for this task and provide parameters
-                on how to run the container. At the same place the Dicefile exists we create
-                the Vagrantfile with the following content:</para>
-      <screen language="ruby">VAGRANTFILE_API_VERSION = "2"
-
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.provider "docker" do |d|
-    d.image = "opensuse/dice:latest"
-    d.create_args = ["-privileged=true", "-i", "-t"]
-    # start the sshd in foreground to keep the container in running state
-    d.cmd = ["/usr/sbin/sshd", "-D"]
-    d.has_ssh = true
-  end
-end</screen>
-      <para>After these changes a <command>dice build</command> command will make use
-                of the Vagrant build system and offers a nice way to provision
-                the Docker container instances prior to the actual KIWI NG build process.
-                Vagrant will take over the task to run and manage the docker container
-                via the <literal>docker</literal> tool chain.</para>
-    </section>
-    <section xml:id="the-vagrant-setup-for-the-libvirt-provider">
-      <title>The Vagrant setup for the libvirt Provider</title>
-      <para>The following sections are an example for the second use case and describes
-                how to configure Dice to use libvirt in combination with Vagrant as
-                provisioning and virtualization system.</para>
-    </section>
-    <section xml:id="the-vagrant-build-box">
-      <title>The Vagrant Build Box</title>
-      <para>Apart from the Docker build container the Dice infrastructure also
-                provides a virtual machine image also known as vagrant box which
-                contains a system ready to build images with KIWI NG.</para>
-      <para>Download the Vagrant build box which starts with
-                <literal>Vagrant-Libvirt-Tumbleweed</literal> from the Open BuildService and add
-                the box to vagrant as follows:</para>
-      <screen language="bash">$ wget http://download.opensuse.org/repositories/Virtualization:/Appliances:/Images/images/Vagrant-Libvirt-Tumbleweed.XXXXXXX.vagrant.libvirt.box
-
-$ vagrant box add --provider libvirt --name kiwi-build-box Vagrant-Libvirt-Tumbleweed.XXXXXXX.vagrant.libvirt.box
-
-$ export VAGRANT_DEFAULT_PROVIDER=libvirt</screen>
-      <para>The command <command>vagrant box list</command> must list the box with
-                name <literal>kiwi-build-box</literal> as referenced in the following Vagrantfile setup.</para>
-    </section>
-    <section xml:id="id3">
-      <title>The Vagrantfile</title>
-      <screen language="ruby">VAGRANTFILE_API_VERSION = "2"
-
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "kiwi-build-box"
-
-  config.vm.provider "libvirt" do |lv|
-    lv.memory = "1024"
-  end
-end</screen>
-      <para>After these changes a <command>dice build</command> command will make use
-                of the Vagrant build system and offers a nice way to provision
-                fully isolated qemu instances via libvirt prior to the actual KIWI NG
-                build process. Vagrant will take over the task to run and manage the
-                virtual machines via the <literal>libvirt</literal> tool chain.</para>
     </section>
   </chapter>
   <chapter xml:id="db-overview" xml:base="overview">
