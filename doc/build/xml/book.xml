@@ -346,7 +346,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                 is exactly the same as with the <literal>build</literal> command. The separation between
                 <literal>boxbuild</literal> and <literal>build</literal> options is done using the <literal>--</literal> separator like
                 shown in the following example:</para>
-      <screen language="bash">$ sudo kiwi-ng --type iso system boxbuild --box suse -- \
+      <screen language="bash">$ kiwi-ng --type iso system boxbuild --box suse -- \
       --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
       --target-dir /tmp/myimage</screen>
       <note>
