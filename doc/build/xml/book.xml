@@ -640,7 +640,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
             children, for example:</para>
       <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 
-&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;!-- all settings belong here --&gt;
 &lt;/image&gt;</screen>
       <para>The <literal>image</literal> element requires the following two attributes (as shown in the
@@ -664,7 +664,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
             <literal>name</literal> (it can contain spaces and slashes):</para>
       <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 
-&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1" displayName="LimeJeOS-Leap-15.1"&gt;
+&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1" displayName="LimeJeOS-Leap-15.1"&gt;
     &lt;!-- all setting belong here --&gt;
 &lt;/image&gt;</screen>
     </section>
@@ -672,7 +672,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
       <title>The <literal>description</literal> Element</title>
       <para>The <literal>description</literal> element, contains some high level information about the
             image:</para>
-      <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;description type="system"&gt;
         &lt;author&gt;Jane Doe&lt;/author&gt;
         &lt;contact&gt;jane@myemaildomain.xyz&lt;/contact&gt;
@@ -715,7 +715,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
         <para>A build type defines the type of an appliance that is produced by KIWI NG, for
                 instance, a live ISO image or a virtual machine disk.</para>
         <para>For example, a live ISO image is specified as follows:</para>
-        <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;preferences&gt;
         &lt;type image="iso" primary="true" flags="overlay" hybridpersistent_filesystem="ext4" hybridpersistent="true"/&gt;
         &lt;!-- additional preferences --&gt;
@@ -730,16 +730,16 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
         <para>It is possible to provide <emphasis role="bold">multiple</emphasis> elements with <emphasis role="bold">different</emphasis><literal>image</literal> attributes inside the preferences section. The following XML
                 snippet can be used to create a live image, an OEM installation image, and
                 a virtual machine disk of the same appliance:</para>
-        <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;preferences&gt;
         &lt;!-- Live ISO --&gt;
         &lt;type image="iso" primary="true" flags="overlay" hybridpersistent_filesystem="ext4" hybridpersistent="true"/&gt;
 
         &lt;!-- Virtual machine --&gt;
-        &lt;type image="vmx" filesystem="ext4" bootloader="grub2" kernelcmdline="splash" firmware="efi"/&gt;
+        &lt;type image="vmx" filesystem="ext4" kernelcmdline="splash" firmware="efi"/&gt;
 
         &lt;!-- OEM installation image --&gt;
-        &lt;type image="oem" filesystem="ext4" initrd_system="dracut" installiso="true" bootloader="grub2" kernelcmdline="splash" firmware="efi"&gt;
+        &lt;type image="oem" filesystem="ext4" initrd_system="dracut" installiso="true" kernelcmdline="splash" firmware="efi"&gt;
             &lt;oemconfig&gt;
                 &lt;oem-systemsize&gt;2048&lt;/oem-systemsize&gt;
                 &lt;oem-swap&gt;true&lt;/oem-swap&gt;
@@ -828,20 +828,6 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                     appropriate place. Certain attributes are however useful for nearly all
                     build types and will be covered here:</para>
           <itemizedlist>
-            <listitem>
-              <para><literal>bootloader</literal>: Specifies the bootloader used for booting the image. At
-                            the moment <literal>grub2</literal>, <literal>zipl</literal> and <literal>grub2_s390x_emu</literal> (a combination of zipl
-                            and a userspace GRUB2) are supported.
-                            The special <literal>custom</literal> entry allows to skip the bootloader configuration
-                            and installation and leaves this up to the user which can be done by
-                            using the <literal>editbootinstall</literal> and <literal>editbootconfig</literal> custom scripts.</para>
-            </listitem>
-            <listitem>
-              <para><literal>boottimeout</literal>: Specifies the boot timeout in seconds prior to launching
-                            the default boot option. By default the timeout is set to 10 seconds. It
-                            makes sense to set this value to <literal>0</literal> for images intended to be started
-                            non-interactively (e.g. virtual machines).</para>
-            </listitem>
             <listitem>
               <para><literal>bootpartition</literal>: Boolean parameter notifying KIWI NG whether an extra boot
                             partition should be used or not (the default depends on the current
@@ -944,6 +930,28 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
             </listitem>
           </itemizedlist>
         </section>
+        <section xml:id="common-attributes-of-the-bootloader-element">
+          <title>Common attributes of the <literal>bootloader</literal> element</title>
+          <para>The <literal>bootloader</literal> element is used to select the bootloader. At
+                    the moment <literal>grub2</literal>, <literal>isolinux</literal>, <literal>zipl</literal> and <literal>grub2_s390x_emu</literal>
+                    (a combination of zipl and a userspace GRUB2) are supported.
+                    The special <literal>custom</literal> entry allows to skip the bootloader configuration
+                    and installation and leaves this up to the user which can be done by
+                    using the <literal>editbootinstall</literal> and <literal>editbootconfig</literal> custom scripts.</para>
+          <itemizedlist>
+            <listitem>
+              <para><literal>timeout</literal>: Specifies the boot timeout in seconds prior to launching
+                            the default boot option. By default the timeout is set to 10 seconds. It
+                            makes sense to set this value to <literal>0</literal> for images intended to be started
+                            non-interactively (e.g. virtual machines).</para>
+            </listitem>
+            <listitem>
+              <para><literal>targettype</literal>: Specifies the device type of the disk zipl should boot.
+                            On zFCP devices use <literal>SCSI</literal>, on DASD devices use <literal>CDL</literal> or <literal>LDL</literal> on
+                            emulated DASD devices use <literal>FBA</literal></para>
+            </listitem>
+          </itemizedlist>
+        </section>
       </section>
       <section xml:id="common-elements">
         <title>Common Elements</title>
@@ -993,7 +1001,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
         </itemizedlist>
         <para>An example excerpt from a image description using these child-elements of
                 <literal>preferences</literal>, results in the following image description:</para>
-        <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;!-- snip --&gt;
     &lt;preferences&gt;
         &lt;version&gt;15.0&lt;/version&gt;
@@ -1005,7 +1013,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
         &lt;rpm-check-signatures&gt;false&lt;/rpm-check-signatures&gt;
         &lt;bootsplash-theme&gt;openSUSE&lt;/bootsplash-theme&gt;
         &lt;bootloader-theme&gt;openSUSE&lt;/bootloader-theme&gt;
-        &lt;type image="vmx" filesystem="ext4" format="qcow2" boottimeout="0" bootloader="grub2"&gt;
+        &lt;type image="vmx" filesystem="ext4" format="qcow2"&gt;
     &lt;/preferences&gt;
     &lt;!-- snip --&gt;
 &lt;/image&gt;</screen>
@@ -1030,7 +1038,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
       <para>In the following example, we create two virtual machine images: one for
             QEMU (using the <literal>qcow2</literal> format) and one for VMWare (using the <literal>vmdk</literal>
             format).</para>
-      <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;!-- snip --&gt;
     &lt;profiles&gt;
         &lt;profile name="QEMU" description="virtual machine for QEMU"/&gt;
@@ -1041,10 +1049,10 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
         &lt;packagemanager&gt;zypper&lt;/packagemanager&gt;
     &lt;/preferences&gt;
     &lt;preferences profiles="QEMU"&gt;
-        &lt;type image="vmx" format="qcow2" filesystem="ext4" bootloader="grub2"&gt;
+        &lt;type image="vmx" format="qcow2" filesystem="ext4"&gt;
     &lt;/preferences&gt;
     &lt;preferences profiles="VMWare"&gt;
-        &lt;type image="vmx" format="vmdk" filesystem="ext4" bootloader="grub2"&gt;
+        &lt;type image="vmx" format="vmdk" filesystem="ext4"&gt;
     &lt;/preferences&gt;
     &lt;!-- snip --&gt;
 &lt;/image&gt;</screen>
@@ -1098,7 +1106,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
       <title>Adding Users</title>
       <para>User accounts can be added or modified via the <literal>users</literal> element, which
             supports a list of multiple <literal>user</literal> child elements:</para>
-      <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;users&gt;
         &lt;user
             password="this_is_soo_insecure"
@@ -1150,7 +1158,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
       <para>The <literal>users</literal> element furthermore accepts a list of profiles (see
             <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#image-profiles">Image Profiles</link>) to which it applies via the
             <literal>profiles</literal> attribute, as shown in the following example:</para>
-      <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;profiles&gt;
         &lt;profile name="VM" description="standard virtual machine"/&gt;
         &lt;profile name="shared_VM" description="virtual machine shared by everyone"/&gt;
@@ -1190,7 +1198,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                 defined, as KIWI NG will otherwise not be able to fetch any packages.</para>
         <para>A repository is added to the description via the <literal>repository</literal> element,
                 which is a child of the top-level <literal>image</literal> element:</para>
-        <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;!-- snip --&gt;
     &lt;repository type="rpm-md" alias="kiwi" priority="1"&gt;
         &lt;source path="obs://Virtualization:Appliances:Builder/openSUSE_Leap_15.1"/&gt;
@@ -1308,7 +1316,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                 should be installed on the image. This is achieved via the <literal>packages</literal>
                 element which includes the packages that should be installed, ignore or
                 removed via individual <literal>package</literal> child elements:</para>
-        <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;packages type="bootstrap"&gt;
         &lt;package name="udev"/&gt;
         &lt;package name="filesystem"/&gt;
@@ -1353,7 +1361,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
           <title>The <literal>package</literal> element</title>
           <para>The <literal>package</literal> element represents a single package to be installed (or
                     removed), whose name is specified via the mandatory <literal>name</literal> attribute:</para>
-          <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+          <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="bootstrap"&gt;
         &lt;package name="udev"/&gt;
@@ -1367,7 +1375,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                     (like <command>dnf</command> or <command>zypper</command>) can install packages via their
                     <literal>Provides:</literal>. This can be used to add a package that provides a certain
                     capability (e.g. <literal>Provides: /usr/bin/my-binary</literal>) via:</para>
-          <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+          <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="bootstrap"&gt;
         &lt;package name="/usr/bin/my-binary"/&gt;
@@ -1380,7 +1388,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
           <para>Packages can also be included only on specific architectures via the <literal>arch</literal>
                     attribute. KIWI NG compares the <literal>arch</literal> attributes value with the output of
                     <literal>uname -m</literal>.</para>
-          <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+          <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="image"&gt;
         &lt;package name="grub2"/&gt;
@@ -1451,7 +1459,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                     custom program in <literal>config.sh</literal>. We ship its source code via an
                     <literal>archive</literal> element and add the build tools (<literal>ninja</literal>, <literal>meson</literal> and <literal>clang</literal>) to
                     <literal>&lt;packages type="image"&gt;</literal> and <literal>&lt;packages type="uninstall"&gt;</literal>:</para>
-          <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+          <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="image"&gt;
         &lt;package name="ca-certificates"/&gt;
@@ -1523,7 +1531,7 @@ popd</screen>
                     <literal>packages</literal> collection. This useful to exclude certain packages from being
                     installed when using patterns with <literal>patternType="plusRecommended"</literal> as shown
                     in the following example:</para>
-          <screen language="xml">&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+          <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;packages type="image" patternType="plusRecommended"&gt;
         &lt;namedCollection name="network-server"/&gt;
         &lt;package name="grub2"/&gt;
@@ -3068,11 +3076,10 @@ $ kiwi-ng system create $ARGS</screen>
           <para>Update the vmx image type setup as follows</para>
           <screen language="xml">&lt;type image="vmx"
       filesystem="ext4"
-      bootloader="grub2"
       kernelcmdline="console=xvc0 multipath=off net.ifnames=0"
-      boottimeout="1"
       devicepersistency="by-label"
       firmware="ec2"&gt;
+  &lt;bootloader name="grub2" timeout="1"/&gt;
   &lt;size unit="M"&gt;10240&lt;/size&gt;
   &lt;machine xen_loader="hvmloader"/&gt;
 &lt;/type&gt;</screen>
@@ -3193,14 +3200,13 @@ system_info:
           <para>Update the vmx image type setup as follows</para>
           <screen language="xml">&lt;type image="vmx"
       filesystem="ext4"
-      boottimeout="1"
       kernelcmdline="console=ttyS0 rootdelay=300 net.ifnames=0"
       devicepersistency="by-uuid"
       format="vhd-fixed"
       formatoptions="force_size"
-      bootloader="grub2"
       bootpartition="true"
       bootpartsize="1024"&gt;
+  &lt;bootloader name="grub2" timeout="1"/&gt;
   &lt;size unit="M"&gt;30720&lt;/size&gt;
 &lt;/type&gt;</screen>
         </step>
@@ -3268,10 +3274,10 @@ system_info:
                     (oem) type as follows:</para>
           <screen language="xml">&lt;type image="oem"
       initrd_system="dracut"
-      filesystem="ext4" boottimeout="1"
+      filesystem="ext4"
       kernelcmdline="console=ttyS0,38400n8 net.ifnames=0"
-      format="gce"
-      bootloader="grub2"&gt;
+      format="gce"&gt;
+  &lt;bootloader name="grub2" timeout="1"/&gt;
   &lt;size unit="M"&gt;10240&lt;/size&gt;
   &lt;oemconfig&gt;
       &lt;oem-swap&gt;false&lt;/oem-swap&gt;
@@ -3467,7 +3473,8 @@ touch /var/lib/YaST2/reconfig_system</screen>
       <procedure>
         <step>
           <para>Update the image type setup</para>
-          <screen language="xml">&lt;type image="vmx" filesystem="ext4" format="vagrant" boottimeout="0"&gt;
+          <screen language="xml">&lt;type image="vmx" filesystem="ext4" format="vagrant"&gt;
+    &lt;bootloader name="grub2" timeout="0"/&gt;
     &lt;vagrantconfig provider="libvirt" virtualsize="42"/&gt;
     &lt;size unit="G"&gt;42&lt;/size&gt;
 &lt;/type&gt;</screen>
@@ -3477,7 +3484,8 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <para>For the VirtualBox provider, the additional attribute
                     <literal>virtualbox_guest_additions_present</literal> can be set to <literal>true</literal> when the
                     VirtualBox guest additions are installed in the KIWI NG image:</para>
-          <screen language="xml">&lt;type image="vmx" filesystem="ext4" format="vagrant" boottimeout="0"&gt;
+          <screen language="xml">&lt;type image="vmx" filesystem="ext4" format="vagrant"&gt;
+    &lt;bootloader name="grub2" timeout="0"/&gt;
     &lt;vagrantconfig
       provider="virtualbox"
       virtualbox_guest_additions_present="true"
@@ -3603,7 +3611,8 @@ vagrant ssh</screen>
         <para>In the following example snippet from <literal>config.xml</literal> we add a custom
                 <literal>MyVagrantfile</literal> into the box (the file should be in the image
                 description directory next to <literal>config.sh</literal>):</para>
-        <screen language="xml">&lt;type image="vmx" filesystem="ext4" format="vagrant" boottimeout="0"&gt;
+        <screen language="xml">&lt;type image="vmx" filesystem="ext4" format="vagrant"&gt;
+    &lt;bootloader name="grub2" timeout="0"/&gt;
     &lt;vagrantconfig
       provider="libvirt"
       virtualsize="42"
@@ -3618,7 +3627,7 @@ vagrant ssh</screen>
                 customized one (the libvirt profile in the following example):</para>
         <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 
-&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
   &lt;!-- description goes here --&gt;
   &lt;profiles&gt;
     &lt;profile name="libvirt" description="Vagrant Box for Libvirt"/&gt;
@@ -3631,9 +3640,8 @@ vagrant ssh</screen>
     &lt;type
       image="vmx"
       filesystem="ext4"
-      format="vagrant"
-      boottimeout="0"
-      bootloader="grub2"&gt;
+      format="vagrant"&gt;
+        &lt;bootloader name="grub2" timeout="0"/&gt;
         &lt;vagrantconfig
           provider="libvirt"
           virtualsize="42"
@@ -3646,9 +3654,8 @@ vagrant ssh</screen>
      &lt;type
        image="vmx"
        filesystem="ext4"
-       format="vagrant"
-       boottimeout="0"
-       bootloader="grub2"&gt;
+       format="vagrant"&gt;
+         &lt;bootloader name="grub2" timeout="0"/&gt;
          &lt;vagrantconfig
            provider="virtualbox"
            virtualbox_guest_additions_present="true"
@@ -3788,7 +3795,8 @@ $ umount /mnt</screen>
             to create a bootable ISO image which deploys the image
             into a ramdisk and activates that image with the following
             oem type definition:</para>
-      <screen language="xml">&lt;type image="oem" filesystem="ext4" installiso="true" bootloader="grub2" initrd_system="dracut" installboot="install" boottimeout="1" kernelcmdline="rd.kiwi.ramdisk ramdisk_size=2048000"&gt;
+      <screen language="xml">&lt;type image="oem" filesystem="ext4" installiso="true" initrd_system="dracut" installboot="install" kernelcmdline="rd.kiwi.ramdisk ramdisk_size=2048000"&gt;
+    &lt;bootloader name="grub2" timeout="1"/&gt;
     &lt;oemconfig&gt;
         &lt;oem-skip-verify&gt;true&lt;/oem-skip-verify&gt;
         &lt;oem-unattended&gt;true&lt;/oem-unattended&gt;
@@ -3989,7 +3997,7 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
             using <literal>systemdisk</literal>. This element is a child of the .
             Volumes themselves are added via (multiple) <literal>volume</literal> child
             elements of the <literal>systemdisk</literal> element:</para>
-      <screen language="xml">&lt;image schemaversion="7.1" name="openSUSE-Leap-15.1"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
   &lt;type image="oem" filesystem="btrfs" preferlvm="true"&gt;
     &lt;systemdisk name="vgroup"&gt;
       &lt;volume name="usr/lib" size="1G" label="library"/&gt;
@@ -4181,7 +4189,6 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
                 <screen language="xml">&lt;type image="vmx"
     image="vmx"
     filesystem="ext4"
-    bootloader="grub2"
     luks="linux"
     bootpartition="false"&gt;
 &lt;/type&gt;</screen>
@@ -4193,7 +4200,6 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
                 <screen language="xml">&lt;type image="vmx"
     image="vmx"
     filesystem="ext4"
-    bootloader="grub2"
     luks="linux"
     bootpartition="true"&gt;
 &lt;/type&gt;</screen>
@@ -4240,7 +4246,7 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
                         <literal>&lt;?xml?&gt;</literal> element, e.g.:</para>
             <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;
-&lt;image schemaversion="7.1" name="LimeJeOS-Leap-15.1"&gt;
+&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
   &lt;!-- snip --&gt;
 &lt;/image&gt;</screen>
           </step>
@@ -4355,7 +4361,7 @@ Config</literal> on your project’s main page) or via <literal>osc meta -e prjc
 
 &lt;!-- OBS-Profiles: foo_profile bar_profile --&gt;
 
-&lt;image schemaversion="7.1" name="openSUSE-Leap-15.1"&gt;
+&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
   &lt;!-- image description with the profiles foo_profile and bar_profile
 &lt;/image&gt;</screen>
               </step>
@@ -4372,7 +4378,7 @@ Config</literal> on your project’s main page) or via <literal>osc meta -e prjc
 
 &lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;
 
-&lt;image schemaversion="7.1" name="openSUSE-Leap-15.1"&gt;
+&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
   &lt;!-- image description with the profiles foo_profile and bar_profile
 &lt;/image&gt;</screen>
             <para>The file <literal>_multibuild</literal> would have the following contents:</para>
@@ -4985,12 +4991,11 @@ PART="5;S;x,x;L;/"</screen>
             <literal>image="vmx"</literal> in <literal>config.xml</literal>. An example configuration for a 42 GB
             large VMDK image with 512 MB RAM, an IDE controller and a bridged network
             interface is shown below:</para>
-      <screen language="xml">&lt;image schemaversion="7.1" name="JeOS-Tumbleweed"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="JeOS-Tumbleweed"&gt;
   &lt;!-- snip --&gt;
   &lt;preferences&gt;
-    &lt;type image="vmx" filesystem="ext4"
-          format="vmdk" boottimeout="0"
-          bootloader="grub2"&gt;
+    &lt;type image="vmx" filesystem="ext4" format="vmdk"&gt;
+      &lt;bootloader name="grub2" timeout="0"/&gt;
       &lt;size unit="G"&gt;42&lt;/size&gt;
       &lt;machine memory="512" guestOS="suse" HWversion="4"&gt;
         &lt;vmdisk id="0" controller="ide"/&gt;
@@ -5058,7 +5063,7 @@ PART="5;S;x,x;L;/"</screen>
         <para>The <literal>size</literal> child element of  specifies the size of the resulting
                 disk image. The following example shows a image description where 20 GB are
                 added to the virtual machine image of which 5 GB are left unpartitioned:</para>
-        <screen language="xml">&lt;image schemaversion="7.1" name="JeOS-Tumbleweed"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="JeOS-Tumbleweed"&gt;
   &lt;!-- snip --&gt;
   &lt;preferences&gt;
     &lt;type image="vmx" format="vmdk"&gt;
@@ -5157,11 +5162,11 @@ PART="5;S;x,x;L;/"</screen>
                     forwards them.</para>
           <para>The following example adds the two entries <literal>numvcpus = "4"</literal> and
                     <literal>cpuid.coresPerSocket = "2"</literal> into the VM configuration file:</para>
-          <screen language="xml">&lt;image schemaversion="7.1" name="openSUSE-15.1" displayname="Bob"&gt;
+          <screen language="xml">&lt;image schemaversion="7.2" name="openSUSE-15.1" displayname="Bob"&gt;
   &lt;preferences&gt;
     &lt;type image="vmx" filesystem="ext4" format="vmdk"
-          bootloader="grub2" kernelcmdline="splash"
-          bootpartition="false"&gt;
+          kernelcmdline="splash" bootpartition="false"&gt;
+      &lt;bootloader name="grub2"/&gt;
       &lt;machine memory="512" guestOS="suse" HWversion="4"&gt;
         &lt;vmconfig-entry&gt;numvcpus = "4"&lt;/vmconfig-entry&gt;
         &lt;vmconfig-entry&gt;cpuid.coresPerSocket = "2"&lt;/vmconfig-entry&gt;
@@ -5178,10 +5183,10 @@ PART="5;S;x,x;L;/"</screen>
           <para>Note, that this element is only used for the <literal>vmdk</literal> image format.</para>
           <para>In the following example we add a bridged network interface using the
                     <literal>e1000</literal> driver:</para>
-          <screen language="xml">&lt;image schemaversion="7.1" name="openSUSE-15.1" displayname="Bob"&gt;
+          <screen language="xml">&lt;image schemaversion="7.2" name="openSUSE-15.1" displayname="Bob"&gt;
   &lt;preferences&gt;
-    &lt;type image="vmx" filesystem="btrfs"
-          bootloader="grub2" kernelcmdline="splash"&gt;
+    &lt;type image="vmx" filesystem="btrfs" kernelcmdline="splash"&gt;
+      &lt;bootloader name="grub2"/&gt;
       &lt;machine memory="4096" guestOS="suse" HWversion="4"&gt;
         &lt;vmnic driver="e1000" interface="0" mode="bridged"/&gt;
       &lt;/machine&gt;
@@ -5214,11 +5219,11 @@ PART="5;S;x,x;L;/"</screen>
                     times, each time for each disk or disk controller present.</para>
           <para>Note that this element is only used for <literal>vmdk</literal> and <literal>ova</literal> image formats.</para>
           <para>The following example adds a disk with the ID 0 using an IDE controller:</para>
-          <screen language="xml">&lt;image schemaversion="7.1" name="openSUSE-15.1" displayname="Bob"&gt;
+          <screen language="xml">&lt;image schemaversion="7.2" name="openSUSE-15.1" displayname="Bob"&gt;
   &lt;preferences&gt;
     &lt;type image="vmx" filesystem="ext4" format="vmdk"
-          bootloader="grub2" kernelcmdline="splash"
-          bootpartition="false"&gt;
+          kernelcmdline="splash" bootpartition="false"&gt;
+      &lt;bootloader name="grub2"/&gt;
       &lt;machine memory="512" guestOS="suse" HWversion="4"&gt;
         &lt;vmdisk id="0" controller="ide"/&gt;
       &lt;/machine&gt;
@@ -5257,10 +5262,10 @@ PART="5;S;x,x;L;/"</screen>
                     machine using the <literal>vmdvd</literal> element for the <literal>vmdk</literal> image format. In the
                     following example we add two drives: one with a SCSCI and another with a
                     IDE controller:</para>
-          <screen language="xml">&lt;image schemaversion="7.1" name="openSUSE-15.1" displayname="Bob"&gt;
+          <screen language="xml">&lt;image schemaversion="7.2" name="openSUSE-15.1" displayname="Bob"&gt;
   &lt;preferences&gt;
-    &lt;type bootloader="grub2" filesystem="ext4"
-          image="vmx" kernelcmdline="splash"&gt;
+    &lt;type image="vmx" filesystem="ext4" kernelcmdline="splash"&gt;
+      &lt;bootloader name="grub2"/&gt;
       &lt;machine memory="512" xen_loader="hvmloader"&gt;
         &lt;vmdvd id="0" controller="scsi"/&gt;
         &lt;vmdvd id="1" controller="ide"/&gt;
@@ -8765,6 +8770,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>seconds</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_default_bootloader">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_default_bootloader</property>
+                  </term>
+                  <listitem>
+                    <para>Return default bootloader name which is grub2</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>bootloader name</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -14409,6 +14438,24 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.copy_bootloader_section">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.copy_bootloader_section</property>
+                  </term>
+                  <listitem>
+                    <para>Copy bootloader section from this xml state to the target xml state</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>target_state</literal> () – XMLState instance</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.XMLState.copy_build_type_attributes">
                   <term>
                     <property>kiwi.xml_state.XMLState.copy_build_type_attributes</property>
@@ -14781,6 +14828,128 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Return type</term>
                         <listitem>
                           <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bootloader_console">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bootloader_console</property>
+                  </term>
+                  <listitem>
+                    <para>Return bootloader console setting for selected build type</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>console string</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bootloader_name">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bootloader_name</property>
+                  </term>
+                  <listitem>
+                    <para>Return bootloader name for selected build type</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>bootloader name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bootloader_section">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bootloader_section</property>
+                  </term>
+                  <listitem>
+                    <para>First bootloader section from the build type section</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>&lt;bootloader&gt; section reference</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>xml_parse::bootloader</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bootloader_targettype">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bootloader_targettype</property>
+                  </term>
+                  <listitem>
+                    <para>Return bootloader target type setting. Only relevant for
+                                the zipl bootloader because zipl is installed differently
+                                depending on the storage target it runs later</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>target type string</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bootloader_timeout">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bootloader_timeout</property>
+                  </term>
+                  <listitem>
+                    <para>Return bootloader timeout setting for selected build type</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>timeout string</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
