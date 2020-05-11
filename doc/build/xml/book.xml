@@ -14957,6 +14957,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bootloader_timeout_style">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bootloader_timeout_style</property>
+                  </term>
+                  <listitem>
+                    <para>Return bootloader timeout style setting for selected build type</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>timeout_style string</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_containerconfig_section">
                   <term>
                     <property>kiwi.xml_state.XMLState.get_build_type_containerconfig_section</property>
