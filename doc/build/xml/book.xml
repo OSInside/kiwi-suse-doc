@@ -78,6 +78,11 @@
           <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:ubuntu">Build Tests Ubuntu(x86)</link>
         </para>
       </listitem>
+      <listitem>
+        <para>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:archlinux">Build Tests ArchLinux(x86)</link>
+        </para>
+      </listitem>
     </itemizedlist>
     <section xml:id="the-appliance-concept">
       <title>The Appliance Concept</title>
@@ -14900,6 +14905,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Return type</term>
                         <listitem>
                           <para>xml_parse::bootloader</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bootloader_serial_line_setup">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bootloader_serial_line_setup</property>
+                  </term>
+                  <listitem>
+                    <para>Return bootloader serial line setup parameters for the
+                                selected build type</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>serial line setup</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
