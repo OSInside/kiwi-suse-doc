@@ -8991,7 +8991,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>arch</literal> () – platform.machine</para>
+                          <para><literal>arch</literal> () – machine architecture name</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -9372,7 +9372,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>arch</literal> () – platform.machine</para>
+                          <para><literal>arch</literal> () – machine architecture name</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -9403,7 +9403,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>arch</literal> () – platform.machine</para>
+                          <para><literal>arch</literal> () – machine architecture name</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -10161,6 +10161,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_platform_name">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_platform_name</property>
+                  </term>
+                  <listitem>
+                    <para/>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -25895,7 +25905,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <para><literal>root_dir</literal> () – root directory path name</para>
                       </listitem>
                       <listitem>
-                        <para><literal>arch</literal> () – platform.machine</para>
+                        <para><literal>arch</literal> () – Defaults.get_platform_name</para>
                       </listitem>
                       <listitem>
                         <para><literal>target_dir</literal> () – target directory path name</para>
@@ -28224,8 +28234,7 @@ end</screen>
                   <listitem>
                     <itemizedlist>
                       <listitem>
-                        <para><literal>arch</literal> () – platform.machine. The 32bit x86 platform is
-                                            handled as ‘ix86’</para>
+                        <para><literal>arch</literal> () – Defaults.get_platform_name</para>
                       </listitem>
                       <listitem>
                         <para><literal>xml_state</literal> () – instance of <literal>XMLState</literal></para>
