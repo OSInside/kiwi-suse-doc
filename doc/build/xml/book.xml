@@ -9462,6 +9462,37 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_efi_vendor_directory">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_efi_vendor_directory</property>
+                  </term>
+                  <listitem>
+                    <para>Provides EFI vendor directory if present</para>
+                    <para>Looks up distribution specific EFI vendor directory</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>root_path</literal> () – path to efi mountpoint</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>directory path or None</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_exclude_list_for_non_physical_devices">
                   <term>
                     <property>kiwi.defaults.Defaults.get_exclude_list_for_non_physical_devices</property>
@@ -10659,6 +10690,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_vendor_grubenv">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_vendor_grubenv</property>
+                  </term>
+                  <listitem>
+                    <para/>
                   </listitem>
                 </varlistentry>
               </variablelist>
