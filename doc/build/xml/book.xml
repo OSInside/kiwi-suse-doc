@@ -17273,6 +17273,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.cleanup">
+                  <term>
+                    <property>kiwi.boot.image.base.BootImageBase.cleanup</property>
+                  </term>
+                  <listitem>
+                    <para>Cleanup temporary boot image data if any</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.create_initrd">
                   <term>
                     <property>kiwi.boot.image.base.BootImageBase.create_initrd</property>
@@ -17302,16 +17312,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.disable_cleanup">
-                  <term>
-                    <property>kiwi.boot.image.base.BootImageBase.disable_cleanup</property>
-                  </term>
-                  <listitem>
-                    <para>Deactivate cleanup(deletion) of boot root directory</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.dump">
                   <term>
                     <property>kiwi.boot.image.base.BootImageBase.dump</property>
@@ -17328,16 +17328,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.enable_cleanup">
-                  <term>
-                    <property>kiwi.boot.image.base.BootImageBase.enable_cleanup</property>
-                  </term>
-                  <listitem>
-                    <para>Activate cleanup(deletion) of boot root directory</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -17758,6 +17748,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>The kiwi initrd is a customized first boot initrd which allows
                         to control the first boot an appliance. The kiwi initrd replaces
                         itself after first boot by the result of dracut.</para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.builtin_kiwi.BootImageKiwi.cleanup">
+                  <term>
+                    <property>kiwi.boot.image.builtin_kiwi.BootImageKiwi.cleanup</property>
+                  </term>
+                  <listitem>
+                    <para>Cleanup temporary boot image data if any</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.builtin_kiwi.BootImageKiwi.create_initrd">
                   <term>
@@ -20930,6 +20930,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>exclude</literal> () – list of exclude dirs/files</para>
                             </listitem>
                           </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.base.FileSystemBase.get_mountpoint">
+                  <term>
+                    <property>kiwi.filesystem.base.FileSystemBase.get_mountpoint</property>
+                  </term>
+                  <listitem>
+                    <para>Provides mount point directory</para>
+                    <para>Effective use of the directory is guaranteed only after sync_data</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>directory path name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -30487,6 +30512,31 @@ end</screen>
                               <para><literal>filesystem_name</literal> () – unused</para>
                             </listitem>
                           </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.volume_manager.base.VolumeManagerBase.get_mountpoint">
+                  <term>
+                    <property>kiwi.volume_manager.base.VolumeManagerBase.get_mountpoint</property>
+                  </term>
+                  <listitem>
+                    <para>Provides mount point directory</para>
+                    <para>Effective use of the directory is guaranteed only after sync_data</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>directory path name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
