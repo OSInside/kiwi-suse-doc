@@ -1563,146 +1563,76 @@ popd</screen>
         <para>
           <emphasis role="bold">Abstract</emphasis>
         </para>
-        <para>This chapter describes the usage of the user defined scripts
-                <literal>config.sh</literal> and <literal>image.sh</literal>, which can be used to further
-                customize an image in ways that are not possible via the image
-                description alone.</para>
+        <para>This chapter describes the purpose of the user defined scripts
+                <literal>config.sh</literal>, <literal>image.sh</literal> and <literal>disk.sh</literal>, which can
+                be used to further customize an image in ways that are not possible
+                via the image description alone.</para>
       </note>
-      <para>KIWI NG supports up to two user defined scripts that it runs in the change
+      <para>KIWI NG supports the following optional scripts that it runs in a
             root environment (chroot) containing your new appliance:</para>
-      <procedure>
-        <step>
-          <para><literal>config.sh</literal> runs the end of the <xref linkend="prepare-step"/>
-                    if present. It can be used to fine tune the unpacked image.</para>
-        </step>
-        <step>
-          <para><literal>images.sh</literal> is executed at the beginning of the <xref linkend="create-step"/>. It is run on the top level of the
-                    target root tree. The script is usually used to remove files that are
-                    not needed in the final image. For example, if an appliance is being
-                    built for a specific hardware, unnecessary kernel drivers can be removed
-                    using this script.</para>
-        </step>
-      </procedure>
-      <para>KIWI NG will execute both scripts via the operating system if their executable
+      <variablelist>
+        <varlistentry>
+          <term>config.sh</term>
+          <listitem>
+            <para>runs at the end of the <xref linkend="prepare-step"/>
+                        and after users have been set and the <emphasis>overlay tree directory</emphasis>
+                        has been applied. It is usually used to apply a permanent and final
+                        change of data in the root tree, such as modifying a package provided
+                        config file.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>images.sh</term>
+          <listitem>
+            <para>is executed at the beginning of the <xref linkend="create-step"/>. It runs in the same image root tree
+                        that has been created by the prepare step but is invoked any
+                        time an image should be created from that root tree. It is usually
+                        used to apply image type specific changes to the root tree such as
+                        a modification to a config file that should be done when building
+                        a live iso but not when building a virtual disk image.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>disk.sh</term>
+          <listitem>
+            <para>is executed for the disk image types <literal>vmx</literal> and <literal>oem</literal>
+                        only and runs after the synchronisation of the root tree into the
+                        disk image loop file. At call time of the script the device name
+                        of the currently mapped root device is passed as a parameter.
+                        The chroot environment for this script call is the virtual disk
+                        itself and not the root tree as with <literal>config.sh</literal> and
+                        <literal>images.sh</literal>. <literal>disk.sh</literal> is usually used to apply
+                        changes at parts of the system that are not an element of the
+                        file based root tree such as the partition table, the bootloader
+                        or filesystem attributes.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <para>KIWI NG executes scripts via the operating system if their executable
             bit is set (in that case a shebang is mandatory) otherwise they will be
-            invoked via the BASH.</para>
-      <section xml:id="image-customization-config-sh">
-        <title>Image Customization via the <literal>config.sh</literal> Shell Script</title>
-        <para>The KIWI NG image description allows to have an <literal>config.sh</literal> script in
-                place. It can be used for changes appropriate for all images to be created
-                from a given unpacked image (<literal>config.sh</literal> runs prior to the <emphasis>create
-                    step</emphasis>). The script should add operating system configuration files which
-                would be otherwise added by a user driven installer, like the activation of
-                services, creation of configuration files, preparation of an environment
-                for a firstboot workflow, etc.</para>
-        <para>The <literal>config.sh</literal> script is called at the end of the <xref linkend="prepare-step"/> (after users have been set and the <emphasis>overlay tree directory</emphasis>
-                has been applied). If <literal>config.sh</literal> exits with a non-zero exit code
-                then KIWI NG will report the failure and abort the image creation.</para>
-        <para>Find a common template for <literal>config.sh</literal> script below:</para>
+            invoked via the BASH. If a script exits with a non-zero exit code
+            then KIWI NG will report the failure and abort the image creation.</para>
+      <section xml:id="script-template-for-config-sh-images-sh">
+        <title>Script Template for config.sh / images.sh</title>
+        <para>KIWI NG provides a collection of methods and variables that supports users
+                with custom operations. For details see <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#image-customization-methods">Functions and Variables Provided by KIWI NG</link>.
+                The following template shows how to import this information in your
+                script:</para>
         <screen language="bash">#======================================
 # Include functions &amp; variables
 #--------------------------------------
 test -f /.kconfig &amp;&amp; . /.kconfig
 test -f /.profile &amp;&amp; . /.profile
 
-#======================================
-# Greeting...
-#--------------------------------------
-echo "Configure image: [$kiwi_iname]..."
-
-#======================================
-# Call configuration code/functions
-#--------------------------------------
 ...</screen>
-        <section xml:id="configuration-tips">
-          <title>Configuration Tips</title>
-          <procedure>
-            <step>
-              <para>
-                <emphasis role="bold">Stateless systemd UUIDs:</emphasis>
-              </para>
-            </step>
-          </procedure>
-          <para>Machine ID files are created and set (<literal>/etc/machine-id</literal>,
-                        <literal>/var/lib/dbus/machine-id</literal>) during the image package installation
-                        when <emphasis>systemd</emphasis> and/or <emphasis>dbus</emphasis> are installed. Those UUIDs are intended to
-                        be unique and set only once in each deployment. KIWI NG follows the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.freedesktop.org/software/systemd/man/machine-id.html">systemd
-                            recommendations</link> and
-                        wipes any <literal>/etc/machine-id</literal> content, leaving it as an empty file.
-                        Note, this only applies to images based on a dracut initrd, it does not
-                        apply for container images.</para>
-          <para>In case this setting is also required for a non dracut based image,
-                        the same result can achieved by removing <literal>/etc/machine-id</literal> in
-                        <literal>config.sh</literal>.</para>
-          <note>
-            <para>Avoid interactive boot</para>
-            <para>It is important to remark that the file <literal>/etc/machine-id</literal> is set
-                            to an empty file instead of deleting it. <command>systemd</command> may
-                            trigger <command>systemd-firstboot</command> service if this file is not
-                            present, which leads to an interactive firstboot where the user is
-                            asked to provide some data.</para>
-          </note>
-          <note>
-            <para>Avoid inconsistent <literal>/var/lib/dbus/machine-id</literal></para>
-            <para>Note that <literal>/etc/machine-id</literal> and <literal>/var/lib/dbus/machine-id</literal><emphasis role="bold">must</emphasis> contain the same unique ID. On modern systems
-                            <literal>/var/lib/dbus/machine-id</literal> is already a symlink to
-                            <literal>/etc/machine-id</literal>. However on older systems those might be two
-                            different files. This is the case for SLE-12 based images. If you are
-                            targeting these older operating systems, it is recommended to add the
-                            symlink creation into <literal>config.sh</literal>:</para>
-            <screen language="bash">#======================================
-# Make machine-id consistent with dbus
-#--------------------------------------
-if [ -e /var/lib/dbus/machine-id ]; then
-    rm /var/lib/dbus/machine-id
-fi
-ln -s /etc/machine-id /var/lib/dbus/machine-id</screen>
-          </note>
-        </section>
-      </section>
-      <section xml:id="image-customization-images-sh">
-        <title>Image Customization via the <literal>images.sh</literal> Shell Script</title>
-        <para>The KIWI NG image description allows to have an optional <literal>images.sh</literal>
-                bash script in place. It can be used for changes appropriate for certain
-                images/image types on a case-by-case basis (since it runs at beginning of
-                <xref linkend="create-step"/>).</para>
         <warning>
           <para>Modifications of the unpacked root tree</para>
-          <para>Keep in mind that there is only one unpacked root tree the script
-                    operates in. This means that all changes are permanent and will not be
-                    automatically restored!</para>
+          <para>Keep in mind that there is only one unpacked root tree the
+                    script operates in. This means that all changes are permanent
+                    and will not be automatically restored!</para>
         </warning>
-        <para>The script should be designed to take over control of handling image type
-                specific tasks. For example, if building the OEM type requires some
-                additional packages or configurations then that can be handled in
-                <literal>images.sh</literal>. Additionally, the script authors tasks is to check if
-                changes performed beforehand do not interfere in a negative way if another
-                image type is created from the same unpacked image root tree.</para>
-        <para>If <literal>images.sh</literal> exits with a non-zero exit code, then KIWI NG will report
-                an error and abort the image creation.</para>
-        <para>See below a common template for <literal>images.sh</literal> script:</para>
-        <screen language="bash">#======================================
-# Include functions &amp; variables
-#--------------------------------------
-test -f /.kconfig &amp;&amp; . /.kconfig
-test -f /.profile &amp;&amp; . /.profile
-
-#======================================
-# Greeting...
-#--------------------------------------
-echo "Configure image: [$kiwi_iname]..."
-
-#======================================
-# Call configuration code/functions
-#--------------------------------------
-...
-
-#======================================
-# Exit successfully
-#--------------------------------------
-exit 0</screen>
       </section>
-      <section xml:id="functions-and-variables-provided-by-kiwi-ng">
+      <section xml:id="image-customization-methods">
         <title>Functions and Variables Provided by KIWI NG</title>
         <para>KIWI NG creates the <literal>.kconfig</literal> and <literal>.profile</literal> files to be sourced
                 by the shell scripts <literal>config.sh</literal> and <literal>images.sh</literal>.
@@ -1710,60 +1640,48 @@ exit 0</screen>
                 simplify the image configuration and <literal>.profile</literal> contains environment
                 variables which get populated from the settings provided in the image
                 description.</para>
-        <section xml:id="provided-functions">
-          <title>Provided Functions</title>
+        <section xml:id="functions">
+          <title>Functions</title>
           <para>The <literal>.kconfig</literal> file provides a common set of functions.  Functions
                     specific to SUSE Linux begin with the name <literal>suse</literal>, functions applicable
                     to all Linux distributions start with the name <literal>base</literal>.</para>
           <para>The following list describes all functions provided by <literal>.kconfig</literal>:</para>
           <variablelist>
             <varlistentry>
-              <term>
-                <literal>baseCleanMount</literal>
-              </term>
+              <term>baseCleanMount</term>
               <listitem>
                 <para>Unmount the filesystems <literal>/proc</literal>, <literal>/dev/pts</literal>, <literal>/sys</literal> and
                                 <literal>/proc/sys/fs/binfmt_misc</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseGetPackagesForDeletion</literal>
-              </term>
+              <term>baseGetPackagesForDeletion</term>
               <listitem>
                 <para>Return the name(s) of the packages marked for deletion in the image
                                 description.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseGetProfilesUsed</literal>
-              </term>
+              <term>baseGetProfilesUsed</term>
               <listitem>
                 <para>Return the name(s) of profiles used to build this image.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseSetRunlevel {value}</literal>
-              </term>
+              <term>baseSetRunlevel {value}</term>
               <listitem>
                 <para>Set the default run level.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseSetupUserPermissions</literal>
-              </term>
+              <term>baseSetupUserPermissions</term>
               <listitem>
                 <para>Set the ownership of all home directories and their content to the correct
                                 users and groups listed in <literal>/etc/passwd</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseStripAndKeep {list of info-files to keep}</literal>
-              </term>
+              <term>baseStripAndKeep {list of info-files to keep}</term>
               <listitem>
                 <para>Helper function for the <literal>baseStrip*</literal> functions, reads the list of files
                                 to check from stdin for removing
@@ -1771,42 +1689,32 @@ exit 0</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseStripDocs {list of docu names to keep}</literal>
-              </term>
+              <term>baseStripDocs {list of docu names to keep}</term>
               <listitem>
                 <para>Remove all documentation files, except for the ones given as the
                                 parameter.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseStripInfos {list of info-files to keep}</literal>
-              </term>
+              <term>baseStripInfos {list of info-files to keep}</term>
               <listitem>
                 <para>Remove all info files, except for the one given as the parameter.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseStripLocales {list of locales}</literal>
-              </term>
+              <term>baseStripLocales {list of locales}</term>
               <listitem>
                 <para>Remove all locales, except for the ones given as the parameter.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseStripTranslations {list of translations}</literal>
-              </term>
+              <term>baseStripTranslations {list of translations}</term>
               <listitem>
                 <para>Remove all translations, except for the ones given as the parameter.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseStripMans {list of manpages to keep}</literal>
-              </term>
+              <term>baseStripMans {list of manpages to keep}</term>
               <listitem>
                 <para>Remove all manual pages, except for the ones given as the parameter.</para>
                 <para>Example:</para>
@@ -1814,85 +1722,65 @@ exit 0</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>suseImportBuildKey</literal>
-              </term>
+              <term>suseImportBuildKey</term>
               <listitem>
                 <para>Add the SUSE build keys to the RPM database.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseStripUnusedLibs</literal>
-              </term>
+              <term>baseStripUnusedLibs</term>
               <listitem>
                 <para>Remove libraries which are not directly linked against applications
                                 in the bin directories.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseUpdateSysConfig {filename} {variable} {value}</literal>
-              </term>
+              <term>baseUpdateSysConfig {filename} {variable} {value}</term>
               <listitem>
                 <para>Update the contents of a sysconfig variable</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>suseConfig</literal>
-              </term>
+              <term>suseConfig</term>
               <listitem>
                 <para>This function is deprecated and is a NOP.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseSystemdServiceInstalled {service}</literal>
-              </term>
+              <term>baseSystemdServiceInstalled {service}</term>
               <listitem>
                 <para>Prints the path of the first found systemd unit or mount with name passed
                                 as the first parameter.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseSysVServiceInstalled {service}</literal>
-              </term>
+              <term>baseSysVServiceInstalled {service}</term>
               <listitem>
                 <para>Prints the name <literal>${service}</literal> if a SysV init service with that name is
                                 found, otherwise it prints nothing.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseSystemdCall {service_name} {args}</literal>
-              </term>
+              <term>baseSystemdCall {service_name} {args}</term>
               <listitem>
                 <para>Calls <literal>systemctl ${args} ${service_name}</literal> if a systemd unit, a systemd
                                 mount or a SysV init service with the <literal>${service_name}</literal> exist.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseInsertService {servicename}</literal>
-              </term>
+              <term>baseInsertService {servicename}</term>
               <listitem>
                 <para>Activate the given service via <command>systemctl</command>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseRemoveService {servicename}</literal>
-              </term>
+              <term>baseRemoveService {servicename}</term>
               <listitem>
                 <para>Deactivate the given service via <command>systemctl</command>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>baseService {servicename} {on|off}</literal>
-              </term>
+              <term>baseService {servicename} {on|off}</term>
               <listitem>
                 <para>Activate or deactivate a service via <command>systemctl</command>.
                                 The function requires the service name and the value <literal>on</literal> or <literal>off</literal> as
@@ -1902,44 +1790,34 @@ exit 0</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>suseInsertService {servicename}</literal>
-              </term>
+              <term>suseInsertService {servicename}</term>
               <listitem>
                 <para>Calls baseInsertService and exists only for
                                 compatibility reasons.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>suseRemoveService {servicename}</literal>
-              </term>
+              <term>suseRemoveService {servicename}</term>
               <listitem>
                 <para>Calls baseRemoveService and exists only for
                                 compatibility reasons.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>suseService {servicename} {on|off}</literal>
-              </term>
+              <term>suseService {servicename} {on|off}</term>
               <listitem>
                 <para>Calls baseService and exists only for compatibility
                                 reasons.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>suseActivateDefaultServices</literal>
-              </term>
+              <term>suseActivateDefaultServices</term>
               <listitem>
                 <para>Activates the <literal>network</literal> and <literal>cron</literal> services to run at boot.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>suseSetupProduct</literal>
-              </term>
+              <term>suseSetupProduct</term>
               <listitem>
                 <para>Creates the <literal>/etc/products.d/baseproduct</literal> link
                                 pointing to the product referenced by either <literal>/etc/SuSE-brand</literal> or
@@ -1948,9 +1826,7 @@ exit 0</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>suseSetupProductInformation</literal>
-              </term>
+              <term>suseSetupProductInformation</term>
               <listitem>
                 <para>Uses <command>zypper</command> to search for the installed product
                                 and installs all product specific packages. This function fails
@@ -1958,132 +1834,32 @@ exit 0</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>Debug {message}</literal>
-              </term>
+              <term>Debug {message}</term>
               <listitem>
                 <para>Helper function to print the supplied message if the variable DEBUG is
                                 set to 1.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>Echo {echo commandline}</literal>
-              </term>
+              <term>Echo {echo commandline}</term>
               <listitem>
                 <para>Helper function to print a message to the controlling terminal.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>Rm {list of files}</literal>
-              </term>
+              <term>Rm {list of files}</term>
               <listitem>
                 <para>Helper function to delete files and log the deletion.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>Rpm {rpm commandline}</literal>
-              </term>
+              <term>Rpm {rpm commandline}</term>
               <listitem>
                 <para>Helper function for calling <literal>rpm</literal>: forwards all commandline arguments to
                                 <literal>rpm</literal> and logs the call.</para>
               </listitem>
             </varlistentry>
           </variablelist>
-          <section xml:id="functions-for-custom-non-dracut-based-boot">
-            <title>Functions for Custom non-dracut Based Boot</title>
-            <para>KIWI NG also provides the following functions (mostly for compatibility
-                        reasons) which can be used to customize the boot process when using the
-                        custom boot option (see
-                        <xref linkend="working-with-kiwi-customizing-the-boot-process"/>):</para>
-            <variablelist>
-              <varlistentry>
-                <term>
-                  <literal>baseStripInitrd</literal>
-                </term>
-                <listitem>
-                  <para>Removes various tools binaries and libraries which
-                                    are not required to boot a SUSE system with KIWI NG. This function is not
-                                    required when using the dracut initrd system and is kept for
-                                    compatibility reasons.</para>
-                </listitem>
-              </varlistentry>
-              <varlistentry>
-                <term>
-                  <literal>baseStripFirmware</literal>
-                </term>
-                <listitem>
-                  <para>Check all kernel modules if they require a firmware and strip out all
-                                    firmware files which are not referenced by a kernel module</para>
-                </listitem>
-              </varlistentry>
-              <varlistentry>
-                <term>
-                  <literal>baseStripModules</literal>
-                </term>
-                <listitem>
-                  <para>Search for updated modules and remove the old version which might be
-                                    provided by the standard kernel</para>
-                </listitem>
-              </varlistentry>
-              <varlistentry>
-                <term>
-                  <literal>baseStripKernel</literal>
-                </term>
-                <listitem>
-                  <para>Strips the kernel:</para>
-                  <procedure>
-                    <step>
-                      <para>create the <literal>vmlinux.gz</literal> and <literal>vmlinuz</literal> files which are used
-                                            as a fallback for the kernel extraction</para>
-                    </step>
-                    <step>
-                      <para>handle <literal>&lt;strip type="delete"&gt;</literal> requests. Because this information is
-                                            generic not only files of the kernel are affected but also other data
-                                            which are unwanted get deleted here</para>
-                    </step>
-                    <step>
-                      <para>only keep kernel modules matching the <literal>&lt;drivers&gt;</literal> patterns from the
-                                            kiwi boot image description</para>
-                    </step>
-                    <step>
-                      <para>lookup kernel module dependencies and bring back modules which were
-                                            removed but still required by other modules that were kept in the
-                                            system</para>
-                    </step>
-                    <step>
-                      <para>search for duplicate kernel modules due to kernel module updates and
-                                            keep only the latest version</para>
-                    </step>
-                    <step>
-                      <para>search for kernel firmware files and keep only those for which a
-                                            kernel driver is still present in the system</para>
-                    </step>
-                  </procedure>
-                </listitem>
-              </varlistentry>
-              <varlistentry>
-                <term>
-                  <literal>suseStripKernel</literal>
-                </term>
-                <listitem>
-                  <para>Removes all kernel drivers which are not listed in the
-                                    drivers sections of <literal>config.xml</literal>.</para>
-                </listitem>
-              </varlistentry>
-              <varlistentry>
-                <term>
-                  <literal>baseStripTools {list of toolpath} {list of tools}</literal>
-                </term>
-                <listitem>
-                  <para>Helper function for suseStripInitrd
-                                    function parameters: toolpath, tools.</para>
-                </listitem>
-              </varlistentry>
-            </variablelist>
-          </section>
         </section>
         <section xml:id="profile-environment-variables">
           <title>Profile Environment Variables</title>
@@ -2091,84 +1867,64 @@ exit 0</screen>
                     specific set of variables which are listed below.</para>
           <variablelist>
             <varlistentry>
-              <term>
-                <literal>$kiwi_compressed</literal>
-              </term>
+              <term>$kiwi_compressed</term>
               <listitem>
                 <para>The value of the <literal>compressed</literal> attribute set in the  element in
                                 <literal>config.xml</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>$kiwi_delete</literal>
-              </term>
+              <term>$kiwi_delete</term>
               <listitem>
                 <para>A list of all packages which are children of the <literal>packages</literal> element
                                 with <literal>type="delete"</literal> in <literal>config.xml</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>$kiwi_drivers</literal>
-              </term>
+              <term>$kiwi_drivers</term>
               <listitem>
                 <para>A comma separated list of the driver entries as listed in the
                                 <literal>drivers</literal> section of the <literal>config.xml</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>$kiwi_iname</literal>
-              </term>
+              <term>$kiwi_iname</term>
               <listitem>
                 <para>The name of the image as listed in <literal>config.xml</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>$kiwi_iversion</literal>
-              </term>
+              <term>$kiwi_iversion</term>
               <listitem>
                 <para>The image version as a string.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>$kiwi_keytable</literal>
-              </term>
+              <term>$kiwi_keytable</term>
               <listitem>
                 <para>The contents of the keytable setup as done in <literal>config.xml</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>$kiwi_language</literal>
-              </term>
+              <term>$kiwi_language</term>
               <listitem>
                 <para>The contents of the locale setup as done in <literal>config.xml</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>$kiwi_profiles</literal>
-              </term>
+              <term>$kiwi_profiles</term>
               <listitem>
                 <para>A comma separated list of profiles used to build this image.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>$kiwi_timezone</literal>
-              </term>
+              <term>$kiwi_timezone</term>
               <listitem>
                 <para>The contents of the timezone setup as done in <literal>config.xml</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>
-                <literal>$kiwi_type</literal>
-              </term>
+              <term>$kiwi_type</term>
               <listitem>
                 <para>The image type as extracted from the  element in
                                 <literal>config.xml</literal>.</para>
@@ -2176,6 +1932,51 @@ exit 0</screen>
             </varlistentry>
           </variablelist>
         </section>
+      </section>
+      <section xml:id="configuration-tips">
+        <title>Configuration Tips</title>
+        <procedure>
+          <step>
+            <para>
+              <emphasis role="bold">Stateless systemd UUIDs:</emphasis>
+            </para>
+          </step>
+        </procedure>
+        <para>Machine ID files are created and set (<literal>/etc/machine-id</literal>,
+                    <literal>/var/lib/dbus/machine-id</literal>) during the image package installation
+                    when <emphasis>systemd</emphasis> and/or <emphasis>dbus</emphasis> are installed. Those UUIDs are intended to
+                    be unique and set only once in each deployment. KIWI NG follows the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.freedesktop.org/software/systemd/man/machine-id.html">systemd
+                        recommendations</link> and
+                    wipes any <literal>/etc/machine-id</literal> content, leaving it as an empty file.
+                    Note, this only applies to images based on a dracut initrd, it does not
+                    apply for container images.</para>
+        <para>In case this setting is also required for a non dracut based image,
+                    the same result can achieved by removing <literal>/etc/machine-id</literal> in
+                    <literal>config.sh</literal>.</para>
+        <note>
+          <para>Avoid interactive boot</para>
+          <para>It is important to remark that the file <literal>/etc/machine-id</literal> is set
+                        to an empty file instead of deleting it. <command>systemd</command> may
+                        trigger <command>systemd-firstboot</command> service if this file is not
+                        present, which leads to an interactive firstboot where the user is
+                        asked to provide some data.</para>
+        </note>
+        <note>
+          <para>Avoid inconsistent <literal>/var/lib/dbus/machine-id</literal></para>
+          <para>Note that <literal>/etc/machine-id</literal> and <literal>/var/lib/dbus/machine-id</literal><emphasis role="bold">must</emphasis> contain the same unique ID. On modern systems
+                        <literal>/var/lib/dbus/machine-id</literal> is already a symlink to
+                        <literal>/etc/machine-id</literal>. However on older systems those might be two
+                        different files. This is the case for SLE-12 based images. If you are
+                        targeting these older operating systems, it is recommended to add the
+                        symlink creation into <literal>config.sh</literal>:</para>
+          <screen language="bash">#======================================
+# Make machine-id consistent with dbus
+#--------------------------------------
+if [ -e /var/lib/dbus/machine-id ]; then
+    rm /var/lib/dbus/machine-id
+fi
+ln -s /etc/machine-id /var/lib/dbus/machine-id</screen>
+        </note>
       </section>
     </section>
     <section xml:id="runtime-config" xml:base="working_with_kiwi/runtime_configuration">
@@ -2835,8 +2636,8 @@ install() {
             <para>At the end of the preparation stage the script <literal>config.sh</literal> is
                             executed (if present). It is run in the top level directory of the
                             target root tree. The script’s primary function is to complete the
-                            system configuration, for example, to activate services. See
-                            <xref linkend="image-customization-config-sh"/> section for further details.</para>
+                            system configuration. For more details about custom scripts
+                            see <xref linkend="working-with-kiwi-user-defined-scripts"/></para>
           </step>
           <step>
             <para>
@@ -2887,12 +2688,8 @@ $ kiwi-ng system create $ARGS</screen>
               <literal>images.sh</literal>
             </para>
             <para>At the beginning of the image creation process the script named
-                            <literal>images.sh</literal> is executed (if present). It is run in the top level
-                            directory of the unpacked root tree. The script is usually used to
-                            remove files that are no needed in the final image. For example, if an
-                            appliance is being built for a specific hardware, unnecessary kernel
-                            drivers can be removed using this script.</para>
-            <para>See <xref linkend="image-customization-images-sh"/> for further details.</para>
+                            <literal>images.sh</literal> is executed (if present). For more details about
+                            custom scripts see <xref linkend="working-with-kiwi-user-defined-scripts"/></para>
           </step>
           <step>
             <para>
@@ -12037,6 +11834,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>Exception raised if the setup of the temporary image system
                         configuration for the duration of the build process has
                         failed.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiShellVariableValueError">
+            <term>
+              <literal>kiwi.exceptions.KiwiShellVariableValueError</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Exception raised if a given python value cannot be converted
+                        into a string representation for use in shell scripts</para>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -27916,6 +27725,16 @@ end</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.profile.Profile.get_settings">
+                  <term>
+                    <property>kiwi.system.profile.Profile.get_settings</property>
+                  </term>
+                  <listitem>
+                    <para>Return all profile elements that has a value</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -28397,6 +28216,16 @@ end</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.system.setup.SystemSetup.call_disk_script">
+                  <term>
+                    <property>kiwi.system.setup.SystemSetup.call_disk_script</property>
+                  </term>
+                  <listitem>
+                    <para>Call disk.sh script chrooted</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.system.setup.SystemSetup.call_edit_boot_config_script">
                   <term>
                     <property>kiwi.system.setup.SystemSetup.call_edit_boot_config_script</property>
@@ -28695,6 +28524,16 @@ end</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.system.setup.SystemSetup.script_exists">
+                  <term>
+                    <property>kiwi.system.setup.SystemSetup.script_exists</property>
+                  </term>
+                  <listitem>
+                    <para>Check if provided script base name exists in the image description</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.system.setup.SystemSetup.set_selinux_file_contexts">
                   <term>
                     <property>kiwi.system.setup.SystemSetup.set_selinux_file_contexts</property>
@@ -28833,6 +28672,45 @@ end</screen>
               <para>
                 <emphasis role="bold">Special character handling for shell evaluated code</emphasis>
               </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.shell.Shell.format_to_variable_value">
+                  <term>
+                    <property>kiwi.system.shell.Shell.format_to_variable_value</property>
+                  </term>
+                  <listitem>
+                    <para>Format given variable value to return a string value
+                                representation that can be sourced by shell scripts.
+                                If the provided value is not representable as a string
+                                (list, dict, tuple etc) an exception is raised</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>value</literal> () – a python variable</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Raises</term>
+                        <listitem>
+                          <para><xref linkend="kiwi.exceptions.KiwiShellVariableValueError"/> – if value is an iterable</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>string value representation</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.shell.Shell.quote">
                   <term>
@@ -30805,6 +30683,31 @@ end</screen>
                         <term>Return type</term>
                         <listitem>
                           <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.volume_manager.btrfs.VolumeManagerBtrfs.get_mountpoint">
+                  <term>
+                    <property>kiwi.volume_manager.btrfs.VolumeManagerBtrfs.get_mountpoint</property>
+                  </term>
+                  <listitem>
+                    <para>Provides btrfs root mount point directory</para>
+                    <para>Effective use of the directory is guaranteed only after sync_data</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>directory path name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
