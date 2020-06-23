@@ -1938,6 +1938,32 @@ test -f /.profile &amp;&amp; . /.profile
         <procedure>
           <step>
             <para>
+              <emphasis role="bold">Locale configuration:</emphasis>
+            </para>
+          </step>
+        </procedure>
+        <para>KIWI in order to set the locale relies on <command>systemd-firstboot</command>,
+                    which in turn writes the locale configuration file <literal>/etc/locale.conf</literal>.
+                    The values for the locale settings are taken from the description XML
+                    file in the <literal>&lt;locale&gt;</literal> element under <literal>&lt;preferences&gt;</literal>.</para>
+        <para>KIWI assumes systemd adoption to handle these locale settings, in case the
+                    build distribution does not honor <literal>/etc/locale.conf</literal> this is likely to not
+                    produce any effect on the locale settings. As an example, in SLE12
+                    distribution the locale configuration is already possible by using the
+                    systemd toolchain, however this approach overlaps with SUSE specific
+                    managers such as YaST. In that case using <command>systemd-firstboot</command>
+                    is only effective if locales in <literal>/etc/sysconfig/language</literal> are
+                    not set or if the file does not exist at all. In SLE12
+                    <literal>/etc/sysconfig/language</literal> has precendence over
+                    <literal>/etc/locale.conf</literal> for compatibility reasons and management tools
+                    could still relay on  files for locale settings.</para>
+        <para>In any case the configuration is still possible in KIWI by using
+                    any distribution specific way to configure the locale setting inside the
+                    <literal>config.sh</literal> script or by adding any additional configuration file
+                    as part of the overlay root-tree.</para>
+        <procedure>
+          <step>
+            <para>
               <emphasis role="bold">Stateless systemd UUIDs:</emphasis>
             </para>
           </step>
