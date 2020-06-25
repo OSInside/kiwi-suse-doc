@@ -20842,6 +20842,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.base.FileSystemBase.umount">
+                  <term>
+                    <property>kiwi.filesystem.base.FileSystemBase.umount</property>
+                  </term>
+                  <listitem>
+                    <para>Umounts the filesystem in case it is mounted, does nothing otherwise</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
