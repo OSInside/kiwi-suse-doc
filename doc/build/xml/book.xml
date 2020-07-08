@@ -1009,7 +1009,7 @@ kiwi-ng system update help</screen>
         </variablelist>
       </section>
     </section>
-    <section xml:id="kiwi-ng-system-build" xml:base="commands/system_build">
+    <section xml:id="kiwi-system-build" xml:base="commands/system_build">
       <title>kiwi-ng system build</title>
       <section xml:id="db-kiwi-system-build-synopsis">
         <title>SYNOPSIS</title>
@@ -1251,7 +1251,7 @@ kiwi-ng system build help</screen>
         </itemizedlist>
       </section>
     </section>
-    <section xml:id="kiwi-ng-system-create" xml:base="commands/system_create">
+    <section xml:id="kiwi-system-create" xml:base="commands/system_create">
       <title>kiwi-ng system create</title>
       <section xml:id="db-kiwi-system-create-synopsis">
         <title>SYNOPSIS</title>
@@ -5492,6 +5492,191 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
             <para>An optional root filesystem image associated with a kernel and initrd.
                             The use case for this component image type is highly customizable.
                             Many different deployment strategies are possible.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+    <section xml:id="image-results">
+      <title>Image Results</title>
+      <para>KIWI NG execution results in an appliance image after a successful run of
+                <xref linkend="kiwi-system-build"/> or <xref linkend="kiwi-system-create"/> command.
+                The result is the image binary in addition a couple of metadata files that can
+                be handy to describe or identify the resulting image. The output files follow
+                this naming convention:</para>
+      <para>
+        <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.&lt;extension&gt;</literal>
+      </para>
+      <para>where <literal>&lt;image-name&gt;</literal> is the name stated in the <xref linkend="image-description"/> as an
+                attribute of the <xref linkend="sec-image"/> element. The <literal>&lt;arch&gt;</literal> is the CPU
+                architecture used for the build, <literal>&lt;version&gt;</literal> is the image version defined in
+                <xref linkend="sec-preferences"/> element of the image description
+                and the <literal>&lt;extension&gt;</literal> is dependent on the image type and its definition.</para>
+      <para>Any KIWI NG appliance build results in, at least, the following output files:</para>
+      <procedure>
+        <step>
+          <para>The image binary, <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.&lt;image-extension&gt;</literal>:</para>
+          <para>This is the file containig the actual image binary, depending
+                        on the image type and its definition it can be a virtual disk image
+                        file, and ISO image, a tarball, etc.</para>
+        </step>
+        <step>
+          <para>The <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.packages</literal> file:</para>
+          <para>This file includes a sorted list of the packages
+                        that are included into the image. In fact this is normalized dump of the
+                        package manager database. It follows the following cvs format where each
+                        line is represented by:</para>
+          <para>
+            <literal>&lt;name&gt;|&lt;epoch&gt;|&lt;version&gt;|&lt;release&gt;|&lt;arch&gt;|&lt;disturl&gt;|&lt;license&gt;</literal>
+          </para>
+          <para>The values represented here are mainly based on RPM packages metadata.
+                        Other package managers may not provide all of these values, in such cases
+                        the format is the same and the fields that cannot be provided are set as
+                         value. This list can be used to track changes across multiple
+                        builds of the same image description over time by diffing the
+                        packages installed.</para>
+        </step>
+        <step>
+          <para>The <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.verified</literal> file:</para>
+          <para>This file is the output of a verification done by the package manager
+                        against the package data base. More specific it is the output of
+                        the <command>rpm</command> verification process or <command>dpkg</command> verification
+                        depending on the packaging technology selected for the image.
+                        In both cases the output follows the RPM verification syntax. This
+                        provides an overview of all packages status right before any boot of
+                        the image.</para>
+        </step>
+      </procedure>
+      <para>More specific  the result files for a given image name and version such
+                as <literal>LimeJeOS-Leap-15.1</literal> and <literal>1.15.1</literal> will be:</para>
+      <itemizedlist>
+        <listitem>
+          <para><emphasis role="bold">image packages</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.packages</literal></para>
+        </listitem>
+        <listitem>
+          <para><emphasis role="bold">image verified</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.verified</literal></para>
+        </listitem>
+      </itemizedlist>
+      <para>In addition to the image binaries itself that depend on the image type:</para>
+      <variablelist>
+        <varlistentry>
+          <term>image=”tbz”</term>
+          <listitem>
+            <para>For this image type the result is mainly a root tree packed in a tarball:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">root archive</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.tar.xz</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”btrfs|ext2|ext3|ext4|squashfs|xfs”</term>
+          <listitem>
+            <para>The image root tree data is packed into a filesystem image of the given
+                            type, hence the resutl for an <literal>ext4</literal> image would be:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">filesystem image</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.ext4</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”iso”</term>
+          <listitem>
+            <para>The image result is an ISO file:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">live image</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.iso</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”vmx”</term>
+          <listitem>
+            <para>An image representing the system disk. The disk format can be
+                            defined in <xref linkend="sec-preferences"/> element as
+                            documented in <xref linkend="vmx"/>. For a <literal>format="qcow2"</literal> the result is:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">disk image</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.qcow2</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”oem”</term>
+          <listitem>
+            <para>An image representing an expandable system disk. As for <literal>vmx</literal> type this
+                            results in a disk image. In addition to the <literal>vmx</literal> type <literal>oem</literal> has a couple
+                            of optional additional installation images. KIWI NG can produce an
+                            installation ISO (by setting <literal>installiso="true"</literal> in
+                            <xref linkend="sec-preferences"/>) or a tarball including
+                            the artifacts for a network deployment (by setting <literal>installiso="true"</literal> in
+                            <xref linkend="sec-preferences"/>), see
+                            <xref linkend="oem"/> for further details. The results for <literal>oem</literal> can be:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">disk image</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.raw</literal></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold">installation image (optional)</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.iso</literal></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold">installation pxe archive (optional)</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.tar</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”docker”</term>
+          <listitem>
+            <para>An archive image suitable for the docker container engine. The result is
+                            a loadable (<command>docker load -i &lt;image&gt;</command>) tarball:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">container</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.docker.tar.xz</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”oci”</term>
+          <listitem>
+            <para>An archive image that builds a container matching the OCI
+                            (Open Container Interface) standard. The result is a tarball matching OCI
+                            standards:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">container</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.oci.tar.xz</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”appx”</term>
+          <listitem>
+            <para>An archive image suitable for the Windows Subsystem For Linux
+                            container engine. The result is an <literal>appx</literal> binary file:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">container</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.appx</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”kis”</term>
+          <listitem>
+            <para>An optional root filesystem image associated with a kernel and initrd.
+                            All three binaries are packed in a tarball, see <xref linkend="kis"/> for further
+                            details about the kis archive:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">kis archive</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.tar.xz</literal></para>
+              </listitem>
+            </itemizedlist>
           </listitem>
         </varlistentry>
       </variablelist>
