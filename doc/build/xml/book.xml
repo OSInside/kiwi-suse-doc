@@ -5047,8 +5047,8 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
           <varlistentry>
             <term>oemconfig.oem-swap Element</term>
             <listitem>
-              <para>Specify if a swap partition should be created. The creation of a
-                            swap partition is the default behavior. This value is represented
+              <para>Specify if a swap partition should be created. By default no
+                            swap partition will be created. This value is represented
                             by the <literal>kiwi_oemswap</literal> variable in the initrd</para>
             </listitem>
           </varlistentry>
