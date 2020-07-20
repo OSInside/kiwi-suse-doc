@@ -11310,6 +11310,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_sync_options">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_sync_options</property>
+                  </term>
+                  <listitem>
+                    <para>Provides list of default data sync options</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>list of rsync options</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_syslinux_modules">
                   <term>
                     <property>kiwi.defaults.Defaults.get_syslinux_modules</property>
