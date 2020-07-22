@@ -19493,10 +19493,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <para>writes grub.cfg template by KIWI if template system is used</para>
                       </listitem>
                       <listitem>
-                        <para>copies grub config file to alternative boot path for EFI systems
-                                        in fallback mode</para>
-                      </listitem>
-                      <listitem>
                         <para>creates an embedded fat efi image for EFI ISO boot</para>
                       </listitem>
                     </itemizedlist>
