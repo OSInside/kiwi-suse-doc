@@ -14222,12 +14222,20 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Recursively remove an empty path and its sub directories
-                                ignore non empty or protected paths and leave them untouched</para>
+                                starting at a given root directory. Ignore non empty or
+                                protected paths and leave them untouched</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>path</literal> () – path name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>root</literal> () – start at directory</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>path</literal> () – path name below root</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
