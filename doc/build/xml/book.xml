@@ -1468,7 +1468,7 @@ kiwi-ng image info help</screen>
       </section>
     </section>
   </chapter>
-  <chapter xml:id="container-building" xml:base="self_contained">
+  <chapter xml:id="self-contained" xml:base="self_contained">
     <title>Building in a Self-Contained Environment</title>
     <note>
       <para>
@@ -4200,12 +4200,373 @@ $ kiwi-ng system create $ARGS</screen>
                 a namespace which can be selected at call time of KIWI NG</para>
     </section>
   </chapter>
+  <chapter xml:id="image-types" xml:base="image_types_and_results">
+    <title>Image Types</title>
+    <note>
+      <para>Before building an image with KIWI NG it’s important to understand
+                the different image types and their meaning. This document provides
+                an overview about the supported KIWI NG image types, their results
+                and some words about the environment to run the build.</para>
+    </note>
+    <variablelist>
+      <varlistentry>
+        <term>ISO Hybrid Live Image</term>
+        <listitem>
+          <para>An iso image which can be dumped on a CD/DVD or USB stick
+                        and boots off from this media without interfering with other
+                        system storage components. A useful pocket system for testing
+                        and demo and debugging purposes. For further details refer
+                        to <xref linkend="hybrid-iso"/></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Virtual Disk Image</term>
+        <listitem>
+          <para>An image representing the system disk, useful for cloud frameworks
+                        like Amazon EC2, Google Compute Engine or Microsoft Azure.
+                        For further details refer to <xref linkend="vmx"/></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>OEM Expandable Disk Image</term>
+        <listitem>
+          <para>An image representing an expandable system disk. This means after
+                        deployment the system can resize itself to the new disk geometry.
+                        The resize operation is configurable as part of the image description
+                        and an installation image for CD/DVD, USB stick and Network deployment
+                        can be created in addition. For further details refer to: <xref linkend="oem"/></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Docker Container Image</term>
+        <listitem>
+          <para>An archive image suitable for the docker container engine.
+                        The image can be loaded via the <literal>docker load</literal> command and
+                        works within the scope of the container engine.
+                        For further details refer to: <xref linkend="building-docker-build"/></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>WSL Container Image</term>
+        <listitem>
+          <para>An archive image suitable for the Windows Subsystem For Linux
+                        container engine. The image can be loaded From a Windows System
+                        that has support for WSL activated. For further details refer
+                        to: <xref linkend="building-wsl-build"/></para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>KIS Root File System Image</term>
+        <listitem>
+          <para>An optional root filesystem image associated with a kernel and initrd.
+                        The use case for this component image type is highly customizable.
+                        Many different deployment strategies are possible.
+                        For further details refer to: <xref linkend="kis"/></para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <section xml:id="image-results">
+      <title>Image Results</title>
+      <para>KIWI NG execution results in an appliance image after a successful run of
+                <xref linkend="kiwi-system-build"/> or <xref linkend="kiwi-system-create"/> command.
+                The result is the image binary in addition a couple of metadata files that can
+                be handy to describe or identify the resulting image. The output files follow
+                this naming convention:</para>
+      <para>
+        <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.&lt;extension&gt;</literal>
+      </para>
+      <para>where <literal>&lt;image-name&gt;</literal> is the name stated in the <xref linkend="image-description"/> as an
+                attribute of the <xref linkend="sec-image"/> element. The <literal>&lt;arch&gt;</literal> is the CPU
+                architecture used for the build, <literal>&lt;version&gt;</literal> is the image version defined in
+                <xref linkend="sec-preferences"/> element of the image description
+                and the <literal>&lt;extension&gt;</literal> is dependent on the image type and its definition.</para>
+      <para>Any KIWI NG appliance build results in, at least, the following output files:</para>
+      <procedure>
+        <step>
+          <para>The image binary, <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.&lt;image-extension&gt;</literal>:</para>
+          <para>This is the file containig the actual image binary, depending
+                        on the image type and its definition it can be a virtual disk image
+                        file, and ISO image, a tarball, etc.</para>
+        </step>
+        <step>
+          <para>The <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.packages</literal> file:</para>
+          <para>This file includes a sorted list of the packages
+                        that are included into the image. In fact this is normalized dump of the
+                        package manager database. It follows the following cvs format where each
+                        line is represented by:</para>
+          <para>
+            <literal>&lt;name&gt;|&lt;epoch&gt;|&lt;version&gt;|&lt;release&gt;|&lt;arch&gt;|&lt;disturl&gt;|&lt;license&gt;</literal>
+          </para>
+          <para>The values represented here are mainly based on RPM packages metadata.
+                        Other package managers may not provide all of these values, in such cases
+                        the format is the same and the fields that cannot be provided are set as
+                         value. This list can be used to track changes across multiple
+                        builds of the same image description over time by diffing the
+                        packages installed.</para>
+        </step>
+        <step>
+          <para>The <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.verified</literal> file:</para>
+          <para>This file is the output of a verification done by the package manager
+                        against the package data base. More specific it is the output of
+                        the <command>rpm</command> verification process or <command>dpkg</command> verification
+                        depending on the packaging technology selected for the image.
+                        In both cases the output follows the RPM verification syntax. This
+                        provides an overview of all packages status right before any boot of
+                        the image.</para>
+        </step>
+      </procedure>
+      <para>More specific  the result files for a given image name and version such
+                as <literal>LimeJeOS-Leap-15.1</literal> and <literal>1.15.1</literal> will be:</para>
+      <itemizedlist>
+        <listitem>
+          <para><emphasis role="bold">image packages</emphasis>:
+                        <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.packages</literal></para>
+        </listitem>
+        <listitem>
+          <para><emphasis role="bold">image verified</emphasis>:
+                        <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.verified</literal></para>
+        </listitem>
+      </itemizedlist>
+      <para>In addition to the image binaries itself that depend on the image type:</para>
+      <variablelist>
+        <varlistentry>
+          <term>image=”tbz”</term>
+          <listitem>
+            <para>For this image type the result is mainly a root tree packed in a tarball:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">root archive</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.tar.xz</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”btrfs|ext2|ext3|ext4|squashfs|xfs”</term>
+          <listitem>
+            <para>The image root tree data is packed into a filesystem image of the given
+                            type, hence the resutl for an <literal>ext4</literal> image would be:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">filesystem image</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.ext4</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”iso”</term>
+          <listitem>
+            <para>The image result is an ISO file:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">live image</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.iso</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”vmx”</term>
+          <listitem>
+            <para>An image representing the system disk. The disk format can be
+                            defined in <xref linkend="sec-preferences"/> element as
+                            documented in <xref linkend="vmx"/>. For a <literal>format="qcow2"</literal> the result is:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">disk image</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.qcow2</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”oem”</term>
+          <listitem>
+            <para>An image representing an expandable system disk. As for <literal>vmx</literal> type this
+                            results in a disk image. In addition to the <literal>vmx</literal> type <literal>oem</literal> has a couple
+                            of optional additional installation images. KIWI NG can produce an
+                            installation ISO (by setting <literal>installiso="true"</literal> in
+                            <xref linkend="sec-preferences"/>) or a tarball including
+                            the artifacts for a network deployment (by setting <literal>installiso="true"</literal> in
+                            <xref linkend="sec-preferences"/>), see
+                            <xref linkend="oem"/> for further details. The results for <literal>oem</literal> can be:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">disk image</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.raw</literal></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold">installation image (optional)</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.iso</literal></para>
+              </listitem>
+              <listitem>
+                <para><emphasis role="bold">installation pxe archive (optional)</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.tar</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”docker”</term>
+          <listitem>
+            <para>An archive image suitable for the docker container engine. The result is
+                            a loadable (<command>docker load -i &lt;image&gt;</command>) tarball:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">container</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.docker.tar.xz</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”oci”</term>
+          <listitem>
+            <para>An archive image that builds a container matching the OCI
+                            (Open Container Interface) standard. The result is a tarball matching OCI
+                            standards:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">container</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.oci.tar.xz</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”appx”</term>
+          <listitem>
+            <para>An archive image suitable for the Windows Subsystem For Linux
+                            container engine. The result is an <literal>appx</literal> binary file:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">container</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.appx</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>image=”kis”</term>
+          <listitem>
+            <para>An optional root filesystem image associated with a kernel and initrd.
+                            All three binaries are packed in a tarball, see <xref linkend="kis"/> for further
+                            details about the kis archive:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">kis archive</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.tar.xz</literal></para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+    <section xml:id="supported-distributions">
+      <title>Build Host Constraints</title>
+      <para>For building images a host system is required that runs the build process.
+                Tools to create the image are used from that host and this creates an
+                indirect dependency to the target image. For example; Building an
+                Ubuntu image requires the apt and dpkg tools and metadata to be available
+                and functional on the host to build an Ubuntu image. There are many more
+                of those host vs. image dependencies and not all of them can be resolved
+                in a clear and clean way.</para>
+      <para>The most compatible environment is provided if the build host is of the same
+                distribution than the target image. This always applies for the Open Build
+                Service (OBS). In other cases our recommendation is that the build host
+                is of the same distribution than the target and near to the major
+                version (+-1) compared to the target.</para>
+      <para>In general, our goal is to support any major distribution with KIWI NG. However
+                for building images we rely on core tools which are not under our control.
+                Also several design aspects of distributions like <emphasis role="bold">secure boot</emphasis> and working
+                with <emphasis role="bold">upstream projects</emphasis> are different and not influenced by us. There
+                are many side effects that can be annoying especially if the build host
+                is not of the same distribution vendor than the image target.</para>
+    </section>
+    <section xml:id="architectures">
+      <title>Architectures</title>
+      <para>As described in the section above one requirement between the build host
+                and the image when it comes to architecture support is, that the image
+                architecture should match the build host architecture. Cross arch building
+                would require any core tool that is used to build an image to be cross
+                arch capable. To patch e.g an x86_64 system such that it can build an
+                aarch64 image would require some work on binutils and hacks as well as
+                performance tweaks which is all not worth the effort and still can lead
+                to broken results. Thus we recommend to provide native systems for the
+                target architecture and build there. One possible alternative is to
+                use the kiwi boxed plugin as documented here: <xref linkend="self-contained"/>
+                together with a box created for the desired architecture. However keep
+                in mind the performance problematic when running a VM of a different
+                architecture.</para>
+      <para>The majority of the image builds are based on the x86 architecture.
+                As mentioned KIWI NG also supports other architectures, shown in the
+                table below:</para>
+      <informaltable>
+        <tgroup cols="2">
+          <colspec colname="c0" colwidth="14"/>
+          <colspec colname="c1" colwidth="21"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Architecture</para>
+              </entry>
+              <entry>
+                <para>Supported</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>x86_64</para>
+              </entry>
+              <entry>
+                <para>yes</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>ix86</para>
+              </entry>
+              <entry>
+                <para>yes <emphasis role="bold">note:distro</emphasis></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>s390/s390x</para>
+              </entry>
+              <entry>
+                <para>yes <emphasis role="bold">note:distro</emphasis></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>arm/aarch64</para>
+              </entry>
+              <entry>
+                <para>yes <emphasis role="bold">note:distro</emphasis></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>ppc64</para>
+              </entry>
+              <entry>
+                <para>no (alpha-phase)</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+    </section>
+  </chapter>
   <chapter xml:id="building-types" xml:base="building_images">
     <title>Building Images for Supported Types</title>
     <note>
-      <para>This document provides an overview about the supported KIWI NG image
-                types. Before building an image with KIWI NG it’s important to understand
-                the different image types and their meaning.</para>
+      <para>This document provides an overview how to build and use
+                the KIWI NG supported image types.</para>
     </note>
     <section xml:id="hybrid-iso" xml:base="building_images/build_live_iso">
       <title>Build an ISO Hybrid Live Image</title>
@@ -5440,634 +5801,6 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
                 longer developed and only kept for compatibiliy reasons. For details
                 see <xref linkend="build-legacy-pxe"/></para>
       </note>
-    </section>
-    <section xml:id="image-types">
-      <title>Image Types</title>
-      <variablelist>
-        <varlistentry>
-          <term>ISO Hybrid Live Image</term>
-          <listitem>
-            <para>An iso image which can be dumped on a CD/DVD or USB stick
-                            and boots off from this media without interfering with other
-                            system storage components. A useful pocket system for testing
-                            and demo and debugging purposes.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Virtual Disk Image</term>
-          <listitem>
-            <para>An image representing the system disk, useful for cloud frameworks
-                            like Amazon EC2, Google Compute Engine or Microsoft Azure.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>OEM Expandable Disk Image</term>
-          <listitem>
-            <para>An image representing an expandable system disk. This means after
-                            deployment the system can resize itself to the new disk geometry.
-                            The resize operation is configurable as part of the image description
-                            and an installation image for CD/DVD, USB stick and Network deployment
-                            can be created in addition.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Docker Container Image</term>
-          <listitem>
-            <para>An archive image suitable for the docker container engine.
-                            The image can be loaded via the <literal>docker load</literal> command and
-                            works within the scope of the container engine</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>WSL Container Image</term>
-          <listitem>
-            <para>An archive image suitable for the Windows Subsystem For Linux
-                            container engine. The image can be loaded From a Windows System
-                            that has support for WSL activated.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>KIS Root File System Image</term>
-          <listitem>
-            <para>An optional root filesystem image associated with a kernel and initrd.
-                            The use case for this component image type is highly customizable.
-                            Many different deployment strategies are possible.</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-    </section>
-    <section xml:id="image-results">
-      <title>Image Results</title>
-      <para>KIWI NG execution results in an appliance image after a successful run of
-                <xref linkend="kiwi-system-build"/> or <xref linkend="kiwi-system-create"/> command.
-                The result is the image binary in addition a couple of metadata files that can
-                be handy to describe or identify the resulting image. The output files follow
-                this naming convention:</para>
-      <para>
-        <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.&lt;extension&gt;</literal>
-      </para>
-      <para>where <literal>&lt;image-name&gt;</literal> is the name stated in the <xref linkend="image-description"/> as an
-                attribute of the <xref linkend="sec-image"/> element. The <literal>&lt;arch&gt;</literal> is the CPU
-                architecture used for the build, <literal>&lt;version&gt;</literal> is the image version defined in
-                <xref linkend="sec-preferences"/> element of the image description
-                and the <literal>&lt;extension&gt;</literal> is dependent on the image type and its definition.</para>
-      <para>Any KIWI NG appliance build results in, at least, the following output files:</para>
-      <procedure>
-        <step>
-          <para>The image binary, <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.&lt;image-extension&gt;</literal>:</para>
-          <para>This is the file containig the actual image binary, depending
-                        on the image type and its definition it can be a virtual disk image
-                        file, and ISO image, a tarball, etc.</para>
-        </step>
-        <step>
-          <para>The <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.packages</literal> file:</para>
-          <para>This file includes a sorted list of the packages
-                        that are included into the image. In fact this is normalized dump of the
-                        package manager database. It follows the following cvs format where each
-                        line is represented by:</para>
-          <para>
-            <literal>&lt;name&gt;|&lt;epoch&gt;|&lt;version&gt;|&lt;release&gt;|&lt;arch&gt;|&lt;disturl&gt;|&lt;license&gt;</literal>
-          </para>
-          <para>The values represented here are mainly based on RPM packages metadata.
-                        Other package managers may not provide all of these values, in such cases
-                        the format is the same and the fields that cannot be provided are set as
-                         value. This list can be used to track changes across multiple
-                        builds of the same image description over time by diffing the
-                        packages installed.</para>
-        </step>
-        <step>
-          <para>The <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.verified</literal> file:</para>
-          <para>This file is the output of a verification done by the package manager
-                        against the package data base. More specific it is the output of
-                        the <command>rpm</command> verification process or <command>dpkg</command> verification
-                        depending on the packaging technology selected for the image.
-                        In both cases the output follows the RPM verification syntax. This
-                        provides an overview of all packages status right before any boot of
-                        the image.</para>
-        </step>
-      </procedure>
-      <para>More specific  the result files for a given image name and version such
-                as <literal>LimeJeOS-Leap-15.1</literal> and <literal>1.15.1</literal> will be:</para>
-      <itemizedlist>
-        <listitem>
-          <para><emphasis role="bold">image packages</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.packages</literal></para>
-        </listitem>
-        <listitem>
-          <para><emphasis role="bold">image verified</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.verified</literal></para>
-        </listitem>
-      </itemizedlist>
-      <para>In addition to the image binaries itself that depend on the image type:</para>
-      <variablelist>
-        <varlistentry>
-          <term>image=”tbz”</term>
-          <listitem>
-            <para>For this image type the result is mainly a root tree packed in a tarball:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">root archive</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.tar.xz</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>image=”btrfs|ext2|ext3|ext4|squashfs|xfs”</term>
-          <listitem>
-            <para>The image root tree data is packed into a filesystem image of the given
-                            type, hence the resutl for an <literal>ext4</literal> image would be:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">filesystem image</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.ext4</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>image=”iso”</term>
-          <listitem>
-            <para>The image result is an ISO file:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">live image</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.iso</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>image=”vmx”</term>
-          <listitem>
-            <para>An image representing the system disk. The disk format can be
-                            defined in <xref linkend="sec-preferences"/> element as
-                            documented in <xref linkend="vmx"/>. For a <literal>format="qcow2"</literal> the result is:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">disk image</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.qcow2</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>image=”oem”</term>
-          <listitem>
-            <para>An image representing an expandable system disk. As for <literal>vmx</literal> type this
-                            results in a disk image. In addition to the <literal>vmx</literal> type <literal>oem</literal> has a couple
-                            of optional additional installation images. KIWI NG can produce an
-                            installation ISO (by setting <literal>installiso="true"</literal> in
-                            <xref linkend="sec-preferences"/>) or a tarball including
-                            the artifacts for a network deployment (by setting <literal>installiso="true"</literal> in
-                            <xref linkend="sec-preferences"/>), see
-                            <xref linkend="oem"/> for further details. The results for <literal>oem</literal> can be:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">disk image</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.raw</literal></para>
-              </listitem>
-              <listitem>
-                <para><emphasis role="bold">installation image (optional)</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.iso</literal></para>
-              </listitem>
-              <listitem>
-                <para><emphasis role="bold">installation pxe archive (optional)</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.tar</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>image=”docker”</term>
-          <listitem>
-            <para>An archive image suitable for the docker container engine. The result is
-                            a loadable (<command>docker load -i &lt;image&gt;</command>) tarball:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">container</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.docker.tar.xz</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>image=”oci”</term>
-          <listitem>
-            <para>An archive image that builds a container matching the OCI
-                            (Open Container Interface) standard. The result is a tarball matching OCI
-                            standards:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">container</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.oci.tar.xz</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>image=”appx”</term>
-          <listitem>
-            <para>An archive image suitable for the Windows Subsystem For Linux
-                            container engine. The result is an <literal>appx</literal> binary file:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">container</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.appx</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>image=”kis”</term>
-          <listitem>
-            <para>An optional root filesystem image associated with a kernel and initrd.
-                            All three binaries are packed in a tarball, see <xref linkend="kis"/> for further
-                            details about the kis archive:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">kis archive</emphasis>: <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.tar.xz</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-    </section>
-    <section xml:id="supported-distributions">
-      <title>Supported Distributions</title>
-      <para>KIWI NG can build images for the distributions which are <emphasis role="bold">equal</emphasis> or <emphasis role="bold">newer</emphasis>
-                compared to the table below. For anything older use the
-                legacy KIWI NG version <emphasis>v7.x</emphasis> For more details on the legacy KIWI NG,
-                see: <xref linkend="legacy-kiwi"/></para>
-      <para>The most compatible environment is provided if the build host is of the same
-                distribution than the target image. This always applies for the Open Build
-                Service (OBS). In other cases please check the table if your target combination
-                is known to be supported.</para>
-      <informaltable>
-        <tgroup cols="9">
-          <colspec colname="c0" colwidth="18"/>
-          <colspec colname="c1" colwidth="12"/>
-          <colspec colname="c2" colwidth="15"/>
-          <colspec colname="c3" colwidth="18"/>
-          <colspec colname="c4" colwidth="10"/>
-          <colspec colname="c5" colwidth="13"/>
-          <colspec colname="c6" colwidth="13"/>
-          <colspec colname="c7" colwidth="13"/>
-          <colspec colname="c8" colwidth="13"/>
-          <thead>
-            <row>
-              <entry>
-                <para>Host / Image</para>
-              </entry>
-              <entry>
-                <para>CentOS 7</para>
-              </entry>
-              <entry>
-                <para>Fedora 30</para>
-              </entry>
-              <entry>
-                <para>openSUSE Leap 15</para>
-              </entry>
-              <entry>
-                <para>RHEL 7</para>
-              </entry>
-              <entry>
-                <para>SLE 12</para>
-              </entry>
-              <entry>
-                <para>SLE 15</para>
-              </entry>
-              <entry>
-                <para>openSUSE TW</para>
-              </entry>
-              <entry>
-                <para>Ubuntu 19</para>
-              </entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>
-                <para>CentOS 7</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>Fedora 30</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>openSUSE Leap 15</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>
-                  <emphasis role="bold">note:dnf</emphasis>
-                </para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>RHEL 7</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>SLE 12</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>SLE 15</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>
-                  <emphasis role="bold">note:dnf</emphasis>
-                </para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>openSUSE TW</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>
-                  <emphasis role="bold">note:dnf</emphasis>
-                </para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>untested</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>Ubuntu 19</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>no</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </informaltable>
-      <para>In general, our goal is to support any major distribution with KIWI NG. However
-                for building images we rely on core tools which are not under our control.
-                Also several design aspects of distributions like <emphasis role="bold">secure boot</emphasis> and working
-                with <emphasis role="bold">upstream projects</emphasis> are different and not influenced by us. There
-                are many side effects that can be annoying especially if the build host
-                is not of the same distribution vendor than the image target.</para>
-    </section>
-    <section xml:id="supported-platforms-and-architectures">
-      <title>Supported Platforms and Architectures</title>
-      <para>Images built with KIWI NG are designed for a specific use case. The author of
-                the image description sets this with the contents in the KIWI NG XML document
-                as well as custom scripts and services. The following list provides an
-                abstract of the platforms where KIWI NG built images are productively used:</para>
-      <itemizedlist>
-        <listitem>
-          <para>Amazon EC2</para>
-        </listitem>
-        <listitem>
-          <para>Microsoft Azure</para>
-        </listitem>
-        <listitem>
-          <para>Google Compute Engine</para>
-        </listitem>
-        <listitem>
-          <para>Private Data Centers based on OpenStack</para>
-        </listitem>
-        <listitem>
-          <para>Bare metal deployments e.g Microsoft Azure Large Instance</para>
-        </listitem>
-        <listitem>
-          <para>SAP workloads</para>
-        </listitem>
-      </itemizedlist>
-      <para>The majority of the workloads is based on the x86 architecture. KIWI NG
-                also supports other architectures, shown in the table below:</para>
-      <informaltable>
-        <tgroup cols="2">
-          <colspec colname="c0" colwidth="14"/>
-          <colspec colname="c1" colwidth="21"/>
-          <thead>
-            <row>
-              <entry>
-                <para>Architecture</para>
-              </entry>
-              <entry>
-                <para>Supported</para>
-              </entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>
-                <para>x86_64</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>ix86</para>
-              </entry>
-              <entry>
-                <para>yes <emphasis role="bold">note:distro</emphasis></para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>s390/s390x</para>
-              </entry>
-              <entry>
-                <para>yes <emphasis role="bold">note:distro</emphasis></para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>arm/aarch64</para>
-              </entry>
-              <entry>
-                <para>yes <emphasis role="bold">note:distro</emphasis></para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>ppc64</para>
-              </entry>
-              <entry>
-                <para>no (alpha-phase)</para>
-              </entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </informaltable>
     </section>
   </chapter>
   <chapter xml:id="working-with-images" xml:base="working_with_images">
