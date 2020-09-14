@@ -14605,6 +14605,20 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_initrd_selection_required">
+                  <term>
+                    <property>kiwi.runtime_checker.RuntimeChecker.check_initrd_selection_required</property>
+                  </term>
+                  <listitem>
+                    <para>If the boot attribute is used without selecting kiwi
+                                as the initrd_system, the setting of the boot attribute
+                                will not have any effect. We assume that configurations
+                                which explicitly specify the boot attribute wants to use
+                                the custom kiwi initrd system and not dracut.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_mediacheck_installed">
                   <term>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_mediacheck_installed</property>
