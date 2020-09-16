@@ -516,7 +516,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
       <para>Your first image will be a simple system disk image which can run
                 in any full virtualization system like QEMU. Invoke the following KIWI NG
                 command in order to build it:</para>
-      <screen language="bash">$ sudo kiwi-ng --type vmx system build \
+      <screen language="bash">$ sudo kiwi-ng --type oem system build \
     --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
     --target-dir /tmp/myimage</screen>
       <para>The resulting image will be placed into the folder <literal>/tmp/myimage</literal>
@@ -690,7 +690,7 @@ kiwi-ng help</screen>
         <title>EXAMPLE</title>
         <screen language="bash">$ git clone https://github.com/OSInside/kiwi-descriptions
 
-$ kiwi --type vmx system build \
+$ kiwi --type oem system build \
     --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
     --target-dir /tmp/myimage</screen>
       </section>
@@ -701,7 +701,7 @@ $ kiwi --type vmx system build \
                 to use a legacy KIWI NG commandline as follows:</para>
         <screen language="bash">$ kiwi compat \
     --build kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
-    --type vmx -d /tmp/myimage</screen>
+    --type oem -d /tmp/myimage</screen>
       </section>
     </section>
     <section xml:id="kiwi-ng-result-list" xml:base="commands/result_list">
@@ -1691,7 +1691,7 @@ kiwi-ng image info help</screen>
       <itemizedlist>
         <listitem>
           <para>: either <literal>bootstrap</literal>, <literal>image</literal>, <literal>delete</literal>, <literal>uninstall</literal> or one of the
-                    following build types: <literal>docker</literal>, <literal>iso</literal>, <literal>oem</literal>, <literal>kis</literal>, <literal>vmx</literal>, <literal>oci</literal>.</para>
+                    following build types: <literal>docker</literal>, <literal>iso</literal>, <literal>oem</literal>, <literal>kis</literal>, <literal>oci</literal>.</para>
           <para>Packages for <literal>type="bootstrap"</literal> are pre-installed to populate the images’
                     root file system before chrooting into it.</para>
           <para>Packages in <literal>type="image"</literal> are installed immediately after the initial
@@ -1916,7 +1916,7 @@ popd</screen>
             configurations.</para>
       <para>The use of profiles is advisable to distinguish image builds of the same
             type but with different settings. In the following example, two virtual
-            machine images of the vmx type are configured: one for QEMU (using the
+            machine images of the <literal>oem</literal> type are configured: one for QEMU (using the
             <literal>qcow2</literal> format) and one for VMWare (using the <literal>vmdk</literal> format).</para>
       <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
     &lt;profiles&gt;
@@ -1928,10 +1928,10 @@ popd</screen>
         &lt;packagemanager&gt;zypper&lt;/packagemanager&gt;
     &lt;/preferences&gt;
     &lt;preferences profiles="QEMU"&gt;
-        &lt;type image="vmx" format="qcow2" filesystem="ext4"&gt;
+        &lt;type image="oem" format="qcow2" filesystem="ext4"&gt;
     &lt;/preferences&gt;
     &lt;preferences profiles="VMWare"&gt;
-        &lt;type image="vmx" format="vmdk" filesystem="ext4"&gt;
+        &lt;type image="oem" format="vmdk" filesystem="ext4"&gt;
     &lt;/preferences&gt;
 &lt;/image&gt;</screen>
       <para>Each profile is declared via the element , which itself must be a
@@ -2049,16 +2049,15 @@ popd</screen>
         <varlistentry>
           <term>disk.sh</term>
           <listitem>
-            <para>is executed for the disk image types <literal>vmx</literal> and <literal>oem</literal>
-                        only and runs after the synchronisation of the root tree into the
-                        disk image loop file. At call time of the script the device name
-                        of the currently mapped root device is passed as a parameter.
-                        The chroot environment for this script call is the virtual disk
-                        itself and not the root tree as with <literal>config.sh</literal> and
-                        <literal>images.sh</literal>. <literal>disk.sh</literal> is usually used to apply
-                        changes at parts of the system that are not an element of the
-                        file based root tree such as the partition table, the bootloader
-                        or filesystem attributes.</para>
+            <para>is executed for the disk image type <literal>oem</literal> only and runs after the
+                        synchronisation of the root tree into the disk image loop file.
+                        At call time of the script the device name of the currently mapped
+                        root device is passed as a parameter. The chroot environment for
+                        this script call is the virtual disk itself and not the root tree
+                        as with <literal>config.sh</literal> and <literal>images.sh</literal>. The script <literal>disk.sh</literal>
+                        is usually used to apply changes at parts of the system that are not an
+                        element of the file based root tree such as the partition table, the
+                        bootloader or filesystem attributes.</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -3460,20 +3459,15 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>image=”vmx”</term>
-              <listitem>
-                <para>An image representing the system disk, useful for cloud frameworks
-                                like Amazon EC2, Google Compute Engine or Microsoft Azure.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
               <term>image=”oem”</term>
               <listitem>
                 <para>An image representing an expandable system disk. This means after
                                 deployment the system can resize itself to the new disk geometry.
                                 The resize operation is configurable as part of the image description
                                 and an installation image for CD/DVD, USB stick and Network deployment
-                                can be created in addition.</para>
+                                can be created in addition. For use in cloud frameworks like
+                                Amazon EC2, Google Compute Engine or Microsoft Azure this disk
+                                type also supports the common virtual disk formats.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -3700,21 +3694,21 @@ $ kiwi-ng system create $ARGS</screen>
                                 of the requested size. The attribute takes a size value
                                 and allows a unit in MB or GB, e.g 200M. If no unit is given
                                 the value is considered to be mbytes. A spare partition
-                                can only be configured for the disk image types oem and vmx</para>
+                                can only be configured for the disk image type oem</para>
               </listitem>
             </varlistentry>
             <varlistentry>
               <term>spare_part_mountpoint=”dir_path”:</term>
               <listitem>
                 <para>Specify mount point for spare partition in the system.
-                                Can only be configured for the disk image types oem and vmx</para>
+                                Can only be configured for the disk image type oem</para>
               </listitem>
             </varlistentry>
             <varlistentry>
               <term>spare_part_fs=”btrfs|ext2|ext3|ext4|xfs”:</term>
               <listitem>
                 <para>Specify filesystem for spare partition in the system.
-                                Can only be configured for the disk image types oem and vmx</para>
+                                Can only be configured for the disk image type oem</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -3724,17 +3718,23 @@ $ kiwi-ng system create $ARGS</screen>
                                 Attributes can be specified as comma separated list.
                                 Currently the attributes <literal>no-copy-on-write</literal> and <literal>synchronous-updates</literal>
                                 are available. Can only be configured for the disk image
-                                types oem and vmx</para>
+                                type oem</para>
               </listitem>
             </varlistentry>
             <varlistentry>
               <term>spare_part_is_last=”true|false”:</term>
               <listitem>
                 <para>Specify if the spare partition should be the last one in
-                                the partition table. Can only be configured for the vmx
-                                disk image type. By default the root partition is the last
-                                one and the spare partition lives before it. With this
-                                attribute that setup can be toggled.</para>
+                                the partition table. Can only be configured for the <literal>oem</literal>
+                                type with oem-resize switched off. By default the root
+                                partition is the last one and the spare partition lives
+                                before it. With this attribute that setup can be toggled.
+                                However, if the root partition is no longer the last one
+                                the oem repart/resize code can no longer work because
+                                the spare part would block it. Because of that moving
+                                the spare part at the end of the disk is only applied
+                                if oem-resize is switched off. There is a runtime
+                                check in the KIWI NG code to check this condition</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -3760,7 +3760,7 @@ $ kiwi-ng system create $ARGS</screen>
                                 out of a squashfs compressed read-only root system
                                 overlayed using the overlayfs filesystem into an
                                 extra read-write partition. Available for the disk
-                                image types, vmx and oem</para>
+                                image type oem only</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -3787,7 +3787,7 @@ $ kiwi-ng system create $ARGS</screen>
             <varlistentry>
               <term>format=”gce|ova|qcow2|vagrant|vmdk|vdi|vhd|vhdx|vhd-fixed”:</term>
               <listitem>
-                <para>For disk image types vmx and oem, specifies the format of
+                <para>For disk image type oem, specifies the format of
                                 the virtual disk such that it can run on the desired target
                                 virtualization platform.</para>
               </listitem>
@@ -3975,8 +3975,8 @@ $ kiwi-ng system create $ARGS</screen>
         </section>
         <section xml:id="preferences-type-bootloader">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</title>
-          <para>Used to describe the bootloader setup in vmx or oem disk image types.
-                    For details see: <xref linkend="vmx-bootloader"/></para>
+          <para>Used to describe the bootloader setup in the oem disk image type.
+                    For details see: <xref linkend="disk-bootloader"/></para>
         </section>
         <section xml:id="preferences-type-containerconfig">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</title>
@@ -3986,12 +3986,12 @@ $ kiwi-ng system create $ARGS</screen>
         </section>
         <section xml:id="preferences-type-vagrantconfig">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;vagrantconfig&gt;</title>
-          <para>Used to describe vagrant configuration metadata in vmx disk image
+          <para>Used to describe vagrant configuration metadata in a disk image
                     that is being used as a vagrant box. For details see: <xref linkend="setup-vagrant"/></para>
         </section>
         <section xml:id="preferences-type-systemdisk">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;systemdisk&gt;</title>
-          <para>Used to describe the geometry, partitions and volumes, in a vmx or oem
+          <para>Used to describe the geometry, partitions and volumes, in a
                     disk image. For details see: <xref linkend="custom-volumes"/></para>
         </section>
         <section xml:id="preferences-type-oemconfig">
@@ -4001,14 +4001,14 @@ $ kiwi-ng system create $ARGS</screen>
         </section>
         <section xml:id="preferences-type-size">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;size&gt;</title>
-          <para>Used to customize the size of the resulting disk image in a vmx or
-                    oem image. For details see: <xref linkend="vmx-the-size-element"/></para>
+          <para>Used to customize the size of the resulting disk image in an
+                    oem image. For details see: <xref linkend="disk-the-size-element"/></para>
         </section>
         <section xml:id="preferences-type-machine">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;machine&gt;</title>
           <para>Used to customize the virtual machine configuration which describes
                     the components of an emulated hardware.
-                    For details see: <xref linkend="vmx-the-machine-element"/></para>
+                    For details see: <xref linkend="disk-the-machine-element"/></para>
         </section>
       </section>
       <section xml:id="sec-repository">
@@ -4436,14 +4436,14 @@ $ kiwi-ng system create $ARGS</screen>
   &lt;packagemanager name="zypper"/&gt;
 &lt;/preferences&gt;
 
-&lt;preferences profiles="vmx_qcow_format"&gt;
-  &lt;type image="vmx" filesystem="ext4" format="qcow2"/&gt;
+&lt;preferences profiles="oem_qcow_format"&gt;
+  &lt;type image="oem" filesystem="ext4" format="qcow2"/&gt;
 &lt;/preferences&gt;
 
-&lt;preferences profiles="vmx_vmdk_format"&gt;
-  &lt;type image="vmx" filesystem="ext4" format="vmdk"/&gt;
+&lt;preferences profiles="oem_vmdk_format"&gt;
+  &lt;type image="oem" filesystem="ext4" format="vmdk"/&gt;
 &lt;/preferences&gt;</screen>
-        <para>The above example configures two version of the same vmx type.
+        <para>The above example configures two version of the same oem type.
                 One builds a disk in qcow2 format the other builds a disk in
                 vmdk format. The global preferences section without a profile
                 assigned will be used in any case and defines those preferences
@@ -4535,7 +4535,7 @@ $ kiwi-ng system create $ARGS</screen>
         <listitem>
           <para>An image representing the system disk, useful for cloud frameworks
                         like Amazon EC2, Google Compute Engine or Microsoft Azure.
-                        For further details refer to <xref linkend="vmx"/></para>
+                        For further details refer to <xref linkend="simple-disk"/></para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -4545,7 +4545,7 @@ $ kiwi-ng system create $ARGS</screen>
                         deployment the system can resize itself to the new disk geometry.
                         The resize operation is configurable as part of the image description
                         and an installation image for CD/DVD, USB stick and Network deployment
-                        can be created in addition. For further details refer to: <xref linkend="oem"/></para>
+                        can be created in addition. For further details refer to: <xref linkend="expandable-disk"/></para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -4678,30 +4678,14 @@ $ kiwi-ng system create $ARGS</screen>
           </listitem>
         </varlistentry>
         <varlistentry>
-          <term>image=”vmx”</term>
-          <listitem>
-            <para>An image representing the system disk. The disk format can be
-                            defined in <xref linkend="sec-preferences"/> element as
-                            documented in <xref linkend="vmx"/>. For a <literal>format="qcow2"</literal> the result is:</para>
-            <itemizedlist>
-              <listitem>
-                <para><emphasis role="bold">disk image</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.qcow2</literal></para>
-              </listitem>
-            </itemizedlist>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
           <term>image=”oem”</term>
           <listitem>
-            <para>An image representing an expandable system disk. As for <literal>vmx</literal> type this
-                            results in a disk image. In addition to the <literal>vmx</literal> type <literal>oem</literal> has a couple
-                            of optional additional installation images. KIWI NG can produce an
-                            installation ISO (by setting <literal>installiso="true"</literal> in
-                            <xref linkend="sec-preferences"/>) or a tarball including
-                            the artifacts for a network deployment (by setting <literal>installiso="true"</literal> in
-                            <xref linkend="sec-preferences"/>), see
-                            <xref linkend="oem"/> for further details. The results for <literal>oem</literal> can be:</para>
+            <para>An image representing an expandable disk image. KIWI NG can also produce an
+                            installation ISO for this disk image by setting <literal>installiso="true"</literal> in
+                            the <xref linkend="sec-preferences"/>) section or a tarball
+                            including the artifacts for a network deployment by setting <literal>installiso="true"</literal>.
+                            For further details see <xref linkend="expandable-disk"/>. The results for <literal>oem</literal>
+                            can be:</para>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">disk image</emphasis>:
@@ -4716,6 +4700,18 @@ $ kiwi-ng system create $ARGS</screen>
                                     <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.tar</literal></para>
               </listitem>
             </itemizedlist>
+            <para>The disk image can also be provided in one of the various virtual disk
+                            formats which can be specified in  attribute of the
+                            <xref linkend="sec-preferences"/> section. For further
+                            details see <xref linkend="simple-disk"/>. The result for e.g  <literal>format="qcow2"</literal>
+                            would be:</para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">disk image</emphasis>:
+                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.qcow2</literal></para>
+              </listitem>
+            </itemizedlist>
+            <para>instead of the <literal>raw</literal> default disk format.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -5030,36 +5026,43 @@ $ kiwi-ng system create $ARGS</screen>
         </variablelist>
       </section>
     </section>
-    <section xml:id="vmx" xml:base="building_images/build_vmx_disk">
+    <section xml:id="simple-disk" xml:base="building_images/build_simple_disk">
       <title>Build a Virtual Disk Image</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
-        <para>This chapter explains how to build a simple disk image, including:</para>
+        <para>This page explains how to build a simple disk image.
+                It contains how to:</para>
       </formalpara>
       <itemizedlist>
         <listitem>
-          <para>how to define a vmx image in the image description</para>
+          <para>define a simple disk image in the image description</para>
         </listitem>
         <listitem>
-          <para>how to build a vmx image</para>
+          <para>build a simple disk image</para>
         </listitem>
         <listitem>
-          <para>how to run it with QEMU</para>
+          <para>run it with QEMU</para>
         </listitem>
       </itemizedlist>
-      <para>A Virtual Disk Image is a compressed system disk with additional metadata
-            useful for cloud frameworks like Amazon EC2, Google Compute Engine, or
-            Microsoft Azure.</para>
-      <para>To instruct KIWI NG to build a VMX image add a  element with
-            <literal>image="vmx"</literal> in <literal>config.xml</literal>. An example configuration for a 42 GB
-            large VMDK image with 512 MB RAM, an IDE controller and a bridged network
-            interface is shown below:</para>
+      <para>A simple Virtual Disk Image is a compressed system disk with additional
+            metadata useful for cloud frameworks like Amazon EC2, Google Compute Engine,
+            or Microsoft Azure. It is used as the native disk of a system and does
+            not require an extra installation workflow or a complex first boot setup
+            procedure which is why we call it a <emphasis>simple</emphasis> disk image.</para>
+      <para>To instruct KIWI NG to build a simple disk image add a  element with
+            <literal>image="oem"</literal> in <literal>config.xml</literal> that has the <literal>oem-resize</literal> feature
+            disabled. An example configuration for a 42 GB large VMDK image with
+            512 MB RAM, an IDE controller and a bridged network interface is shown
+            below:</para>
       <screen language="xml">&lt;image schemaversion="7.2" name="JeOS-Tumbleweed"&gt;
   &lt;!-- snip --&gt;
   &lt;preferences&gt;
-    &lt;type image="vmx" filesystem="ext4" format="vmdk"&gt;
+    &lt;type image="oem" filesystem="ext4" format="vmdk"&gt;
       &lt;bootloader name="grub2" timeout="0"/&gt;
       &lt;size unit="G"&gt;42&lt;/size&gt;
+      &lt;oemconfig&gt;
+          &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+      &lt;/oemconfig&gt;
       &lt;machine memory="512" guestOS="suse" HWversion="4"&gt;
         &lt;vmdisk id="0" controller="ide"/&gt;
         &lt;vmnic driver="e1000" interface="0" mode="bridged"/&gt;
@@ -5070,7 +5073,7 @@ $ kiwi-ng system create $ARGS</screen>
   &lt;!-- snip --&gt;
 &lt;/image&gt;</screen>
       <para>The following attributes of the  element are of special interest
-            when building VMX images:</para>
+            when building simple disk images:</para>
       <itemizedlist>
         <listitem>
           <para>: Specifies the format of the virtual disk, possible values are:
@@ -5087,12 +5090,12 @@ $ kiwi-ng system create $ARGS</screen>
       </itemizedlist>
       <para>The <literal>bootloader</literal>, <literal>size</literal> and <literal>machine</literal> child-elements of  can be
             used to customize the virtual machine image further. We describe them in
-            the following sections: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#vmx-bootloader">Setting up the Bootloader of the Image</link>, <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#vmx-the-size-element">Modifying the Size of the Image</link>
-            and <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#vmx-the-machine-element">Customizing the Virtual Machine</link></para>
+            the following sections: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#disk-bootloader">Setting up the Bootloader of the Image</link>, <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#disk-the-size-element">Modifying the Size of the Image</link>
+            and <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#disk-the-machine-element">Customizing the Virtual Machine</link></para>
       <para>Once your image description is finished (or you are content with a image
             from the <xref linkend="example-descriptions"/> and use one of
             them) build the image with KIWI NG:</para>
-      <screen language="bash">$ sudo kiwi-ng --type vmx system build \
+      <screen language="bash">$ sudo kiwi-ng --type oem system build \
     --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
     --target-dir /tmp/myimage</screen>
       <para>The created image will be in the target directory <literal>/tmp/myimage</literal> with
@@ -5121,7 +5124,7 @@ $ kiwi-ng system create $ARGS</screen>
         </listitem>
       </itemizedlist>
       <para>For information how to setup a Vagrant box, see: <xref linkend="setup-vagrant"/>.</para>
-      <section xml:id="vmx-bootloader">
+      <section xml:id="disk-bootloader">
         <title>Setting up the Bootloader of the Image</title>
         <screen language="xml">&lt;preferences&gt;
   &lt;bootloader name="grub2"/&gt;
@@ -5182,14 +5185,17 @@ $ kiwi-ng system create $ARGS</screen>
           </varlistentry>
         </variablelist>
       </section>
-      <section xml:id="vmx-the-size-element">
+      <section xml:id="disk-the-size-element">
         <title>Modifying the Size of the Image</title>
         <para>The <literal>size</literal> child element of  specifies the size of the resulting
                 disk image. The following example shows a image description where 20 GB are
                 added to the virtual machine image of which 5 GB are left unpartitioned:</para>
         <screen language="xml">&lt;preferences&gt;
-  &lt;type image="vmx" format="vmdk"&gt;
+  &lt;type image="oem" format="vmdk"&gt;
     &lt;size unit="G" additive="true" unpartitioned="5"&gt;20&lt;/size&gt;
+    &lt;oemconfig&gt;
+        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+    &lt;/oemconfig&gt;
   &lt;/type&gt;
 &lt;/preferences&gt;</screen>
         <para>The following optional attributes can be used to customize the image size
@@ -5212,7 +5218,7 @@ $ kiwi-ng system create $ARGS</screen>
           </listitem>
         </itemizedlist>
       </section>
-      <section xml:id="vmx-the-machine-element">
+      <section xml:id="disk-the-machine-element">
         <title>Customizing the Virtual Machine</title>
         <para>The <literal>machine</literal> child element of  can be used to customize the virtual
                 machine configuration which is used when the image is run, like the number
@@ -5282,7 +5288,7 @@ $ kiwi-ng system create $ARGS</screen>
           <para>The following example adds the two entries <literal>numvcpus = "4"</literal> and
                     <literal>cpuid.coresPerSocket = "2"</literal> into the VM configuration file:</para>
           <screen language="xml">&lt;preferences&gt;
-  &lt;type image="vmx" filesystem="ext4" format="vmdk"&gt;
+  &lt;type image="oem" filesystem="ext4" format="vmdk"&gt;
     &lt;machine memory="512" guestOS="suse" HWversion="4"&gt;
       &lt;vmconfig-entry&gt;numvcpus = "4"&lt;/vmconfig-entry&gt;
       &lt;vmconfig-entry&gt;cpuid.coresPerSocket = "2"&lt;/vmconfig-entry&gt;
@@ -5299,7 +5305,7 @@ $ kiwi-ng system create $ARGS</screen>
           <para>In the following example we add a bridged network interface using the
                     <literal>e1000</literal> driver:</para>
           <screen language="xml">&lt;preferences&gt;
-  &lt;type image="vmx" filesystem="ext4" format="vmdk"&gt;
+  &lt;type image="oem" filesystem="ext4" format="vmdk"&gt;
     &lt;machine memory="4096" guestOS="suse" HWversion="4"&gt;
       &lt;vmnic driver="e1000" interface="0" mode="bridged"/&gt;
     &lt;/machine&gt;
@@ -5332,7 +5338,7 @@ $ kiwi-ng system create $ARGS</screen>
           <para>Note that this element is only used for <literal>vmdk</literal> and <literal>ova</literal> image formats.</para>
           <para>The following example adds a disk with the ID 0 using an IDE controller:</para>
           <screen language="xml">&lt;preferences&gt;
-  &lt;type image="vmx" filesystem="ext4" format="vmdk"&gt;
+  &lt;type image="oem" filesystem="ext4" format="vmdk"&gt;
     &lt;machine memory="512" guestOS="suse" HWversion="4"&gt;
       &lt;vmdisk id="0" controller="ide"/&gt;
     &lt;/machine&gt;
@@ -5371,7 +5377,7 @@ $ kiwi-ng system create $ARGS</screen>
                     following example we add two drives: one with a SCSCI and another with a
                     IDE controller:</para>
           <screen language="xml">&lt;preferences&gt;
-  &lt;type image="vmx" filesystem="ext4"&gt;
+  &lt;type image="oem" filesystem="ext4"&gt;
     &lt;machine memory="512" xen_loader="hvmloader"&gt;
       &lt;vmdvd id="0" controller="scsi"/&gt;
       &lt;vmdvd id="1" controller="ide"/&gt;
@@ -5391,29 +5397,30 @@ $ kiwi-ng system create $ARGS</screen>
         </section>
       </section>
     </section>
-    <section xml:id="oem" xml:base="building_images/build_oem_disk">
-      <title>Build an OEM Expandable Disk Image</title>
+    <section xml:id="expandable-disk" xml:base="building_images/build_expandable_disk">
+      <title>Build an Expandable Disk Image</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
-        <para>This page explains how to build an OEM disk image. It contains:</para>
+        <para>This page explains how to build an expandable disk image.
+                It contains how to:</para>
       </formalpara>
       <itemizedlist>
         <listitem>
-          <para>how to build an OEM image</para>
+          <para>build an expandable disk image</para>
         </listitem>
         <listitem>
-          <para>how to deploy an OEM image</para>
+          <para>deploy an expandable disk image</para>
         </listitem>
         <listitem>
-          <para>how to run the deployed system</para>
+          <para>run the deployed system</para>
         </listitem>
       </itemizedlist>
-      <para>An OEM disk represents the system disk with the capability to auto
+      <para>An expandable disk represents the system disk with the capability to auto
             expand the disk and its filesystem to a custom disk geometry. This
-            allows deploying the same OEM image on target systems of a different
+            allows deploying the same disk image on target systems with different
             hardware setup.</para>
-      <para>The following example shows how to build and deploy an OEM disk image
-            based on openSUSE Leap using a QEMU virtual machine as OEM target
+      <para>The following example shows how to build and deploy such a disk image
+            based on openSUSE Leap using a QEMU virtual machine as the target
             system:</para>
       <procedure>
         <step>
@@ -5428,12 +5435,12 @@ $ kiwi-ng system create $ARGS</screen>
           <para>Find the following result images below <literal>/tmp/myimage</literal>.</para>
           <itemizedlist>
             <listitem>
-              <para>The OEM disk image with the suffix <literal>.raw</literal> is an expandable
+              <para>The disk image with the suffix <literal>.raw</literal> is an expandable
                             virtual disk. It can expand itself to a custom disk geometry.</para>
             </listitem>
             <listitem>
-              <para>The OEM installation image with the suffix <literal>install.iso</literal> is a
-                            hybrid installation system which contains the OEM disk image and is
+              <para>The installation image with the suffix <literal>install.iso</literal> is a
+                            hybrid installation system which contains the disk image and is
                             capable to install this image on any target disk.</para>
             </listitem>
           </itemizedlist>
@@ -5441,30 +5448,30 @@ $ kiwi-ng system create $ARGS</screen>
       </procedure>
       <section xml:id="deployment-methods">
         <title>Deployment Methods</title>
-        <para>The basic idea behind an OEM image is to provide the virtual disk data for
-                OEM vendors to support easy deployment of the system to physical storage
-                media.</para>
+        <para>The basic idea behind an expandable disk image is to provide the virtual
+                disk data for OEM vendors to support easy deployment of the system to
+                physical storage media.</para>
         <para>There are the following basic deployment strategies:</para>
         <procedure>
           <step>
             <para>
               <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#deploy-manually">Manual Deployment</link>
             </para>
-            <para>Manually deploy the OEM disk image onto the target disk</para>
+            <para>Manually deploy the disk image onto the target disk.</para>
           </step>
           <step>
             <para>
               <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#deploy-from-iso">CD/DVD Deployment</link>
             </para>
-            <para>Boot the OEM installation image and let KIWI NG’s OEM installer
-                        deploy the OEM disk image from CD/DVD or USB stick onto the target disk</para>
+            <para>Boot the installation image and let KIWI NG’s installer
+                        deploy the disk image from CD/DVD or USB stick onto the target disk.</para>
           </step>
           <step>
             <para>
               <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#deploy-from-network">Network Deployment</link>
             </para>
-            <para>PXE boot the target system and let KIWI NG’s OEM installer
-                        deploy the OEM disk image from the network onto the target disk</para>
+            <para>PXE boot the target system and let KIWI NG’s installer
+                        deploy the disk image from the network onto the target disk.</para>
           </step>
         </procedure>
       </section>
@@ -5480,13 +5487,13 @@ $ kiwi-ng system create $ARGS</screen>
             <note>
               <para>Retaining the Disk Geometry</para>
               <para>If the target disk geometry is less or equal to the geometry of
-                            the OEM disk image itself, the disk expansion performed for a physical
-                            disk install during the OEM boot workflow will be skipped and the
+                            the disk image itself, the disk expansion performed for a physical
+                            disk install during the boot workflow will be skipped and the
                             original disk geometry stays untouched.</para>
             </note>
           </step>
           <step>
-            <para>Dump OEM image on target disk</para>
+            <para>Dump disk image on target disk.</para>
             <screen language="bash">$ dd if=LimeJeOS-Leap-15.1.x86_64-1.15.1.raw of=target_disk conv=notrunc</screen>
           </step>
           <step>
@@ -5509,12 +5516,12 @@ $ kiwi-ng system create $ARGS</screen>
             <para>Follow the steps above to create a virtual target disk</para>
           </step>
           <step>
-            <para>Boot the OEM installation image as CD/DVD with the
-                        target disk attached</para>
+            <para>Boot the installation image as CD/DVD with the
+                        target disk attached.</para>
             <screen language="bash">$ qemu -cdromLimeJeOS-Leap-15.1.x86_64-1.15.1.install.iso -hda target_disk -boot d -m 4096</screen>
             <note>
               <para>USB Stick Deployment</para>
-              <para>Like any other iso image built with KIWI NG, also the OEM installation
+              <para>Like any other ISO image built with KIWI NG, also the installation
                             image is a hybrid image. Thus it can also be used on USB stick and
                             serve as installation stick image like it is explained in
                             <xref linkend="hybrid-iso"/></para>
@@ -5524,7 +5531,7 @@ $ kiwi-ng system create $ARGS</screen>
       </section>
       <section xml:id="deploy-from-network">
         <title>Network Deployment</title>
-        <para>The deployment from the network downloads the OEM disk image from a
+        <para>The deployment from the network downloads the disk image from a
                 PXE boot server. This requires a PXE network boot server to be setup
                 as explained in <xref linkend="network-boot-server"/></para>
         <para>If the PXE server is running the following steps shows how to test the
@@ -5533,7 +5540,7 @@ $ kiwi-ng system create $ARGS</screen>
         <procedure>
           <step>
             <para>Make sure to create an installation PXE TAR archive along with your
-                        OEM image by replacing the following setup in
+                        disk image by replacing the following setup in
                         kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS/config.xml</para>
             <para>Instead of</para>
             <screen language="xml">&lt;type image="oem" installiso="true"/&gt;</screen>
@@ -5559,7 +5566,7 @@ scp pxeboot.LimeJeOS-Leap-15.1.x86_64-1.15.1.kernel PXE_SERVER_IP:/srv/tftpboot/
             </procedure>
           </step>
           <step>
-            <para>Copy the OEM disk image, MD5 file, system kernel, initrd and bootoptions to
+            <para>Copy the disk image, MD5 file, system kernel, initrd and bootoptions to
                         the PXE boot server:</para>
             <para>Activation of the deployed system is done via <literal>kexec</literal> of the kernel
                         and initrd provided here.</para>
@@ -5646,14 +5653,25 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
         <screen language="xml">&lt;oemconfig&gt;
   &lt;oem-swapsize&gt;512&lt;/oem-swapsize&gt;
 &lt;/oemconfig&gt;</screen>
-        <para>The following list of optional oem element settings exists:</para>
+        <para>The following list of optional <literal>oem</literal> element settings exists:</para>
         <variablelist>
+          <varlistentry>
+            <term>oemconfig.oem-resize Element</term>
+            <listitem>
+              <para>Specify if the disk has the capability to expand itself to
+                            a new disk geometry or not. By default, this feature is activated.
+                            The implementation of the resize capability is done in a dracut
+                            module packaged as <literal>dracut-kiwi-oem-repart</literal>. If <literal>oem-resize</literal> is
+                            set to false, the installation of the corresponding dracut package
+                            can be skipped as well.</para>
+            </listitem>
+          </varlistentry>
           <varlistentry>
             <term>oemconfig.oem-boot-title Element</term>
             <listitem>
               <para>By default, the string OEM will be used as the boot manager menu
                             entry when KIWI creates the GRUB configuration during deployment.
-                            The oem-boot-title element allows you to set a custom name for the
+                            The <literal>oem-boot-title</literal> element allows you to set a custom name for the
                             grub menu entry. This value is represented by the
                             <literal>kiwi_oemtitle</literal> variable in the initrd</para>
             </listitem>
@@ -5662,7 +5680,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
             <term>oemconfig.oem-bootwait Element</term>
             <listitem>
               <para>Specify if the system should wait for user interaction prior to
-                            continuing the boot process after the oem image has been dumped to
+                            continuing the boot process after the disk image has been dumped to
                             the designated storage device (default value is false). This value
                             is represented by the <literal>kiwi_oembootwait</literal> variable in the initrd</para>
             </listitem>
@@ -5670,7 +5688,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
           <varlistentry>
             <term>oemconfig.oem-reboot Element</term>
             <listitem>
-              <para>Specify if the system is to be rebooted after the oem image has
+              <para>Specify if the system is to be rebooted after the disk image has
                             been deployed to the designated storage device (default value is
                             false). This value is represented by the <literal>kiwi_oemreboot</literal>
                             variable in the initrd</para>
@@ -5679,7 +5697,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
           <varlistentry>
             <term>oemconfig.oem-reboot-interactive Element</term>
             <listitem>
-              <para>Specify if the system is to be rebooted after the oem image has
+              <para>Specify if the system is to be rebooted after the disk image has
                             been deployed to the designated storage device (default value is
                             false). Prior to reboot a message is posted and must be
                             acknowledged by the user in order for the system to reboot. This
@@ -5690,7 +5708,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
           <varlistentry>
             <term>oemconfig.oem-silent-boot Element</term>
             <listitem>
-              <para>Specify if the system should boot in silent mode after the oem
+              <para>Specify if the system should boot in silent mode after the disk
                             image has been deployed to the designated storage device (default
                             value is false). This value is represented by the
                             <literal>kiwi_oemsilentboot</literal> variable in the initrd</para>
@@ -5699,7 +5717,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
           <varlistentry>
             <term>oemconfig.oem-shutdown Element</term>
             <listitem>
-              <para>Specify if the system is to be powered down after the oem image
+              <para>Specify if the system is to be powered down after the disk image
                             has been deployed to the designated storage device (default value
                             is false). This value is represented by the <literal>kiwi_oemshutdown</literal>
                             variable in the initrd</para>
@@ -5708,7 +5726,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
           <varlistentry>
             <term>oemconfig.oem-shutdown-interactive Element</term>
             <listitem>
-              <para>Specify if the system is to be powered down after the oem image
+              <para>Specify if the system is to be powered down after the disk image
                             has been deployed to the designated storage device (default value
                             is false). Prior to shutdown a message is posted and must be
                             acknowledged by the user in order for the system to power off.
@@ -5746,9 +5764,9 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
                             specifies the size of the LVM partition which contains all
                             specified volumes. Thus, the sum of all specified volume sizes
                             plus the sum of the specified freespace for each volume must be
-                            smaller or equal to the size specified with the oem-systemsize.
-                            This value is represented by the variable <literal>kiwi_oemrootMB</literal> in
-                            the initrd</para>
+                            smaller or equal to the size specified with the <literal>oem-systemsize</literal>
+                            element. This value is represented by the variable <literal>kiwi_oemrootMB</literal>
+                            in the initrd</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -6231,18 +6249,18 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
         </step>
       </procedure>
     </section>
-    <section xml:id="setup-for-ec2" xml:base="working_with_images/vmx_setup_for_ec2">
+    <section xml:id="setup-for-ec2" xml:base="working_with_images/disk_setup_for_ec2">
       <title>Image Description for Amazon EC2</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
         <para>This page provides further information for handling
-                vmx images built with KIWI NG and references the following
+                Amazon EC2 images built with KIWI NG and references the following
                 articles:</para>
       </formalpara>
       <itemizedlist>
         <listitem>
           <para>
-            <xref linkend="vmx"/>
+            <xref linkend="simple-disk"/>
           </para>
         </listitem>
       </itemizedlist>
@@ -6290,8 +6308,8 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
         </step>
         <step>
           <para>Image Type definition</para>
-          <para>Update the vmx image type setup as follows</para>
-          <screen language="xml">&lt;type image="vmx"
+          <para>Update the oem image type setup as follows</para>
+          <screen language="xml">&lt;type image="oem"
       filesystem="ext4"
       kernelcmdline="console=xvc0 multipath=off net.ifnames=0"
       devicepersistency="by-label"
@@ -6299,6 +6317,9 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
   &lt;bootloader name="grub2" timeout="1"/&gt;
   &lt;size unit="M"&gt;10240&lt;/size&gt;
   &lt;machine xen_loader="hvmloader"/&gt;
+  &lt;oemconfig&gt;
+      &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+  &lt;/oemconfig&gt;
 &lt;/type&gt;</screen>
         </step>
         <step>
@@ -6367,18 +6388,18 @@ system_info:
             Amazon EC2 cloud and registered as image. For further information
             on how to upload to EC2 see: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/SUSE-Enceladus/ec2imgutils">ec2uploadimg</link></para>
     </section>
-    <section xml:id="setup-for-azure" xml:base="working_with_images/vmx_setup_for_azure">
+    <section xml:id="setup-for-azure" xml:base="working_with_images/disk_setup_for_azure">
       <title>Image Description for Microsoft Azure</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
         <para>This page provides further information for handling
-                vmx images built with KIWI NG and references the following
-                articles:</para>
+                Azure disk images built with KIWI NG and references the
+                following articles:</para>
       </formalpara>
       <itemizedlist>
         <listitem>
           <para>
-            <xref linkend="vmx"/>
+            <xref linkend="simple-disk"/>
           </para>
         </listitem>
       </itemizedlist>
@@ -6414,8 +6435,8 @@ system_info:
         </step>
         <step>
           <para>Image Type definition</para>
-          <para>Update the vmx image type setup as follows</para>
-          <screen language="xml">&lt;type image="vmx"
+          <para>Update the oem image type setup as follows</para>
+          <screen language="xml">&lt;type image="oem"
       filesystem="ext4"
       kernelcmdline="console=ttyS0 rootdelay=300 net.ifnames=0"
       devicepersistency="by-uuid"
@@ -6425,6 +6446,9 @@ system_info:
       bootpartsize="1024"&gt;
   &lt;bootloader name="grub2" timeout="1"/&gt;
   &lt;size unit="M"&gt;30720&lt;/size&gt;
+  &lt;oemconfig&gt;
+      &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+  &lt;/oemconfig&gt;
 &lt;/type&gt;</screen>
         </step>
       </procedure>
@@ -6433,18 +6457,18 @@ system_info:
             information on how to upload to Azure see:
             <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/SUSE-Enceladus/azurectl">azurectl</link></para>
     </section>
-    <section xml:id="setup-for-gce" xml:base="working_with_images/vmx_setup_for_google">
+    <section xml:id="setup-for-gce" xml:base="working_with_images/disk_setup_for_google">
       <title>Image Description for Google Compute Engine</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
         <para>This page provides further information for handling
-                vmx images built with KIWI NG and references the following
+                GCE images built with KIWI NG and references the following
                 articles:</para>
       </formalpara>
       <itemizedlist>
         <listitem>
           <para>
-            <xref linkend="vmx"/>
+            <xref linkend="simple-disk"/>
           </para>
         </listitem>
       </itemizedlist>
@@ -6487,8 +6511,8 @@ system_info:
                     <literal>cloud-init</literal> were used together. Thus for now we stick with KIWI NG’s
                     boot code which can resize the disk from within the initrd before
                     the system gets activated through systemd.</para>
-          <para>Update the vmx image type setup to be changed into an expandable
-                    (oem) type as follows:</para>
+          <para>Update the oem image type setup to be changed into an expandable
+                    type as follows:</para>
           <screen language="xml">&lt;type image="oem"
       initrd_system="dracut"
       filesystem="ext4"
@@ -6497,6 +6521,7 @@ system_info:
   &lt;bootloader name="grub2" timeout="1"/&gt;
   &lt;size unit="M"&gt;10240&lt;/size&gt;
   &lt;oemconfig&gt;
+      &lt;oem-resize&gt;true&lt;/oem-resize&gt;
       &lt;oem-swap&gt;false&lt;/oem-swap&gt;
   &lt;/oemconfig&gt;
 &lt;/type&gt;</screen>
@@ -6651,18 +6676,18 @@ touch /var/lib/YaST2/reconfig_system</screen>
         </step>
       </procedure>
     </section>
-    <section xml:id="setup-vagrant" xml:base="working_with_images/vmx_vagrant_setup">
+    <section xml:id="setup-vagrant" xml:base="working_with_images/disk_setup_for_vagrant">
       <title>Image Description for Vagrant</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
         <para>This page provides further information for handling
-                VMX images built with KIWI NG and references the following
-                article:</para>
+                Vagrant controlled disk images built with KIWI NG and references
+                the following article:</para>
       </formalpara>
       <itemizedlist>
         <listitem>
           <para>
-            <xref linkend="vmx"/>
+            <xref linkend="simple-disk"/>
           </para>
         </listitem>
       </itemizedlist>
@@ -6685,15 +6710,18 @@ touch /var/lib/YaST2/reconfig_system</screen>
             building and maintaining boxes.</para>
       <para>Vagrant expects boxes to be setup in a specific way (for details refer to
             the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.vagrantup.com/docs/boxes/base.html">Vagrant box documentation</link>.), applied to the
-            referenced KIWI NG image description from <xref linkend="vmx"/>, the following steps are
-            required:</para>
+            referenced KIWI NG image description from <xref linkend="simple-disk"/>, the following
+            steps are required:</para>
       <procedure>
         <step>
           <para>Update the image type setup</para>
-          <screen language="xml">&lt;type image="vmx" filesystem="ext4" format="vagrant"&gt;
+          <screen language="xml">&lt;type image="oem" filesystem="ext4" format="vagrant"&gt;
     &lt;bootloader name="grub2" timeout="0"/&gt;
     &lt;vagrantconfig provider="libvirt" virtualsize="42"/&gt;
     &lt;size unit="G"&gt;42&lt;/size&gt;
+    &lt;oemconfig&gt;
+        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+    &lt;/oemconfig&gt;
 &lt;/type&gt;</screen>
           <para>This modifies the type to build a Vagrant box for the libvirt
                     provider including a pre-defined disk size. The disk size is
@@ -6701,7 +6729,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <para>For the VirtualBox provider, the additional attribute
                     <literal>virtualbox_guest_additions_present</literal> can be set to <literal>true</literal> when the
                     VirtualBox guest additions are installed in the KIWI NG image:</para>
-          <screen language="xml">&lt;type image="vmx" filesystem="ext4" format="vagrant"&gt;
+          <screen language="xml">&lt;type image="oem" filesystem="ext4" format="vagrant"&gt;
     &lt;bootloader name="grub2" timeout="0"/&gt;
     &lt;vagrantconfig
       provider="virtualbox"
@@ -6709,6 +6737,9 @@ touch /var/lib/YaST2/reconfig_system</screen>
       virtualsize="42"
     /&gt;
     &lt;size unit="G"&gt;42&lt;/size&gt;
+    &lt;oemconfig&gt;
+        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+    &lt;/oemconfig&gt;
 &lt;/type&gt;</screen>
           <para>The resulting Vagrant box then uses the <literal>vboxfs</literal> module for the
                     synchronized folder instead of <literal>rsync</literal>, that is used by default.</para>
@@ -6828,7 +6859,7 @@ vagrant ssh</screen>
         <para>In the following example snippet from <literal>config.xml</literal> we add a custom
                 <literal>MyVagrantfile</literal> into the box (the file should be in the image
                 description directory next to <literal>config.sh</literal>):</para>
-        <screen language="xml">&lt;type image="vmx" filesystem="ext4" format="vagrant"&gt;
+        <screen language="xml">&lt;type image="oem" filesystem="ext4" format="vagrant"&gt;
     &lt;bootloader name="grub2" timeout="0"/&gt;
     &lt;vagrantconfig
       provider="libvirt"
@@ -6836,6 +6867,9 @@ vagrant ssh</screen>
       embedded_vagrantfile="MyVagrantfile"
     /&gt;
     &lt;size unit="G"&gt;42&lt;/size&gt;
+    &lt;oemconfig&gt;
+        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+    &lt;/oemconfig&gt;
 &lt;/type&gt;</screen>
         <para>The option to provide a custom <literal>Vagrantfile</literal> can be combined with the
                 usage of <emphasis>profiles</emphasis> (see <xref linkend="image-profiles"/>), so that
@@ -6855,7 +6889,7 @@ vagrant ssh</screen>
 
   &lt;preferences profiles="libvirt"&gt;
     &lt;type
-      image="vmx"
+      image="oem"
       filesystem="ext4"
       format="vagrant"&gt;
         &lt;bootloader name="grub2" timeout="0"/&gt;
@@ -6865,11 +6899,14 @@ vagrant ssh</screen>
           embedded_vagrantfile="LibvirtVagrantfile"
         /&gt;
         &lt;size unit="G"&gt;42&lt;/size&gt;
+        &lt;oemconfig&gt;
+            &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+        &lt;/oemconfig&gt;
    &lt;/type&gt;
    &lt;/preferences&gt;
    &lt;preferences profiles="virtualbox"&gt;
      &lt;type
-       image="vmx"
+       image="oem"
        filesystem="ext4"
        format="vagrant"&gt;
          &lt;bootloader name="grub2" timeout="0"/&gt;
@@ -6879,6 +6916,9 @@ vagrant ssh</screen>
            virtualsize="42"
          /&gt;
          &lt;size unit="G"&gt;42&lt;/size&gt;
+         &lt;oemconfig&gt;
+             &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+         &lt;/oemconfig&gt;
      &lt;/type&gt;
    &lt;/preferences&gt;
 
@@ -6991,7 +7031,7 @@ $ umount /mnt</screen>
         </step>
       </procedure>
     </section>
-    <section xml:id="ramdisk-deployment" xml:base="working_with_images/oem_ramdisk_deployment">
+    <section xml:id="ramdisk-deployment" xml:base="working_with_images/disk_ramdisk_deployment">
       <title>Deploy and Run System in a RamDisk</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
@@ -7002,7 +7042,7 @@ $ umount /mnt</screen>
       <itemizedlist>
         <listitem>
           <para>
-            <xref linkend="oem"/>
+            <xref linkend="expandable-disk"/>
           </para>
         </listitem>
       </itemizedlist>
@@ -7357,19 +7397,19 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
                 file in the image rootfs.</para>
       </note>
     </section>
-    <section xml:id="setup-for-luks" xml:base="working_with_images/vmx_setup_for_luks">
+    <section xml:id="setup-for-luks" xml:base="working_with_images/disk_setup_for_luks">
       <title>Image Description Encrypted Disk</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
         <para>This page provides further information for handling
-                vmx images with an encrypted root filesystem setup.
+                disk images with an encrypted root filesystem setup.
                 The information here is based on top of the following
                 article:</para>
       </formalpara>
       <itemizedlist>
         <listitem>
           <para>
-            <xref linkend="vmx"/>
+            <xref linkend="simple-disk"/>
           </para>
         </listitem>
       </itemizedlist>
@@ -7397,27 +7437,25 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
         </step>
         <step>
           <para>Image Type definition</para>
-          <para>Update the vmx image type setup as follows</para>
+          <para>Update the oem image type setup as follows</para>
           <variablelist>
             <varlistentry>
               <term>Full disk encryption including <literal>/boot</literal>:</term>
               <listitem>
-                <screen language="xml">&lt;type image="vmx"
-    image="vmx"
-    filesystem="ext4"
-    luks="linux"
-    bootpartition="false"&gt;
+                <screen language="xml">&lt;type image="oem" filesystem="ext4" luks="linux" bootpartition="false"&gt;
+    &lt;oemconfig&gt;
+        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+    &lt;/oemconfig&gt;
 &lt;/type&gt;</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
               <term>Encrypted root partition with an unencrypted extra <literal>/boot</literal> partition:</term>
               <listitem>
-                <screen language="xml">&lt;type image="vmx"
-    image="vmx"
-    filesystem="ext4"
-    luks="linux"
-    bootpartition="true"&gt;
+                <screen language="xml">&lt;type image="oem" filesystem="ext4" luks="linux" bootpartition="true"&gt;
+    &lt;oemconfig&gt;
+        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+    &lt;/oemconfig&gt;
 &lt;/type&gt;</screen>
               </listitem>
             </varlistentry>
@@ -16696,6 +16734,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Content of &lt;oem-multipath-scan&gt; section value</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_oemconfig_oem_resize">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_oemconfig_oem_resize</property>
+                  </term>
+                  <listitem>
+                    <para>State value to activate/deactivate disk resize. Returns a
+                                boolean value if specified or True to set resize on by default</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>Content of &lt;oem-resize&gt; section value</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -31478,7 +31541,12 @@ end</screen>
                               <para><literal>filesystem_name</literal> () – filesystem name</para>
                             </listitem>
                             <listitem>
-                              <para><literal>image_type</literal> – build type name</para>
+                              <para><literal>resize_on_boot</literal> – specify the time of the resize. If the resize happens at
+                                                    boot time the volume size is only the minimum size to
+                                                    just store the data. If the volume size is fixed and
+                                                    does not change at boot time the returned size is the
+                                                    requested size which can be greater than the minimum
+                                                    needed size.</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
