@@ -517,7 +517,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                 in any full virtualization system like QEMU. Invoke the following KIWI NG
                 command in order to build it:</para>
       <screen language="bash">$ sudo kiwi-ng --type oem system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
     --target-dir /tmp/myimage</screen>
       <para>The resulting image will be placed into the folder <literal>/tmp/myimage</literal>
                 with the suffix <literal>.raw</literal>.</para>
@@ -531,7 +531,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                 do that attach the disk image to a virtual system. In this example we use
                 QEMU and boot it as follows:</para>
       <screen language="bash">$ qemu -boot c \
-    -drive file=LimeJeOS-Leap-15.1.x86_64-1.15.1.raw,format=raw,if=virtio \
+    -drive file=Leap-15.1_appliance.x86_64-1.15.1.raw,format=raw,if=virtio \
     -m 4096</screen>
     </section>
     <section xml:id="tweak-and-customize-your-image">
@@ -581,10 +581,9 @@ kiwi-ng help</screen>
                 scripts or configuration data.</para>
         <para>A collection of example image descriptions can be found on the github
                 repository here: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/OSInside/kiwi-descriptions"/>. Most of the
-                descriptions provide a so called JeOS image. JeOS means Just enough
-                Operating System. A JeOS is a small, text only based image including a
-                predefined remote source setup to allow installation of missing
-                software components at a later point in time.</para>
+                descriptions provide a so called appliance image. Appliance means that it’s a small, text only based
+                image including a predefined remote source setup to allow installation of missing software
+                components at a later point in time.</para>
         <para>KIWI NG operates in two steps. The system build command combines
                 both steps into one to make it easier to start with KIWI NG. The first
                 step is the preparation step and if that step was successful, a
@@ -691,7 +690,7 @@ kiwi-ng help</screen>
         <screen language="bash">$ git clone https://github.com/OSInside/kiwi-descriptions
 
 $ kiwi --type oem system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
     --target-dir /tmp/myimage</screen>
       </section>
       <section xml:id="db-commands-kiwi-compat">
@@ -700,7 +699,7 @@ $ kiwi --type oem system build \
                 former versions. However there is a compatibility mode which allows
                 to use a legacy KIWI NG commandline as follows:</para>
         <screen language="bash">$ kiwi compat \
-    --build kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+    --build kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
     --type oem -d /tmp/myimage</screen>
       </section>
     </section>
@@ -1530,7 +1529,7 @@ kiwi-ng image info help</screen>
                 <literal>boxbuild</literal> and <literal>build</literal> options is done using the <literal>--</literal> separator like
                 shown in the following example:</para>
       <screen language="bash">$ kiwi-ng --type iso system boxbuild --box suse -- \
-      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
       --target-dir /tmp/myimage</screen>
       <note>
         <para>The provided <literal>--description</literal> and <literal>--target-dir</literal> options are
@@ -1560,7 +1559,7 @@ kiwi-ng image info help</screen>
                 defined, as KIWI NG will otherwise not be able to fetch any packages.</para>
         <para>A repository is added to the description via the <literal>repository</literal> element,
                 which is a child of the top-level <literal>image</literal> element:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;!-- snip --&gt;
     &lt;repository type="rpm-md" alias="kiwi" priority="1"&gt;
         &lt;source path="obs://Virtualization:Appliances:Builder/openSUSE_Leap_15.1"/&gt;
@@ -1672,7 +1671,7 @@ kiwi-ng image info help</screen>
       <para>On top of the <xref linkend="repositories"/> setup the package setup is
             required. KIWI NG allows the end user to completely customize the selection
             of packages via the <literal>packages</literal> element.</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;packages type="bootstrap"&gt;
         &lt;package name="udev"/&gt;
         &lt;package name="filesystem"/&gt;
@@ -1717,7 +1716,7 @@ kiwi-ng image info help</screen>
         <title>The <literal>package</literal> element</title>
         <para>The <literal>package</literal> element represents a single package to be installed (or
                 removed), whose name is specified via the mandatory <literal>name</literal> attribute:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="bootstrap"&gt;
         &lt;package name="udev"/&gt;
@@ -1731,7 +1730,7 @@ kiwi-ng image info help</screen>
                 (like <command>dnf</command> or <command>zypper</command>) can install packages via their
                 <literal>Provides:</literal>. This can be used to add a package that provides a certain
                 capability (e.g. <literal>Provides: /usr/bin/my-binary</literal>) via:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="bootstrap"&gt;
         &lt;package name="/usr/bin/my-binary"/&gt;
@@ -1744,7 +1743,7 @@ kiwi-ng image info help</screen>
         <para>Packages can also be included only on specific host architectures via the
                 <literal>arch</literal> attribute. KIWI NG compares the <literal>arch</literal> attributes value with the host
                 architecture that builds the image according to the output of <literal>uname -m</literal>.</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="image"&gt;
         &lt;package name="grub2"/&gt;
@@ -1816,7 +1815,7 @@ kiwi-ng image info help</screen>
                 custom program in <literal>config.sh</literal>. We ship its source code via an
                 <literal>archive</literal> element and add the build tools (<literal>ninja</literal>, <literal>meson</literal> and <literal>clang</literal>) to
                 <literal>&lt;packages type="image"&gt;</literal> and <literal>&lt;packages type="uninstall"&gt;</literal>:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="image"&gt;
         &lt;package name="ca-certificates"/&gt;
@@ -1888,7 +1887,7 @@ popd</screen>
                 <literal>packages</literal> collection. This useful to exclude certain packages from being
                 installed when using patterns with <literal>patternType="plusRecommended"</literal> as shown
                 in the following example:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;packages type="image" patternType="plusRecommended"&gt;
         &lt;namedCollection name="network-server"/&gt;
         &lt;package name="grub2"/&gt;
@@ -1918,7 +1917,7 @@ popd</screen>
             type but with different settings. In the following example, two virtual
             machine images of the <literal>oem</literal> type are configured: one for QEMU (using the
             <literal>qcow2</literal> format) and one for VMWare (using the <literal>vmdk</literal> format).</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;profiles&gt;
         &lt;profile name="QEMU" description="virtual machine for QEMU"/&gt;
         &lt;profile name="VMWare" description="virtual machine for VMWare"/&gt;
@@ -1962,7 +1961,7 @@ popd</screen>
       <title>Adding Users</title>
       <para>User accounts can be added or modified via the <literal>users</literal> element, which
             supports a list of multiple <literal>user</literal> child elements:</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;users&gt;
         &lt;user
             password="this_is_soo_insecure"
@@ -3196,7 +3195,7 @@ $ kiwi-ng system create $ARGS</screen>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
         <para>The toplevel of any KIWI NG image description</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
     &lt;!-- descendants --&gt;
 &lt;/image&gt;</screen>
         <para>The image definition starts with an image tag and requires the schema
@@ -4627,15 +4626,15 @@ $ kiwi-ng system create $ARGS</screen>
         </step>
       </procedure>
       <para>More specific  the result files for a given image name and version such
-                as <literal>LimeJeOS-Leap-15.1</literal> and <literal>1.15.1</literal> will be:</para>
+                as <literal>Leap-15.1_appliance</literal> and <literal>1.15.1</literal> will be:</para>
       <itemizedlist>
         <listitem>
           <para><emphasis role="bold">image packages</emphasis>:
-                        <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.packages</literal></para>
+                        <literal>Leap-15.1_appliance.x86_64-1.15.1.packages</literal></para>
         </listitem>
         <listitem>
           <para><emphasis role="bold">image verified</emphasis>:
-                        <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.verified</literal></para>
+                        <literal>Leap-15.1_appliance.x86_64-1.15.1.verified</literal></para>
         </listitem>
       </itemizedlist>
       <para>In addition to the image binaries itself that depend on the image type:</para>
@@ -4647,7 +4646,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">root archive</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.tar.xz</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.tar.xz</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -4660,7 +4659,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">filesystem image</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.ext4</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.ext4</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -4672,7 +4671,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">live image</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.iso</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.iso</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -4689,15 +4688,15 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">disk image</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.raw</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.raw</literal></para>
               </listitem>
               <listitem>
                 <para><emphasis role="bold">installation image (optional)</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.iso</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.install.iso</literal></para>
               </listitem>
               <listitem>
                 <para><emphasis role="bold">installation pxe archive (optional)</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.tar</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.install.tar</literal></para>
               </listitem>
             </itemizedlist>
             <para>The disk image can also be provided in one of the various virtual disk
@@ -4708,7 +4707,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">disk image</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.qcow2</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.qcow2</literal></para>
               </listitem>
             </itemizedlist>
             <para>instead of the <literal>raw</literal> default disk format.</para>
@@ -4722,7 +4721,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">container</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.docker.tar.xz</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.docker.tar.xz</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -4736,7 +4735,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">container</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.oci.tar.xz</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.oci.tar.xz</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -4749,7 +4748,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">container</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.appx</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.appx</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -4763,7 +4762,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">kis archive</emphasis>:
-                                    <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.tar.xz</literal></para>
+                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.tar.xz</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -4895,7 +4894,7 @@ $ kiwi-ng system create $ARGS</screen>
             testing and demo- and debugging-purposes.</para>
       <para>To add a live ISO build to your appliance, create a  element with
             <literal>image</literal> set to <literal>iso</literal> in your <literal>config.xml</literal> as shown below:</para>
-      <screen language="xml">&lt;image schemaversion="6.9" name="JeOS-Tumbleweed"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="Tumbleweed_appliance"&gt;
   &lt;!-- snip --&gt;
   &lt;preferences&gt;
     &lt;type image="iso" primary="true" flags="overlay" hybridpersistent_filesystem="ext4" hybridpersistent="true"/&gt;
@@ -4929,11 +4928,11 @@ $ kiwi-ng system create $ARGS</screen>
       <para>With the appropriate settings present in <literal>config.xml</literal> KIWI NG can now
             build the image:</para>
       <screen language="bash">$ sudo kiwi-ng --type iso system build \
-      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
       --target-dir /tmp/myimage</screen>
       <para>The resulting image is saved in the folder <literal>/tmp/myimage</literal> and can
             be tested with QEMU:</para>
-      <screen language="bash">$ qemu -cdrom LimeJeOS-Leap-15.1.x86_64-1.15.1.iso -m 4096</screen>
+      <screen language="bash">$ qemu -cdrom Leap-15.1_appliance.x86_64-1.15.1.iso -m 4096</screen>
       <para>The image is now complete and ready to use. See <xref linkend="iso-to-usb-stick"/> and
             <xref linkend="iso-as-file-to-usb-stick"/> for further information concerning
             deployment.</para>
@@ -5054,7 +5053,7 @@ $ kiwi-ng system create $ARGS</screen>
             disabled. An example configuration for a 42 GB large VMDK image with
             512 MB RAM, an IDE controller and a bridged network interface is shown
             below:</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="JeOS-Tumbleweed"&gt;
+      <screen language="xml">&lt;image schemaversion="7.2" name="Tumbleweed_appliance"&gt;
   &lt;!-- snip --&gt;
   &lt;preferences&gt;
     &lt;type image="oem" filesystem="ext4" format="vmdk"&gt;
@@ -5096,13 +5095,13 @@ $ kiwi-ng system create $ARGS</screen>
             from the <xref linkend="example-descriptions"/> and use one of
             them) build the image with KIWI NG:</para>
       <screen language="bash">$ sudo kiwi-ng --type oem system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
     --target-dir /tmp/myimage</screen>
       <para>The created image will be in the target directory <literal>/tmp/myimage</literal> with
             the file extension <literal>.raw</literal>.</para>
       <para>The live image can then be tested with QEMU:</para>
       <screen language="bash">$ qemu \
-    -drive file=LimeJeOS-Leap-15.1.x86_64-1.15.1.raw,format=raw,if=virtio \
+    -drive file=Leap-15.1_appliance.x86_64-1.15.1.raw,format=raw,if=virtio \
     -m 4096</screen>
       <para>For further information how to setup the image to work within a cloud
             framework see:</para>
@@ -5430,7 +5429,7 @@ $ kiwi-ng system create $ARGS</screen>
         <step>
           <para>Build the image with KIWI NG:</para>
           <screen language="bash">$ sudo kiwi-ng --type oem system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
     --target-dir /tmp/myimage</screen>
           <para>Find the following result images below <literal>/tmp/myimage</literal>.</para>
           <itemizedlist>
@@ -5494,7 +5493,7 @@ $ kiwi-ng system create $ARGS</screen>
           </step>
           <step>
             <para>Dump disk image on target disk.</para>
-            <screen language="bash">$ dd if=LimeJeOS-Leap-15.1.x86_64-1.15.1.raw of=target_disk conv=notrunc</screen>
+            <screen language="bash">$ dd if=Leap-15.1_appliance.x86_64-1.15.1.raw of=target_disk conv=notrunc</screen>
           </step>
           <step>
             <para>Boot the target disk</para>
@@ -5518,7 +5517,7 @@ $ kiwi-ng system create $ARGS</screen>
           <step>
             <para>Boot the installation image as CD/DVD with the
                         target disk attached.</para>
-            <screen language="bash">$ qemu -cdromLimeJeOS-Leap-15.1.x86_64-1.15.1.install.iso -hda target_disk -boot d -m 4096</screen>
+            <screen language="bash">$ qemu -cdromLeap-15.1_appliance.x86_64-1.15.1.install.iso -hda target_disk -boot d -m 4096</screen>
             <note>
               <para>USB Stick Deployment</para>
               <para>Like any other ISO image built with KIWI NG, also the installation
@@ -5541,7 +5540,7 @@ $ kiwi-ng system create $ARGS</screen>
           <step>
             <para>Make sure to create an installation PXE TAR archive along with your
                         disk image by replacing the following setup in
-                        kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS/config.xml</para>
+                        kiwi-descriptions/suse/x86_64/suse-leap-15.1/config.xml</para>
             <para>Instead of</para>
             <screen language="xml">&lt;type image="oem" installiso="true"/&gt;</screen>
             <para>setup</para>
@@ -5549,19 +5548,19 @@ $ kiwi-ng system create $ARGS</screen>
           </step>
           <step>
             <para>Rebuild the image, unpack the resulting
-                        <literal>LimeJeOS-Leap-15.1.x86_64-1.15.1.install.tar.xz</literal>
+                        <literal>Leap-15.1_appliance.x86_64-1.15.1.install.tar.xz</literal>
                         file to a temporary directory and copy the initrd and kernel images to
                         the PXE server:</para>
             <procedure>
               <step>
                 <para>Unpack installation tarball</para>
                 <screen language="bash">mkdir /tmp/pxe &amp;&amp; cd /tmp/pxe
-tar -xf LimeJeOS-Leap-15.1.x86_64-1.15.1.install.tar.xz</screen>
+tar -xf Leap-15.1_appliance.x86_64-1.15.1.install.tar.xz</screen>
               </step>
               <step>
                 <para>Copy kernel and initrd used for pxe boot</para>
-                <screen language="bash">scp pxeboot.LimeJeOS-Leap-15.1.x86_64-1.15.1.initrd.xz PXE_SERVER_IP:/srv/tftpboot/boot/initrd
-scp pxeboot.LimeJeOS-Leap-15.1.x86_64-1.15.1.kernel PXE_SERVER_IP:/srv/tftpboot/boot/linux</screen>
+                <screen language="bash">scp pxeboot.Leap-15.1_appliance.x86_64-1.15.1.initrd.xz PXE_SERVER_IP:/srv/tftpboot/boot/initrd
+scp pxeboot.Leap-15.1_appliance.x86_64-1.15.1.kernel PXE_SERVER_IP:/srv/tftpboot/boot/linux</screen>
               </step>
             </procedure>
           </step>
@@ -5573,14 +5572,14 @@ scp pxeboot.LimeJeOS-Leap-15.1.x86_64-1.15.1.kernel PXE_SERVER_IP:/srv/tftpboot/
             <procedure>
               <step>
                 <para>Copy system image and MD5 checksum</para>
-                <screen language="bash">scp LimeJeOS-Leap-15.1.x86_64-1.15.1.xz PXE_SERVER_IP:/srv/tftpboot/image/
-scp LimeJeOS-Leap-15.1.x86_64-1.15.1.md5 PXE_SERVER_IP:/srv/tftpboot/image/</screen>
+                <screen language="bash">scp Leap-15.1_appliance.x86_64-1.15.1.xz PXE_SERVER_IP:/srv/tftpboot/image/
+scp Leap-15.1_appliance.x86_64-1.15.1.md5 PXE_SERVER_IP:/srv/tftpboot/image/</screen>
               </step>
               <step>
                 <para>Copy kernel, initrd and bootoptions used for booting the system via kexec</para>
-                <screen language="bash">scp LimeJeOS-Leap-15.1.x86_64-1.15.1.initrd PXE_SERVER_IP:/srv/tftpboot/image/
-scp LimeJeOS-Leap-15.1.x86_64-1.15.1.kernel PXE_SERVER_IP:/srv/tftpboot/image/
-scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpboot/image/</screen>
+                <screen language="bash">scp Leap-15.1_appliance.x86_64-1.15.1.initrd PXE_SERVER_IP:/srv/tftpboot/image/
+scp Leap-15.1_appliance.x86_64-1.15.1.kernel PXE_SERVER_IP:/srv/tftpboot/image/
+scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpboot/image/</screen>
                 <note>
                   <para>The config.bootoptions file is used together with kexec to boot the
                                     previously dumped image. The information in that file references the
@@ -5598,7 +5597,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
             <para>Edit your PXE configuration (for example <literal>pxelinux.cfg/default</literal>) on
                         the PXE server and add these parameters to the append line, typically
                         looking like this:</para>
-            <screen language="bash">append initrd=boot/initrd rd.kiwi.install.pxe rd.kiwi.install.image=tftp://192.168.100.16/image/LimeJeOS-Leap-15.1.x86_64-1.15.1.xz</screen>
+            <screen language="bash">append initrd=boot/initrd rd.kiwi.install.pxe rd.kiwi.install.image=tftp://192.168.100.16/image/Leap-15.1_appliance.x86_64-1.15.1.xz</screen>
             <para>The location of the image is specified as a source URI which can point
                         to any location supported by the <literal>curl</literal> command. KIWI NG calls <literal>curl</literal> to fetch
                         the data from this URI. This also means your image, MD5 file, system kernel
@@ -6018,7 +6017,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
           <step>
             <para>Setup the image type:</para>
             <para>Edit the XML description file:
-                        <literal>kiwi-descriptions/suse/x86_64/suse-tumbleweed-JeOS/config.xml</literal>
+                        <literal>kiwi-descriptions/suse/x86_64/suse-tumbleweed/config.xml</literal>
                         and add the following type and containerconfig:</para>
             <screen language="xml">&lt;type image="appx" metadata_path="/meta/data"&gt;
     &lt;containerconfig name="Tumbleweed"&gt;
@@ -6028,7 +6027,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
             application_id="tumbleweed"
             package_version="2003.12.0.0"
             launcher="openSUSE-Tumbleweed.exe"
-        &gt;TW JeOS text based&lt;/history&gt;
+        &gt;Tumbleweed Appliance text based&lt;/history&gt;
     &lt;/containerconfig&gt;
 &lt;/type&gt;</screen>
             <warning>
@@ -6042,7 +6041,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
           <step>
             <para>Build the image with KIWI NG:</para>
             <screen language="bash">$ sudo kiwi-ng --type appx system build \
-    --description kiwi-descriptions/suse/x86_64/suse-tumbleweed-JeOS \
+    --description kiwi-descriptions/suse/x86_64/suse-tumbleweed \
     --target-dir /tmp/myimage</screen>
           </step>
         </procedure>
@@ -6112,7 +6111,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
       <para>With the appropriate settings present in <literal>config.xml</literal> KIWI NG can now
             build the image:</para>
       <screen language="bash">$ sudo kiwi-ng --type kis system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
     --target-dir /tmp/myimage</screen>
       <para>The resulting image components are saved in the folder <literal>/tmp/myimage</literal>.
             Outside of a deployment infrastructure the example KIS image can be
@@ -6121,7 +6120,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
     -kernel /tmp/myimage/*.kernel \
     -initrd /tmp/myimage/*.initrd.xz \
     -append $(cat /tmp/myimage/*.append) \
-    -hda /tmp/myimage/LimeJeOS-Leap-15.1.*-1.15.1 \</screen>
+    -hda /tmp/myimage/Leap-15.1_appliance.*-1.15.1 \</screen>
       <note>
         <para>For testing the components of a KIS image a deployment infrastructure
                 and also a deployment process is usually needed. One example of a
@@ -6175,7 +6174,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
                         the following operation can not be revoked and will destroy all
                         data on the selected device</para>
           </warning>
-          <screen language="bash">$ dd if=LimeJeOS-Leap-15.1.x86_64-1.15.1.iso of=/dev/&lt;stickdevice&gt;</screen>
+          <screen language="bash">$ dd if=Leap-15.1_appliance.x86_64-1.15.1.iso of=/dev/&lt;stickdevice&gt;</screen>
         </step>
         <step>
           <para>Boot from your USB Stick</para>
@@ -6235,7 +6234,7 @@ scp LimeJeOS-Leap-15.1.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpb
           <para>Call the <literal>live-grub-stick</literal> command as follows:</para>
           <para>Assuming “/dev/sdz1” was the FAT32 partition selected from the
                     output of the <literal>lsblk</literal> command:</para>
-          <screen language="bash">$ sudo live-grub-stick LimeJeOS-Leap-15.1.x86_64-1.15.1.iso /dev/sdz1</screen>
+          <screen language="bash">$ sudo live-grub-stick Leap-15.1_appliance.x86_64-1.15.1.iso /dev/sdz1</screen>
         </step>
         <step>
           <para>Boot from your USB Stick</para>
@@ -6878,7 +6877,7 @@ vagrant ssh</screen>
                 customized one (the libvirt profile in the following example):</para>
         <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 
-&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
   &lt;!-- description goes here --&gt;
   &lt;profiles&gt;
     &lt;profile name="libvirt" description="Vagrant Box for Libvirt"/&gt;
@@ -6954,7 +6953,7 @@ vagrant ssh</screen>
           <para>The PXE boot process loads the configured kernel and initrd from
                     the PXE server. For this reason, those two files must be extracted
                     from the live ISO image and copied to the PXE server as follows:</para>
-          <screen language="bash">$ mount LimeJeOS-Leap-15.1.x86_64-1.15.1.iso /mnt
+          <screen language="bash">$ mount Leap-15.1_appliance.x86_64-1.15.1.iso /mnt
 $ cp /mnt/boot/x86_64/loader/initrd /srv/tftpboot/boot/initrd
 $ cp /mnt/boot/x86_64/loader/linux /srv/tftpboot/boot/linux
 $ umount /mnt</screen>
@@ -6977,7 +6976,7 @@ $ umount /mnt</screen>
                         kernel used in the live ISO image.</para>
           </note>
           <para>Once done, export the live ISO image as follows:</para>
-          <screen language="bash">$ vbladed 0 1 INTERFACE LimeJeOS-Leap-15.1.x86_64-1.15.1.iso</screen>
+          <screen language="bash">$ vbladed 0 1 INTERFACE Leap-15.1_appliance.x86_64-1.15.1.iso</screen>
           <para>The above command exports the given ISO file as a block storage
                     device to the network of the given INTERFACE. On any machine
                     except the one exporting the file, it will appear as
@@ -7080,7 +7079,7 @@ $ umount /mnt</screen>
       </itemizedlist>
       <para>An image built with the above setup can be tested in QEMU as
             follows:</para>
-      <screen language="bash">$ qemu -cdrom LimeJeOS-Leap-15.1.x86_64-1.15.1.install.iso</screen>
+      <screen language="bash">$ qemu -cdrom Leap-15.1_appliance.x86_64-1.15.1.install.iso</screen>
       <note>
         <para>Enough Main Memory</para>
         <para>The machine, no matter if it’s a virtual machine like QEMU
@@ -7480,7 +7479,7 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
                 command line flag <literal>--profile=$PROFILE_NAME</literal>:</para>
         <screen language="shell-session">$ sudo kiwi-ng --type iso system build \
       --profile=workstation \
-      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
       --target-dir /tmp/myimage</screen>
         <para>Consult the manual page of <literal>kiwi</literal> for further details:
                 <xref linkend="db-commands-kiwi-synopsis"/>.</para>
@@ -7489,7 +7488,7 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
         <title>Building with the Open Build Service</title>
         <para>The Open Build Service (OBS) support profiles via the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-reference-guide/cha.obs.multibuild.html">multibuild</link>
                 feature. An example project using this feature is the
-                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/package/show/openSUSE:Factory/openSUSE-Tumbleweed-JeOS">openSUSE-Tumbleweed-JeOS</link>
+                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/package/show/openSUSE:Factory/openSUSE-Tumbleweed">openSUSE-Tumbleweed</link>
                 image.</para>
         <para>To enable and use the profiles, follow these steps:</para>
         <procedure>
@@ -7500,7 +7499,7 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
                         <literal>&lt;?xml?&gt;</literal> element, e.g.:</para>
             <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;
-&lt;image schemaversion="7.2" name="LimeJeOS-Leap-15.1"&gt;
+&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
   &lt;!-- snip --&gt;
 &lt;/image&gt;</screen>
           </step>
@@ -7700,7 +7699,7 @@ name="images"&gt;</literal>:</para>
                             repositories from the <literal>Virtualization:Appliances:Builder</literal> project and
                             those from the latest snapshot of openSUSE Tumbleweed:</para>
               <screen language="xml">&lt;project name="Virtualization:Appliances:Images:openSUSE-Tumbleweed"&gt;
-  &lt;title&gt;JeOS for Tumbleweed &lt;/title&gt;
+  &lt;title&gt;Tumbleweed JeOS images&lt;/title&gt;
   &lt;description&gt;Host JeOS images for Tumbleweed&lt;/description&gt;
   &lt;repository name="images"&gt;
     &lt;path project="Virtualization:Appliances:Builder" repository="Factory"/&gt;
@@ -7711,7 +7710,7 @@ name="images"&gt;</literal>:</para>
               <para>The above can be simplified further using the path expansion of the last
                             repository to:</para>
               <screen language="xml">&lt;project name="Virtualization:Appliances:Images:openSUSE-Tumbleweed"&gt;
-  &lt;title&gt;JeOS for Tumbleweed &lt;/title&gt;
+  &lt;title&gt;Tumbleweed JeOS images&lt;/title&gt;
   &lt;description&gt;Host JeOS images for Tumbleweed&lt;/description&gt;
   &lt;repository name="images"&gt;
     &lt;path project="Virtualization:Appliances:Builder" repository="Factory"/&gt;
@@ -7825,7 +7824,7 @@ name="images"&gt;</literal>:</para>
         <step>
           <para>Build the image with KIWI NG:</para>
           <screen language="bash">$ sudo kiwi-ng --type pxe system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1-JeOS \
+    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
     --target-dir /tmp/mypxe-result</screen>
         </step>
         <step>
@@ -7839,8 +7838,8 @@ $ cp *.kernel /srv/tftpboot/boot/linux</screen>
         </step>
         <step>
           <para>Copy the system image and its MD5 sum to <literal>/srv/tftpboot/image</literal>:</para>
-          <screen language="bash">$ cp LimeJeOS-Leap-15.1.x86_64-1.15.1/srv/tftpboot/image
-$ cp LimeJeOS-Leap-15.1.x86_64-1.15.1.md5 /srv/tftpboot/image</screen>
+          <screen language="bash">$ cp Leap-15.1_appliance.x86_64-1.15.1/srv/tftpboot/image
+$ cp Leap-15.1_appliance.x86_64-1.15.1.md5 /srv/tftpboot/image</screen>
         </step>
         <step>
           <para>Adjust the PXE configuration file.
@@ -7860,7 +7859,7 @@ LABEL KIWI-Boot
           <para>Create the image client configuration file:</para>
           <screen language="bash">$ vi /srv/tftpboot/KIWI/config.default
 
-IMAGE=/dev/ram1;LimeJeOS-Leap-15.1.x86_64;1.15.1;192.168.100.2;4096
+IMAGE=/dev/ram1;Leap-15.1_appliance.x86_64;1.15.1;192.168.100.2;4096
 UNIONFS_CONFIG=/dev/ram2,/dev/ram1,overlay</screen>
           <para>All PXE boot based deployment methods are controlled by a client
                     configuration file. The above configuration tells the client where
@@ -7949,12 +7948,12 @@ UNIONFS_CONFIG=tmpfs,nbd,overlay</screen>
           <para>To deploy the image on a local disk the following setup
                     is required:</para>
           <note>
-            <para>In the referenced suse-leap-15.1-JeOS XML description the <literal>pxe</literal>
+            <para>In the referenced suse-leap-15.1 XML description the <literal>pxe</literal>
                         type must be changed as follows and the image needs to be
                         rebuild:</para>
             <screen language="xml">&lt;type image="pxe" filesystem="ext3" boot="netboot/suse-leap15.1"/&gt;</screen>
           </note>
-          <screen language="bash">IMAGE="/dev/sda2;LimeJeOS-Leap-15.1.x86_64;1.15.1;192.168.100.2;4096"
+          <screen language="bash">IMAGE="/dev/sda2;Leap-15.1_appliance.x86_64;1.15.1;192.168.100.2;4096"
 DISK="/dev/sda"
 PART="5;S;X,X;L;/"</screen>
           <para>The setup above will create a partition table on sda with a 5MB swap
@@ -7967,13 +7966,13 @@ PART="5;S;X,X;L;/"</screen>
           <para>To deploy the image on a local disk with prior software RAID
                     configuration, the following setup is required:</para>
           <note>
-            <para>In the referenced suse-leap-15.1-JeOS XML description the <literal>pxe</literal>
+            <para>In the referenced suse-leap-15.1 XML description the <literal>pxe</literal>
                         type must be changed as follows and the image needs to be
                         rebuild:</para>
             <screen language="xml">&lt;type image="pxe" filesystem="ext3" boot="netboot/suse-leap15.1"/&gt;</screen>
           </note>
           <screen language="bash">RAID="1;/dev/sda;/dev/sdb"
-IMAGE="/dev/md1;LimeJeOS-Leap-15.1.x86_64;1.15.1;192.168.100.2;4096"
+IMAGE="/dev/md1;Leap-15.1_appliance.x86_64;1.15.1;192.168.100.2;4096"
 PART="5;S;x,x;L;/"</screen>
           <para>The first parameter of the RAID line is the RAID level. So far only raid1
                     (mirroring) is supported. The second and third parameter specifies the
