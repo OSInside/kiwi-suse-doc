@@ -14642,6 +14642,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_image_type_unique">
+                  <term>
+                    <property>kiwi.runtime_checker.RuntimeChecker.check_image_type_unique</property>
+                  </term>
+                  <listitem>
+                    <para>Verify that the selected image type is unique within
+                                the range of the configured types and profiles.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_initrd_selection_required">
                   <term>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_initrd_selection_required</property>
