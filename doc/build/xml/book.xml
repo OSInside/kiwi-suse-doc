@@ -21064,45 +21064,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   <listitem>
                     <itemizedlist>
                       <listitem>
-                        <para><literal>label</literal> () – filesystem label</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>root_uuid</literal> () – UUID of the created filesystem (on block device only)</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>root_dir</literal> () – root directory path name</para>
+                        <para><literal>xml_state</literal> () – Instance of <literal>XMLState</literal></para>
                       </listitem>
                       <listitem>
                         <para><literal>target_dir</literal> () – target directory path name</para>
                       </listitem>
                       <listitem>
-                        <para><literal>requested_image_type</literal> () – configured image type</para>
+                        <para><literal>root_dir</literal> () – root directory path name</para>
                       </listitem>
                       <listitem>
-                        <para><literal>requested_filesystem</literal> () – requested filesystem name</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>system_setup</literal> () – instance of <literal>SystemSetup</literal></para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>filename</literal> () – file name of the filesystem image</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>blocksize</literal> () – configured disk blocksize</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>filesystem_setup</literal> () – instance of <literal>FileSystemSetup</literal></para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>filesystems_no_device_node</literal> () – List of filesystems which are
-                                            created from a data tree and do not require a block device e.g loop</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>filesystem_custom_parameters</literal> () – Configured custom filesystem
-                                            mount and creation arguments</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>result</literal> () – instance of <literal>Result</literal></para>
+                        <para><literal>custom_args</literal> () – Custom processing arguments defined as hash keys:
+                                            * None</para>
                       </listitem>
                     </itemizedlist>
                   </listitem>
@@ -21417,7 +21389,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
             </term>
             <listitem>
               <para>Bases: </para>
-              <para>image builder factory</para>
+              <para>Image builder factory</para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.builder.ImageBuilder.new">
+                  <term>
+                    <property>kiwi.builder.ImageBuilder.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
