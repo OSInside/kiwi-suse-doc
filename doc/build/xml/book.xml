@@ -20262,6 +20262,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.bootloader.install.BootLoaderInstall.new">
+                  <term>
+                    <property>kiwi.bootloader.install.BootLoaderInstall.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
