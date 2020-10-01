@@ -10680,6 +10680,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_grub_s390_modules">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_grub_s390_modules</property>
+                  </term>
+                  <listitem>
+                    <para>Provides list of grub ofw modules (s390)</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>list of module names</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_imported_root_image">
                   <term>
                     <property>kiwi.defaults.Defaults.get_imported_root_image</property>
@@ -11120,54 +11144,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>mbsize value</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para/>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.defaults.Defaults.get_s390_disk_block_size">
-                  <term>
-                    <property>kiwi.defaults.Defaults.get_s390_disk_block_size</property>
-                  </term>
-                  <listitem>
-                    <para>Provides the default block size for s390 storage disks</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Returns</term>
-                        <listitem>
-                          <para>blocksize value</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para/>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.defaults.Defaults.get_s390_disk_type">
-                  <term>
-                    <property>kiwi.defaults.Defaults.get_s390_disk_type</property>
-                  </term>
-                  <listitem>
-                    <para>Provides the default disk type for s390 storage disks</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Returns</term>
-                        <listitem>
-                          <para>type name</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -19663,6 +19639,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <para>etc/default/grub setup file</para>
                       </listitem>
                       <listitem>
+                        <para>etc/default/zipl2grub.conf.in (s390 only)</para>
+                      </listitem>
+                      <listitem>
                         <para>etc/sysconfig/bootloader</para>
                       </listitem>
                     </itemizedlist>
@@ -19844,116 +19823,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Write isolinux.cfg and isolinux.msg file</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-      </section>
-      <section xml:id="module-kiwi.bootloader.config.zipl_kiwi-bootloader-config-zipl-module">
-        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.bootloader.config.zipl"><literal>kiwi.bootloader.config.zipl</literal></link> Module</title>
-        <variablelist>
-          <varlistentry xml:id="kiwi.bootloader.config.zipl.BootLoaderConfigZipl">
-            <term>
-              <literal>kiwi.bootloader.config.zipl.BootLoaderConfigZipl</literal>
-            </term>
-            <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.bootloader.config.base.BootLoaderConfigBase"><literal>kiwi.bootloader.config.base.BootLoaderConfigBase</literal></link></para>
-              <para>
-                <emphasis role="bold">zipl bootloader configuration.</emphasis>
-              </para>
-              <variablelist>
-                <varlistentry xml:id="kiwi.bootloader.config.zipl.BootLoaderConfigZipl.post_init">
-                  <term>
-                    <property>kiwi.bootloader.config.zipl.BootLoaderConfigZipl.post_init</property>
-                  </term>
-                  <listitem>
-                    <para>zipl post initialization method</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>custom_args</literal> () – </para>
-                          <para>Contains zipl config arguments</para>
-                          <screen language="python">{'targetbase': 'device_name'}</screen>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.bootloader.config.zipl.BootLoaderConfigZipl.setup_disk_boot_images">
-                  <term>
-                    <property>kiwi.bootloader.config.zipl.BootLoaderConfigZipl.setup_disk_boot_images</property>
-                  </term>
-                  <listitem>
-                    <para>On s390 no bootloader images needs to be created</para>
-                    <para>Thus this method does nothing</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <itemizedlist>
-                            <listitem>
-                              <para><literal>boot_uuid</literal> () – boot device UUID</para>
-                            </listitem>
-                            <listitem>
-                              <para><literal>lookup_path</literal> () – custom module lookup path</para>
-                            </listitem>
-                          </itemizedlist>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.bootloader.config.zipl.BootLoaderConfigZipl.setup_disk_image_config">
-                  <term>
-                    <property>kiwi.bootloader.config.zipl.BootLoaderConfigZipl.setup_disk_image_config</property>
-                  </term>
-                  <listitem>
-                    <para>Create the zipl config in memory from a template suitable to
-                                boot from a disk image.</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <itemizedlist>
-                            <listitem>
-                              <para><literal>boot_uuid</literal> () – unused</para>
-                            </listitem>
-                            <listitem>
-                              <para><literal>root_uuid</literal> () – unused</para>
-                            </listitem>
-                            <listitem>
-                              <para><literal>hypervisor</literal> () – unused</para>
-                            </listitem>
-                            <listitem>
-                              <para><literal>kernel</literal> () – kernel name</para>
-                            </listitem>
-                            <listitem>
-                              <para><literal>initrd</literal> () – initrd name</para>
-                            </listitem>
-                            <listitem>
-                              <para><literal>boot_options</literal> () – unused</para>
-                            </listitem>
-                          </itemizedlist>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.bootloader.config.zipl.BootLoaderConfigZipl.write">
-                  <term>
-                    <property>kiwi.bootloader.config.zipl.BootLoaderConfigZipl.write</property>
-                  </term>
-                  <listitem>
-                    <para>Write zipl config file</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -20158,77 +20027,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
     'boot_device': string,
     'root_device': string
 }</screen>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-      </section>
-      <section xml:id="module-kiwi.bootloader.install.zipl_kiwi-bootloader-install-zipl-module">
-        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.bootloader.install.zipl"><literal>kiwi.bootloader.install.zipl</literal></link> Module</title>
-        <variablelist>
-          <varlistentry xml:id="kiwi.bootloader.install.zipl.BootLoaderInstallZipl">
-            <term>
-              <literal>kiwi.bootloader.install.zipl.BootLoaderInstallZipl</literal>
-            </term>
-            <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.bootloader.install.base.BootLoaderInstallBase"><literal>kiwi.bootloader.install.base.BootLoaderInstallBase</literal></link></para>
-              <para>
-                <emphasis role="bold">zipl bootloader installation</emphasis>
-              </para>
-              <variablelist>
-                <varlistentry xml:id="kiwi.bootloader.install.zipl.BootLoaderInstallZipl.install">
-                  <term>
-                    <property>kiwi.bootloader.install.zipl.BootLoaderInstallZipl.install</property>
-                  </term>
-                  <listitem>
-                    <para>Install bootloader on self.device</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.bootloader.install.zipl.BootLoaderInstallZipl.install_required">
-                  <term>
-                    <property>kiwi.bootloader.install.zipl.BootLoaderInstallZipl.install_required</property>
-                  </term>
-                  <listitem>
-                    <para>Check if zipl has to be installed</para>
-                    <para>Always required</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Returns</term>
-                        <listitem>
-                          <para>True</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para/>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.bootloader.install.zipl.BootLoaderInstallZipl.post_init">
-                  <term>
-                    <property>kiwi.bootloader.install.zipl.BootLoaderInstallZipl.post_init</property>
-                  </term>
-                  <listitem>
-                    <para>zipl post initialization method</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>custom_args</literal> () – </para>
-                          <para>Contains custom zipl bootloader arguments</para>
-                          <screen language="python">{'boot_device': string}</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -20665,52 +20463,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>with_theme</literal> () – with graphics theme true|false</para>
                             </listitem>
                           </itemizedlist>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Returns</term>
-                        <listitem>
-                          <para>instance of <literal>Template</literal></para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para>Template</para>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-      </section>
-      <section xml:id="module-kiwi.bootloader.template.zipl_kiwi-bootloader-template-zipl-module">
-        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.bootloader.template.zipl"><literal>kiwi.bootloader.template.zipl</literal></link> Module</title>
-        <variablelist>
-          <varlistentry xml:id="kiwi.bootloader.template.zipl.BootLoaderTemplateZipl">
-            <term>
-              <literal>kiwi.bootloader.template.zipl.BootLoaderTemplateZipl</literal>
-            </term>
-            <listitem>
-              <para>Bases: </para>
-              <para>
-                <emphasis role="bold">zipl configuraton file templates</emphasis>
-              </para>
-              <variablelist>
-                <varlistentry xml:id="kiwi.bootloader.template.zipl.BootLoaderTemplateZipl.get_template">
-                  <term>
-                    <property>kiwi.bootloader.template.zipl.BootLoaderTemplateZipl.get_template</property>
-                  </term>
-                  <listitem>
-                    <para>Bootloader configuration template for disk boot</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>failsafe</literal> () – with failsafe true|false</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
