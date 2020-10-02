@@ -15067,6 +15067,55 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_config.RuntimeConfig.get_package_changes">
+                  <term>
+                    <property>kiwi.runtime_config.RuntimeConfig.get_package_changes</property>
+                  </term>
+                  <listitem>
+                    <para>Return boolean value to express if the image build and bundle
+                                should contain a .changes file. The .changes file contains
+                                the package changelog information from all packages installed
+                                into the image.</para>
+                    <variablelist>
+                      <varlistentry>
+                        <term>bundle:</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para>has_package_changes: true|false</para>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                    <para>By default the creation is switched on.
+                                When building in the Open Build Service the default is
+                                switched off because obs provides a .report file containing
+                                the same information.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>default</literal> () – Default value</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>True or False</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_config.RuntimeConfig.get_xz_options">
                   <term>
                     <property>kiwi.runtime_config.RuntimeConfig.get_xz_options</property>
@@ -29255,6 +29304,25 @@ end</screen>
                         <term>Parameters</term>
                         <listitem>
                           <para><literal>target_root_dir</literal> () – path name</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.setup.SystemSetup.export_package_changes">
+                  <term>
+                    <property>kiwi.system.setup.SystemSetup.export_package_changes</property>
+                  </term>
+                  <listitem>
+                    <para>Export image package changelog for comparision of
+                                actual changes of the installed packages</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>target_dir</literal> () – path name</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
