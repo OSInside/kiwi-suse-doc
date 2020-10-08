@@ -2702,6 +2702,19 @@ install() {
           </varlistentry>
           <varlistentry>
             <term>
+              <literal>rd.live.overlay.size</literal>
+            </term>
+            <listitem>
+              <para>Tells a live ISO image the size for the <literal>tmpfs</literal> filesystem that is used
+                            for the <literal>overlayfs</literal> mount process. If the write area of the overlayfs
+                            mount uses this tmpfs, any new data written during the runtime of
+                            the system will fillup this space. The default value used is set
+                            to <literal>50%</literal> which means one half of the available RAM space can be used
+                            for writing new data.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
               <literal>rd.live.overlay.persistent</literal>
             </term>
             <listitem>
@@ -3755,11 +3768,31 @@ $ kiwi-ng system create $ARGS</screen>
             <varlistentry>
               <term>overlayroot=”true|false”</term>
               <listitem>
-                <para>Specifies to use an overlay root system consisting
-                                out of a squashfs compressed read-only root system
-                                overlayed using the overlayfs filesystem into an
-                                extra read-write partition. Available for the disk
-                                image type oem only</para>
+                <para>For the <literal>oem</literal> type only, specifies to use an <literal>overlayfs</literal> based root
+                                filesystem consisting out of a squashfs compressed read-only root
+                                filesystem combined with a write-partition or tmpfs.
+                                The optional kernel boot parameter <literal>rd.root.overlay.readonly</literal> can
+                                be used to point the write area into a <literal>tmpfs</literal> instead of
+                                the existing persistent write-partition. In this mode all
+                                written data is temporary until reboot of the system. The kernel
+                                boot parameter <literal>rd.root.overlay.size</literal> can be used to configure
+                                the size for the <literal>tmpfs</literal> that is used for the <literal>overlayfs</literal> mount
+                                process if <literal>rd.root.overlay.readonly</literal> is requested. That size
+                                basically configures the amount of space available for writing
+                                new data during the runtime of the system. The default value
+                                is set to <literal>50%</literal> which means one half of the available RAM space can
+                                be used for writing new data. By default the persistent
+                                write-partition is used. The size of that partition can be
+                                influenced via the optional <literal>&lt;size&gt;</literal> element in the <literal>&lt;type&gt;</literal>
+                                section or via the optional <literal>&lt;oem-resize&gt;</literal> element in the
+                                <literal>&lt;oemconfig&gt;</literal> section of the XML description. Setting a fixed
+                                <literal>&lt;size&gt;</literal> value will set the size of the image disk to that
+                                value and results in an image file of that size. The available
+                                space for the write partition is that size reduced by the
+                                size the squashfs read-only system needs. If the <literal>&lt;oem-resize&gt;</literal>
+                                element is set to <literal>true</literal> an eventually given <literal>&lt;size&gt;</literal> element
+                                will not have any effect because the write partition will be
+                                resized on first boot to the available disk space.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
