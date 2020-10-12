@@ -7510,8 +7510,7 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
         <title>Local Builds</title>
         <para>To execute local KIWI NG builds with a specific, selected profile, add the
                 command line flag <literal>--profile=$PROFILE_NAME</literal>:</para>
-        <screen language="shell-session">$ sudo kiwi-ng --type iso system build \
-      --profile=workstation \
+        <screen language="shell-session">$ sudo kiwi-ng --type iso --profile=workstation system build \
       --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
       --target-dir /tmp/myimage</screen>
         <para>Consult the manual page of <literal>kiwi</literal> for further details:
