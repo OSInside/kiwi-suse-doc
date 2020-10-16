@@ -7518,7 +7518,7 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
       </section>
       <section xml:id="building-with-the-open-build-service">
         <title>Building with the Open Build Service</title>
-        <para>The Open Build Service (OBS) support profiles via the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-reference-guide/cha.obs.multibuild.html">multibuild</link>
+        <para>The Open Build Service (OBS) support profiles via the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-user-guide/cha.obs.multibuild.html">multibuild</link>
                 feature. An example project using this feature is the
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/package/show/openSUSE:Factory/openSUSE-Tumbleweed">openSUSE-Tumbleweed</link>
                 image.</para>
@@ -7651,7 +7651,7 @@ Config</literal> on your project’s main page) or via <literal>osc meta -e prjc
 &lt;/image&gt;</screen>
               </step>
               <step>
-                <para>Use the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-reference-guide/cha.obs.multibuild.html">multibuild</link> feature.</para>
+                <para>Use the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-user-guide/cha.obs.multibuild.html">multibuild</link> feature.</para>
               </step>
             </procedure>
             <para>The first option is simpler to use, but has the disadvantage that your
