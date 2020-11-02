@@ -23337,6 +23337,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   <listitem>
                     <para>Move the rpm database to the place as it is expected by the
                                 rpm package installed during bootstrap phase</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>root_bind</literal> () – unused</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -23409,6 +23417,12 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   <listitem>
                     <para>Process package install requests for bootstrap phase (no chroot)</para>
                     <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>root_bind</literal> () – unused</para>
+                        </listitem>
+                      </varlistentry>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
@@ -23799,6 +23813,12 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   <listitem>
                     <para>Process package install requests for bootstrap phase (no chroot)</para>
                     <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>root_bind</literal> () – unused</para>
+                        </listitem>
+                      </varlistentry>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
@@ -29039,6 +29059,25 @@ end</screen>
                         <listitem>
                           <para><xref linkend="kiwi.exceptions.KiwiSetupIntermediateConfigError"/> – if the management of
                                             intermediate configuration files fails</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.root_bind.RootBind.umount_kernel_file_systems">
+                  <term>
+                    <property>kiwi.system.root_bind.RootBind.umount_kernel_file_systems</property>
+                  </term>
+                  <listitem>
+                    <para>Umount kernel filesystems</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Raises</term>
+                        <listitem>
+                          <para><xref linkend="kiwi.exceptions.KiwiMountKernelFileSystemsError"/> – if some kernel filesystem
+                                            fails to mount</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
