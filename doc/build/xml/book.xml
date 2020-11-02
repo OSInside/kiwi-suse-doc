@@ -25584,6 +25584,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </variablelist>
                 </listitem>
               </itemizedlist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.solver.repository.SolverRepository.new">
+                  <term>
+                    <property>kiwi.solver.repository.SolverRepository.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -27892,6 +27902,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <para><literal>target_dir</literal> () – target directory path name</para>
                       </listitem>
                     </itemizedlist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.storage.subformat.DiskFormat.new">
+                  <term>
+                    <property>kiwi.storage.subformat.DiskFormat.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
                   </listitem>
                 </varlistentry>
               </variablelist>
