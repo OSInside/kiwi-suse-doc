@@ -32120,6 +32120,16 @@ end</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.volume_manager.VolumeManager.new">
+                  <term>
+                    <property>kiwi.volume_manager.VolumeManager.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
