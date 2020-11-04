@@ -516,7 +516,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
       <para>Your first image will be a simple system disk image which can run
                 in any full virtualization system like QEMU. Invoke the following KIWI NG
                 command in order to build it:</para>
-      <screen language="bash">$ sudo kiwi-ng --type oem system build \
+      <screen language="bash">$ sudo kiwi-ng --profile=Disk --type oem system build \
     --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
     --target-dir /tmp/myimage</screen>
       <para>The resulting image will be placed into the folder <literal>/tmp/myimage</literal>
