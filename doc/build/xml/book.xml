@@ -1981,11 +1981,20 @@ popd</screen>
           <para><literal>name</literal>: the UNIX username</para>
         </listitem>
         <listitem>
-          <para><literal>home</literal>: the path to the user’s home directory</para>
+          <para><literal>password</literal>: The password for this user account. It can be provided either
+                    in cleartext form (<literal>pwdformat="plain"</literal>) or in ’ed form
+                    (<literal>pwdformat="encrypted"</literal>). Plain passwords are discouraged, as everyone
+                    with access to the image description would know the password. It is
+                    recommended to generate a hash of your password using <literal>openssl</literal> as
+                    follows:</para>
+          <screen language="bash">$ openssl passwd -1 -salt 'xyz' YOUR_PASSWORD</screen>
         </listitem>
       </itemizedlist>
       <para>Additionally, the following optional attributes can be specified:</para>
       <itemizedlist>
+        <listitem>
+          <para><literal>home</literal>: the path to the user’s home directory</para>
+        </listitem>
         <listitem>
           <para><literal>groups</literal>: A comma separated list of UNIX groups. The first element of the
                     list is used as the user’s primary group. The remaining elements are
@@ -1998,15 +2007,6 @@ popd</screen>
         <listitem>
           <para><literal>pwdformat</literal>: The format in which <literal>password</literal> is provided, either <literal>plain</literal>
                     or <literal>encrypted</literal> (the latter is the default).</para>
-        </listitem>
-        <listitem>
-          <para><literal>password</literal>: The password for this user account. It can be provided either
-                    in cleartext form (<literal>pwdformat="plain"</literal>) or in ’ed form
-                    (<literal>pwdformat="encrypted"</literal>). Plain passwords are discouraged, as everyone
-                    with access to the image description would know the password. It is
-                    recommended to generate a hash of your password using <literal>openssl</literal> as
-                    follows:</para>
-          <screen language="bash">$ openssl passwd -1 -salt 'xyz' YOUR_PASSWORD</screen>
         </listitem>
       </itemizedlist>
     </section>
@@ -4378,37 +4378,6 @@ $ kiwi-ng system create $ARGS</screen>
             </listitem>
           </varlistentry>
           <varlistentry>
-            <term>home=”path”:</term>
-            <listitem>
-              <para>The path to the user’s home directory</para>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-        <para>Additionally, the following optional attributes can be specified:</para>
-        <variablelist>
-          <varlistentry>
-            <term>groups=”group_a,group_b”:</term>
-            <listitem>
-              <para>A comma separated list of UNIX groups. The first element of the
-                            list is used as the user’s primary group. The remaining elements are
-                            appended to the user’s supplementary groups. When no groups are assigned
-                            then the system’s default primary group will be used.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>id=”number”:</term>
-            <listitem>
-              <para>The numeric user id of this account.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>pwdformat=”plain|encrypted”:</term>
-            <listitem>
-              <para>The format in which <literal>password</literal> is provided. The default if not
-                            specified is <literal>encrypted</literal>.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
             <term>password=”string”</term>
             <listitem>
               <para>The password for this user account. It can be provided either
@@ -4429,6 +4398,37 @@ $ kiwi-ng system create $ARGS</screen>
                             with the groups attribute or belong to the default group as configured
                             in the system. If specified the first entry in the groups list is used
                             as the login group.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <para>Additionally, the following optional attributes can be specified:</para>
+        <variablelist>
+          <varlistentry>
+            <term>home=”path”:</term>
+            <listitem>
+              <para>The path to the user’s home directory</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>groups=”group_a,group_b”:</term>
+            <listitem>
+              <para>A comma separated list of UNIX groups. The first element of the
+                            list is used as the user’s primary group. The remaining elements are
+                            appended to the user’s supplementary groups. When no groups are assigned
+                            then the system’s default primary group will be used.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>id=”number”:</term>
+            <listitem>
+              <para>The numeric user id of this account.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>pwdformat=”plain|encrypted”:</term>
+            <listitem>
+              <para>The format in which <literal>password</literal> is provided. The default if not
+                            specified is <literal>encrypted</literal>.</para>
             </listitem>
           </varlistentry>
         </variablelist>
