@@ -6143,7 +6143,7 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
             image as well.</para>
       <para>With the appropriate settings present in <literal>config.xml</literal> KIWI NG can now
             build the image:</para>
-      <screen language="bash">$ sudo kiwi-ng --type kis system build \
+      <screen language="bash">$ sudo kiwi-ng --profile KIS system build \
     --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
     --target-dir /tmp/myimage</screen>
       <para>The resulting image components are saved in the folder <literal>/tmp/myimage</literal>.
@@ -7875,7 +7875,7 @@ $ cp *.kernel /srv/tftpboot/boot/linux</screen>
         </step>
         <step>
           <para>Copy the system image and its MD5 sum to <literal>/srv/tftpboot/image</literal>:</para>
-          <screen language="bash">$ cp Leap-15.1_appliance.x86_64-1.15.1/srv/tftpboot/image
+          <screen language="bash">$ cp Leap-15.1_appliance.x86_64-1.15.1 /srv/tftpboot/image
 $ cp Leap-15.1_appliance.x86_64-1.15.1.md5 /srv/tftpboot/image</screen>
         </step>
         <step>
@@ -8097,6 +8097,154 @@ PART="5;S;x,x;L;/"</screen>
           </note>
         </section>
       </section>
+    </section>
+    <section xml:id="network-overlay-boot" xml:base="working_with_images/network_overlay_boot">
+      <title>Booting a Root Filesystem from Network</title>
+      <formalpara role="sidebar">
+        <title>Abstract</title>
+        <para>This page provides further information for handling
+                KIS images built with KIWI NG and references the following
+                article:</para>
+      </formalpara>
+      <itemizedlist>
+        <listitem>
+          <para>
+            <xref linkend="kis"/>
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>In KIWI NG, the <literal>kiwi-overlay</literal> dracut module can be used to boot
+            from a remote exported root filesystem. The exported device
+            is visible as block device on the network client. KIWI NG
+            supports the two export backends <literal>NBD</literal> (Network Block Device)
+            and <literal>AoE</literal> (ATA over Ethernet) for this purpose. A system that is
+            booted in this mode will read the contents of the root filesystem
+            from a remote location and targets any write action into RAM by
+            default. The kernel cmdline option <literal>rd.root.overlay.write</literal> can
+            be used to specify an alternative device to use for writing.
+            The two layers (read and write) are combined using the <literal>overlayfs</literal>
+            filesystem.</para>
+      <para>For remote boot of a network client, the PXE boot protocol
+            is used. This functionality requires a network boot server
+            setup on the system. Details how to setup such a server
+            can be found in <xref linkend="network-boot-server"/>.</para>
+      <para>Before the KIS image can be build, the following configuration step
+            is required:</para>
+      <itemizedlist>
+        <listitem>
+          <para>Create dracut configuration to include the <literal>kiwi-overlay</literal> module</para>
+          <screen language="bash">$ cd kiwi-descriptions/suse/x86_64/suse-leap-15.1
+$ mkdir -p root/etc/dracut.conf.d
+$ cd root/etc/dracut.conf.d
+$ echo 'add_dracutmodules+=" kiwi-overlay "' &gt; overlay.conf</screen>
+        </listitem>
+      </itemizedlist>
+      <para>Now the KIS image can be build as shown in <xref linkend="kis"/>. After the
+            build, the following configuration steps are required to boot
+            from the network:</para>
+      <procedure>
+        <step>
+          <para>Copy initrd/kernel from the KIS build to the PXE server</para>
+          <para>The PXE boot process loads the configured kernel and initrd from
+                    the PXE server. For this reason, the following files must be
+                    copied to the PXE server as follows:</para>
+          <screen language="bash">$ cp *.initrd.xz /srv/tftpboot/boot/initrd
+$ cp *.kernel /srv/tftpboot/boot/linux</screen>
+        </step>
+        <step>
+          <para>Export Root FileSystem to the Network</para>
+          <para>Access to the root filesystem is implemented using either the
+                    AoE or the NBD protocol. This requires the export of the
+                    root filesystem image as remote block device:</para>
+          <variablelist>
+            <varlistentry>
+              <term>Export via AoE:</term>
+              <listitem>
+                <para>Install the <literal>vblade</literal> package on the system which is expected
+                                to export the root filesystem</para>
+                <note>
+                  <para>Not all versions of AoE are compatible with any kernel. This
+                                    means the kernel on the system exporting the root filesystem image
+                                    must provide a compatible aoe kernel module compared to the
+                                    kernel used inside of the root filesystem image.</para>
+                </note>
+                <para>Once done, export the filesystem from the KIS build above as follows:</para>
+                <screen language="bash">$ vbladed 0 1 IFACE Leap-15.1_appliance.x86_64-1.15.1</screen>
+                <para>The above command exports the given filesystem image file as a block
+                                storage device to the network of the given IFACE. On any machine except
+                                the one exporting the file, it will appear as <literal>/dev/etherd/e0.1</literal>
+                                once the <command>aoe</command> kernel module was loaded. The two numbers,
+                                0 and 1 in the above example, classifies a major and minor number which
+                                is used in the device node name on the reading side, in this
+                                case <literal>e0.1</literal>.</para>
+                <note>
+                  <para>Only machines in the same network of the given INTERFACE
+                                    can see the exported block device.</para>
+                </note>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>Export via NBD:</term>
+              <listitem>
+                <para>Install the <literal>nbd</literal> package on the system which is expected
+                                to export the root filesystem</para>
+                <para>Once done, export the filesystem from the KIS build above as follows:</para>
+                <screen language="bash">$ losetup /dev/loop0 Leap-15.1_appliance.x86_64-1.15.1
+
+$ vi /etc/nbd-server/config
+
+  [generic]
+      user = root
+      group = root
+  [export]
+      exportname = /dev/loop0
+
+$ nbd-server</screen>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </step>
+        <step>
+          <para>Setup boot entry in the PXE configuration</para>
+          <note>
+            <para>The following step assumes that the pxelinux.0 loader
+                        has been configured on the boot server to boot up network
+                        clients</para>
+          </note>
+          <para>Edit the file <literal>/srv/tftpboot/pxelinux.cfg/default</literal> and create
+                    a boot entry of the form:</para>
+          <variablelist>
+            <varlistentry>
+              <term>Using NBD:</term>
+              <listitem>
+                <screen language="bash">LABEL Overlay-Boot
+    kernel boot/linux
+    append initrd=boot/initrd root=overlay:nbd=server-ip:export</screen>
+                <para>The boot parameter <literal>root=overlay:nbd=server-ip:export</literal> specifies
+                                the NBD server IP address and the name of the export as used in
+                                <literal>/etc/nbd-server/config</literal></para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>Using AoE:</term>
+              <listitem>
+                <screen language="bash">LABEL Overlay-Boot
+    kernel boot/linux
+    append initrd=boot/initrd root=overlay:aoe=AOEINTERFACE</screen>
+                <para>The boot parameter <literal>root=overlay:aoe=AOEINTERFACE</literal> specifies the
+                                interface name as it was exported by the <command>vbladed</command> command</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </step>
+        <step>
+          <para>Boot from the Network</para>
+          <para>Within the network which has access to the PXE server and the
+                    exported root filesystem image, any network client can now boot the
+                    system. A test based on QEMU can be done as follows:</para>
+          <screen language="bash">$ qemu -boot n</screen>
+        </step>
+      </procedure>
     </section>
   </chapter>
   <chapter xml:id="contributing" xml:base="contributing">
