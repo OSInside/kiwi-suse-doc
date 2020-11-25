@@ -24160,6 +24160,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.package_manager.PackageManager.new">
+                  <term>
+                    <property>kiwi.package_manager.PackageManager.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
