@@ -24675,6 +24675,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.partitioner.Partitioner.new">
+                  <term>
+                    <property>kiwi.partitioner.Partitioner.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -25441,6 +25451,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   <term>Raises</term>
                   <listitem>
                     <para><xref linkend="kiwi.exceptions.KiwiRepositorySetupError"/> – if package_manager is not supported</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.repository.Repository.new">
+                  <term>
+                    <property>kiwi.repository.Repository.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
                   </listitem>
                 </varlistentry>
               </variablelist>
