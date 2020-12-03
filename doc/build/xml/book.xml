@@ -16948,7 +16948,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>State value to activate multipath maps. Returns a boolean
-                                value if specified or None</para>
+                                value if specified or False</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Returns</term>
