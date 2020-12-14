@@ -5785,6 +5785,17 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
             </listitem>
           </varlistentry>
           <varlistentry>
+            <term>oemconfig.oem-swapname Element</term>
+            <listitem>
+              <para>Specify the name of the swap space. By default the name is set
+                            to <literal>LVSwap</literal>. The default already indicates that this setting
+                            is only useful in combination with the LVM volume manager. In
+                            this case the swapspace is setup as a volume in the volume
+                            group and any volume needs a name. The name set here is used
+                            to give the swap volume a name.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
             <term>oemconfig.oem-swapsize Element</term>
             <listitem>
               <para>Set the size of the swap partition. If a swap partition is to be
@@ -14873,6 +14884,19 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_swap_name_used_with_lvm">
+                  <term>
+                    <property>kiwi.runtime_checker.RuntimeChecker.check_swap_name_used_with_lvm</property>
+                  </term>
+                  <listitem>
+                    <para>The optional oem-swapname is only effective if used together
+                                with the LVM volume manager. A name for the swap space can
+                                only be set if it is created as a LVM volume. In any other
+                                case the name does not apply to the system</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_syslinux_installed_if_isolinux_is_used">
                   <term>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_syslinux_installed_if_isolinux_is_used</property>
@@ -17015,6 +17039,37 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Content of &lt;oem-swapsize&gt; section value or default</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_oemconfig_swap_name">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_oemconfig_swap_name</property>
+                  </term>
+                  <listitem>
+                    <para>Return the swap space name</para>
+                    <para>Operates on the value of oem-swapname and if set
+                                returns the configured name or the default name: LVSwap</para>
+                    <para>The name of the swap space is used only if the
+                                image is configured to use the LVM volume manager.
+                                In this case swap is a volume and the volume takes
+                                a name. In any other case the given name will have
+                                no effect.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>Content of &lt;oem-swapname&gt; section value or default</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
