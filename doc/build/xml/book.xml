@@ -8707,9 +8707,8 @@ NUMBER_OF_PROCESSES</literal> are required (otherwise <command>tox</command> wil
                     as documented in <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#signing-git-patches">Signing Git Patches</link>.</para>
       </note>
       <screen language="shell-session">$ git commit -S -a</screen>
-      <para>Run the tests and code style checks. All of these are also performed by the
-                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://travis-ci.com/OSInside/kiwi">Travis CI</link> and <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://gitlab.com/schaefi/kiwi-ci/pipelines">GitLab CI</link> integration test systems
-                when a pull request is created.</para>
+      <para>Run the tests and code style checks. All of these are also performed by
+                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://gitlab.com/kiwi3">GitLab CI</link> when a pull request is created.</para>
       <screen language="shell-session">$ tox</screen>
       <para>Once everything is done, push your local branch to your forked repository and
                 create a pull request into the upstream repository.</para>
