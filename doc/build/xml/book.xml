@@ -2095,8 +2095,9 @@ test -f /.profile &amp;&amp; . /.profile
         <section xml:id="functions">
           <title>Functions</title>
           <para>The <literal>.kconfig</literal> file provides a common set of functions.  Functions
-                    specific to SUSE Linux begin with the name <literal>suse</literal>, functions applicable
-                    to all Linux distributions start with the name <literal>base</literal>.</para>
+                    specific to SUSE Linux Enterprise and openSUSE begin with the name
+                    <literal>suse</literal>, functions applicable to all Linux distributions start with the
+                    name <literal>base</literal>.</para>
           <para>The following list describes all functions provided by <literal>.kconfig</literal>:</para>
           <variablelist>
             <varlistentry>
@@ -2286,10 +2287,30 @@ test -f /.profile &amp;&amp; . /.profile
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>baseVagrantSetup</term>
+              <listitem>
+                <para>Configures the image to work as a vagrant box by performing the following
+                                changes:</para>
+                <itemizedlist>
+                  <listitem>
+                    <para>add the <literal>vagrant</literal> user to <literal>/etc/sudoers</literal>
+                                        or <literal>/etc/sudoers.d/vagrant</literal></para>
+                  </listitem>
+                  <listitem>
+                    <para>insert the insecure vagrant ssh key, apply recommended
+                                        ssh settings and start the ssh daemon</para>
+                  </listitem>
+                  <listitem>
+                    <para>create the default shared folder <literal>/vagrant</literal></para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>Debug {message}</term>
               <listitem>
                 <para>Helper function to print the supplied message if the variable DEBUG is
-                                set to 1.</para>
+                                set to 1 (it is off by default).</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -6824,53 +6845,32 @@ touch /var/lib/YaST2/reconfig_system</screen>
                     name of the user as the password for login.</para>
         </step>
         <step>
-          <para>Integrate public SSH key</para>
-          <para>Vagrant requires an insecure public key pair  to be added to the
-                    authorized keys for the user <literal>vagrant</literal> so that Vagrant itself can
-                    connect to the box via ssh.
-                    The key can be obtained from <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/hashicorp/vagrant/blob/master/keys/vagrant.pub">GitHub</link>
-                    and should be inserted into the file
-                    <literal>home/vagrant/.ssh/authorized_keys</literal>, which can be added as an
-                    overlay file into the image description.</para>
-          <para>Keep in mind to set the file system permissions of
-                    <literal>home/vagrant/.ssh/</literal> and <literal>home/vagrant/.ssh/authorized_keys</literal>
-                    correctly, otherwise Vagrant will not be able to connect to your
-                    box. The following snippet can be added to <literal>config.sh</literal>:</para>
-          <screen language="bash">chmod 0600 /home/vagrant/.ssh/authorized_keys
-chown -R vagrant:vagrant /home/vagrant/</screen>
+          <para>Configure SSH, the default shared folder and sudo permissions</para>
+          <para>Vagrant expects that it can login as the user <literal>vagrant</literal> using an
+                    insecure public key . Furthermore, vagrant also usually uses
+                    <literal>/vagrant</literal> as the default shared folder and assumes that the
+                    <literal>vagrant</literal> user can invoke commands via <command>sudo</command> without having
+                    to enter a password.</para>
+          <para>This can be achieved using the function <literal>baseVagrantSetup</literal> in
+                    <literal>config.sh</literal>:</para>
+          <screen language="bash">baseVagrantSetup</screen>
         </step>
         <step>
-          <para>Create the default shared folder</para>
-          <para>Vagrant boxes usually provide a default shared folder under
-                    <literal>/vagrant</literal>. Consider adding this empty folder to your overlay
-                    files and ensure that the user <literal>vagrant</literal> has write permissions to
-                    it.</para>
-          <para>Note, that the boxes that KIWI NG produces <emphasis role="bold">require</emphasis> this folder to
-                    exist, otherwise Vagrant will not be able to start them properly.</para>
-        </step>
-        <step>
-          <para>Setup and start SSH daemon</para>
-          <para>In <literal>config.sh</literal> add the start of sshd:</para>
-          <screen language="bash">#======================================
-# Activate services
-#--------------------------------------
-baseInsertService sshd</screen>
-          <para>Also make sure to add the line <emphasis role="bold">UseDNS=no</emphasis> into
-                    <literal>/etc/ssh/sshd_config</literal>. This can be done by an overlay file or by
-                    patching the file in the above mentioned <literal>config.sh</literal> file.</para>
-        </step>
-        <step>
-          <para>Configure sudo for the Vagrant user</para>
-          <para>Vagrant expects to have passwordless root permissions via <literal>sudo</literal> to be
-                    able to setup your box. Add the following line to <literal>/etc/sudoers</literal>
-                    or add it into a new file <literal>/etc/sudoers.d/vagrant</literal>:</para>
-          <screen language="default">vagrant ALL=(ALL) NOPASSWD: ALL</screen>
-          <para>You can also use <command>visudo</command> to verify that the resulting
-                    <literal>/etc/sudoers</literal> or <literal>/etc/sudoers.d/vagrant</literal> are valid:</para>
-          <screen language="bash">visudo -cf /etc/sudoers
-if [ $? -ne 0 ]; then
-    exit 1
-fi</screen>
+          <para>Additional customizations:</para>
+          <para>Additionally to <literal>baseVagrantSetup</literal>, you might want to also ensure the
+                    following:</para>
+          <itemizedlist>
+            <listitem>
+              <para>If you have installed the Virtualbox guest additions into your box,
+                            then also load the <literal>vboxsf</literal> kernel module.</para>
+            </listitem>
+            <listitem>
+              <para>When building boxes for libvirt, then ensure that the default wired
+                            networking interface is called <literal>eth0</literal> and uses DHCP. This is
+                            necessary since libvirt uses <literal>dnsmasq</literal> to issue IPs to the VMs. This
+                            step can be omitted for Virtualbox boxes.</para>
+            </listitem>
+          </itemizedlist>
         </step>
       </procedure>
       <para>An image built with the above setup creates a Vagrant box file with the
