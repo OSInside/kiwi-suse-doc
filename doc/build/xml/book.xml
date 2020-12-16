@@ -21596,6 +21596,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.ContainerImage.new">
+                  <term>
+                    <property>kiwi.container.ContainerImage.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -21803,6 +21813,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
             <listitem>
               <para>Bases: </para>
               <para>container setup factory</para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.setup.ContainerSetup.new">
+                  <term>
+                    <property>kiwi.container.setup.ContainerSetup.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -23036,6 +23056,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>
                 <emphasis role="bold">IsoTools factory</emphasis>
               </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.iso_tools.IsoTools.new">
+                  <term>
+                    <property>kiwi.iso_tools.IsoTools.new</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
