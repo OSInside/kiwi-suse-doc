@@ -12305,18 +12305,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
         <variablelist>
-          <varlistentry xml:id="kiwi.exceptions.KiwiDescriptionConflict">
-            <term>
-              <literal>kiwi.exceptions.KiwiDescriptionConflict</literal>
-            </term>
-            <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
-              <para>Exception raised if both, a description file and xml_content
-                        is provided</para>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-        <variablelist>
           <varlistentry xml:id="kiwi.exceptions.KiwiDescriptionInvalid">
             <term>
               <literal>kiwi.exceptions.KiwiDescriptionInvalid</literal>
@@ -13913,7 +13901,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>level</literal> () – color level number</para>
+                              <para><literal>level</literal> () – color level name</para>
                             </listitem>
                             <listitem>
                               <para><literal>message</literal> () – text</para>
@@ -13971,7 +13959,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>record.name</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -14015,7 +14003,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>record.name</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -14047,7 +14035,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.logger_filter.InfoFilter.filter</property>
                   </term>
                   <listitem>
-                    <para>Only messages with record level INFO and WARNING can pass
+                    <para>Only messages with record level INFO can pass
                                 for messages with another level an extra handler is used</para>
                     <variablelist role="field_list">
                       <varlistentry>
@@ -14059,7 +14047,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>record.name</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -14103,7 +14091,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>record.name</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -14147,7 +14135,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>record.name</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -15454,9 +15442,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <listitem>
                         <para><literal>derived_from</literal> () – path to base description file</para>
                       </listitem>
-                      <listitem>
-                        <para><literal>xml_content</literal> () – XML description data as content string</para>
-                      </listitem>
                     </itemizedlist>
                   </listitem>
                 </varlistentry>
@@ -16089,7 +16074,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>string</para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -16113,7 +16098,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>string</para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -16162,7 +16147,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>string</para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -16188,7 +16173,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>string</para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -16212,7 +16197,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>string</para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -16236,7 +16221,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>string</para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -17796,7 +17781,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para><literal>&lt;vagrantconfig virtualbox_guest_additions_present=&gt;</literal> value</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -18017,9 +18002,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.xml_state.XMLState.preferences_matches_host_architecture</property>
                   </term>
                   <listitem>
-                    <para>Tests if the given preferences section is applicable for the current host
-                                architecture. If no architecture is specified within the section
-                                it is considered as a match returning True.</para>
+                    <para>Tests if the given preferences section is applicable for the
+                                current host architecture. If no architecture is specified within
+                                the section it is considered as a match returning True.</para>
                     <para>Note: The XML section pointer must provide an arch attribute</para>
                     <variablelist role="field_list">
                       <varlistentry>
@@ -18187,6 +18172,196 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.xml_state.description_type">
+            <term>
+              <literal>kiwi.xml_state.description_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.description_type.author">
+                  <term>
+                    <property>kiwi.xml_state.description_type.author</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.description_type.contact">
+                  <term>
+                    <property>kiwi.xml_state.description_type.contact</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.description_type.specification">
+                  <term>
+                    <property>kiwi.xml_state.description_type.specification</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 2</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.xml_state.package_type">
+            <term>
+              <literal>kiwi.xml_state.package_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.package_type.package_section">
+                  <term>
+                    <property>kiwi.xml_state.package_type.package_section</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.package_type.packages_section">
+                  <term>
+                    <property>kiwi.xml_state.package_type.packages_section</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.xml_state.size_type">
+            <term>
+              <literal>kiwi.xml_state.size_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.size_type.additive">
+                  <term>
+                    <property>kiwi.xml_state.size_type.additive</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.size_type.mbytes">
+                  <term>
+                    <property>kiwi.xml_state.size_type.mbytes</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.xml_state.volume_type">
+            <term>
+              <literal>kiwi.xml_state.volume_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.attributes">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.attributes</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 6</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.fullsize">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.fullsize</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 4</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.is_root_volume">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.is_root_volume</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 7</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.label">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.label</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 5</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.mountpoint">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.mountpoint</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 3</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.name">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.name</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.realpath">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.realpath</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 2</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.size">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.size</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
