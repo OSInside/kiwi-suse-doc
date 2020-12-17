@@ -17176,7 +17176,8 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.xml_state.XMLState.get_preferences_sections</property>
                   </term>
                   <listitem>
-                    <para>All preferences sections for the selected profiles</para>
+                    <para>All preferences sections for the selected profiles that match the
+                                host architecture</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Returns</term>
@@ -17984,6 +17985,39 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Tests if the given package section is applicable for the current host
+                                architecture. If no architecture is specified within the section
+                                it is considered as a match returning True.</para>
+                    <para>Note: The XML section pointer must provide an arch attribute</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>section</literal> – XML section object</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>True or False</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.preferences_matches_host_architecture">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.preferences_matches_host_architecture</property>
+                  </term>
+                  <listitem>
+                    <para>Tests if the given preferences section is applicable for the current host
                                 architecture. If no architecture is specified within the section
                                 it is considered as a match returning True.</para>
                     <para>Note: The XML section pointer must provide an arch attribute</para>
