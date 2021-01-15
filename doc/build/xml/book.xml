@@ -11897,6 +11897,24 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.set_shared_cache_location">
+                  <term>
+                    <property>kiwi.defaults.Defaults.set_shared_cache_location</property>
+                  </term>
+                  <listitem>
+                    <para>Sets the shared cache location once</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>location</literal> () – a location path</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.to_profile">
                   <term>
                     <property>kiwi.defaults.Defaults.to_profile</property>
