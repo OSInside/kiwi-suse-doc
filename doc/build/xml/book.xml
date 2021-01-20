@@ -10161,6 +10161,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_default_package_manager">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_default_package_manager</property>
+                  </term>
+                  <listitem>
+                    <para>Returns the default package manager name if none
+                                is configured in the image description</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>package manager name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_default_packager_tool">
                   <term>
                     <property>kiwi.defaults.Defaults.get_default_packager_tool</property>
@@ -14843,6 +14868,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_image_version_provided">
+                  <term>
+                    <property>kiwi.runtime_checker.RuntimeChecker.check_image_version_provided</property>
+                  </term>
+                  <listitem>
+                    <para>Kiwi requires a &lt;version&gt; element to be specified as part
+                                of at least one &lt;preferences&gt; section.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_initrd_selection_required">
                   <term>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_initrd_selection_required</property>
@@ -14865,19 +14901,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <para>If the image description enables the mediacheck attribute
                                 the required tools to run this check must be installed
                                 on the image build host</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_minimal_required_preferences">
-                  <term>
-                    <property>kiwi.runtime_checker.RuntimeChecker.check_minimal_required_preferences</property>
-                  </term>
-                  <listitem>
-                    <para>Kiwi requires some of the elements of the <literal>preferences</literal> element
-                                to be present at least in one of the preferences section. This
-                                runtime check validates &lt;version&gt; and &lt;packagemanager&gt; are
-                                provided.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -28901,13 +28924,10 @@ end</screen>
                         <para><literal>xml_state</literal> () – instance of <literal>XMLState</literal></para>
                       </listitem>
                       <listitem>
-                        <para><literal>profiles</literal> () – list of configured profiles</para>
+                        <para><literal>root_dir</literal> () – Path to new root directory</para>
                       </listitem>
                       <listitem>
-                        <para><literal>root_bind</literal> () – instance of <literal>RootBind</literal></para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>uri_list</literal> () – a list of Uri references</para>
+                        <para><literal>allow_existing</literal> () – Allow using an existing root_dir</para>
                       </listitem>
                     </itemizedlist>
                   </listitem>
@@ -28986,8 +29006,8 @@ end</screen>
                       <varlistentry>
                         <term>Raises</term>
                         <listitem>
-                          <para><xref linkend="kiwi.exceptions.KiwiBootStrapPhaseFailed"/> – if the bootstrapping process fails
-                                            either installing packages or including bootstrap archives</para>
+                          <para><xref linkend="kiwi.exceptions.KiwiBootStrapPhaseFailed"/> – if the bootstrapping process fails either installing
+                                            packages or including bootstrap archives</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29046,8 +29066,8 @@ end</screen>
                       <varlistentry>
                         <term>Raises</term>
                         <listitem>
-                          <para><xref linkend="kiwi.exceptions.KiwiInstallPhaseFailed"/> – if the install process fails
-                                            either installing packages or including any archive</para>
+                          <para><xref linkend="kiwi.exceptions.KiwiInstallPhaseFailed"/> – if the install process fails either installing
+                                            packages or including any archive</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29070,7 +29090,7 @@ end</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>manager</literal> () – instance of <literal>PackageManager</literal></para>
+                              <para><literal>manager</literal> () – instance of <literal>PackageManager</literal> subclass</para>
                             </listitem>
                             <listitem>
                               <para><literal>force</literal> () – Forced deletion True|False</para>
@@ -29081,8 +29101,7 @@ end</screen>
                       <varlistentry>
                         <term>Raises</term>
                         <listitem>
-                          <para><xref linkend="kiwi.exceptions.KiwiPackagesDeletePhaseFailed"/> – if the deletion packages
-                                            process fails</para>
+                          <para><xref linkend="kiwi.exceptions.KiwiPackagesDeletePhaseFailed"/> – if the deletion packages process fails</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29103,11 +29122,10 @@ end</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>clear_cache</literal> () – flag the clear cache before configure
-                                                    anything</para>
+                              <para><literal>clear_cache</literal> () – Flag the clear cache before configure anything</para>
                             </listitem>
                             <listitem>
-                              <para><literal>signing_keys</literal> () – keys imported to the package manager</para>
+                              <para><literal>signing_keys</literal> () – Keys imported to the package manager</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -29115,7 +29133,7 @@ end</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>instance of <literal>PackageManager</literal></para>
+                          <para>instance of <literal>PackageManager</literal> subclass</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -29170,22 +29188,13 @@ end</screen>
             <listitem>
               <para>Bases: </para>
               <para>
-                <emphasis role="bold">Create bash readable .profile environment from the XML
-                            description</emphasis>
+                <emphasis role="bold">Create bash readable .profile environment from the XML description</emphasis>
               </para>
-              <para>The information is used by the kiwi first boot code.</para>
               <variablelist role="field_list">
                 <varlistentry>
                   <term>Parameters</term>
                   <listitem>
-                    <itemizedlist>
-                      <listitem>
-                        <para><literal>xml_state</literal> () – instance of :class`XMLState`</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>dot_profile</literal> () – profile dictionary</para>
-                      </listitem>
-                    </itemizedlist>
+                    <para><literal>xml_state</literal> () – instance of :class`XMLState`</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -29719,20 +29728,7 @@ end</screen>
                   <listitem>
                     <itemizedlist>
                       <listitem>
-                        <para><literal>arch</literal> () – Defaults.get_platform_name</para>
-                      </listitem>
-                      <listitem>
                         <para><literal>xml_state</literal> () – instance of <literal>XMLState</literal></para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>description_dir</literal> () – path to image description directory</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>derived_description_dir</literal> – path to derived_description_dir
-                                            boot image descriptions inherits data from the system image
-                                            description, thus they are derived from another image
-                                            description directory which is needed to e.g find system
-                                            image archives, overlay files</para>
                       </listitem>
                       <listitem>
                         <para><literal>root_dir</literal> () – root directory path name</para>
@@ -30085,6 +30081,14 @@ end</screen>
                   </term>
                   <listitem>
                     <para>Check if provided script base name exists in the image description</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>name</literal> () – script base name</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
