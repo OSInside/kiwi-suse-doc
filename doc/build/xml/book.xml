@@ -28870,7 +28870,7 @@ end</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>namedtuple</para>
+                          <para>tuple|None</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -28894,10 +28894,80 @@ end</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>namedtuple</para>
+                          <para>tuple|None</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.system.kernel.kernel_type">
+            <term>
+              <literal>kiwi.system.kernel.kernel_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.kernel.kernel_type.filename">
+                  <term>
+                    <property>kiwi.system.kernel.kernel_type.filename</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.kernel.kernel_type.name">
+                  <term>
+                    <property>kiwi.system.kernel.kernel_type.name</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.kernel.kernel_type.version">
+                  <term>
+                    <property>kiwi.system.kernel.kernel_type.version</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 2</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.system.kernel.xen_hypervisor_type">
+            <term>
+              <literal>kiwi.system.kernel.xen_hypervisor_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.kernel.xen_hypervisor_type.filename">
+                  <term>
+                    <property>kiwi.system.kernel.xen_hypervisor_type.filename</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.kernel.xen_hypervisor_type.name">
+                  <term>
+                    <property>kiwi.system.kernel.xen_hypervisor_type.name</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -29283,7 +29353,7 @@ end</screen>
                   <listitem>
                     <itemizedlist>
                       <listitem>
-                        <para><literal>result_files</literal> () – list of result files</para>
+                        <para><literal>result_files</literal> () – dict of result files</para>
                       </listitem>
                       <listitem>
                         <para><literal>class_version</literal> () – <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.system.result.Result"><literal>Result</literal></link> class version</para>
@@ -30322,13 +30392,13 @@ end</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>quoted text</para>
+                          <para>list of quoted text</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para/>
+                          <para>List[]</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
