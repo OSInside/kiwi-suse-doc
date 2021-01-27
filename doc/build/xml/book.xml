@@ -4066,6 +4066,12 @@ $ kiwi-ng system create $ARGS</screen>
                     the components of an emulated hardware.
                     For details see: <xref linkend="disk-the-machine-element"/></para>
         </section>
+        <section xml:id="preferences-type-installmedia">
+          <title>&lt;preferences&gt;&lt;type&gt;&lt;installmedia&gt;</title>
+          <para>Used to customize the installation media images created for oem images
+                    deployment.
+                    For details see: <xref linkend="installmedia-customize"/></para>
+        </section>
       </section>
       <section xml:id="sec-repository">
         <title>&lt;repository&gt;</title>
@@ -5856,6 +5862,23 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
             </listitem>
           </varlistentry>
         </variablelist>
+      </section>
+      <section xml:id="installmedia-customize">
+        <title>Installation Media Customization</title>
+        <para>The installation media created for OEM network or CD/DVD deployments can
+                be customized with the <literal>installmedia</literal> section which is a child section of the 
+                element as it appears in the following example:</para>
+        <screen language="xml">&lt;installmedia&gt;
+  &lt;initrd action="omit"&gt;
+    &lt;dracut module="network-legacy"/&gt;
+  &lt;/initrd&gt;
+&lt;/installmedia&gt;</screen>
+        <para>The <literal>installmedia</literal> is only available for OEM image types that includes the
+                request to create an installation media.</para>
+        <para>The <literal>initrd</literal> child element of <literal>installmedia</literal> lists dracut modules, they
+                can be omitted, added or staticaly set the list of included ones. This is
+                specified with the <literal>action</literal> attribute and can take <literal>action="omit"</literal>,
+                <literal>action="add"</literal> or <literal>action="set"</literal> values.</para>
       </section>
     </section>
     <section xml:id="building-docker-build" xml:base="building_images/build_docker_container">
@@ -16978,6 +17001,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_installmedia_initrd_modules">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_installmedia_initrd_modules</property>
+                  </term>
+                  <listitem>
+                    <para>Gets the list of modules to append in installation initrds</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>a list of dracut module names</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.XMLState.get_locale">
                   <term>
                     <property>kiwi.xml_state.XMLState.get_locale</property>
@@ -18963,6 +19010,33 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.set_static_modules">
+                  <term>
+                    <property>kiwi.boot.image.base.BootImageBase.set_static_modules</property>
+                  </term>
+                  <listitem>
+                    <para>Set static modules list for boot image</para>
+                    <para>For kiwi boot no modules configuration is required. Thus in
+                                such a case this method is a noop.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>modules</literal> () – list of modules to include</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>install_media</literal> () – lists the modules for install initrds</para>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.write_system_config_file">
                   <term>
                     <property>kiwi.boot.image.base.BootImageBase.write_system_config_file</property>
@@ -19129,6 +19203,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <para>Setup machine_id(s) to be generic and rebuild by dracut on boot</para>
                       </listitem>
                     </itemizedlist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.dracut.BootImageDracut.set_static_modules">
+                  <term>
+                    <property>kiwi.boot.image.dracut.BootImageDracut.set_static_modules</property>
+                  </term>
+                  <listitem>
+                    <para>Set static dracut modules list for boot image</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>modules</literal> () – list of the modules to include</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>install_media</literal> () – lists the modules for install initrds</para>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
