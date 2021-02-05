@@ -823,6 +823,9 @@ kiwi-ng system prepare --description=&lt;directory&gt; --root=&lt;directory&gt;
     [--add-package=&lt;name&gt;...]
     [--add-bootstrap-package=&lt;name&gt;...]
     [--delete-package=&lt;name&gt;...]
+    [--set-container-derived-from=&lt;uri&gt;]
+    [--set-container-tag=&lt;name&gt;]
+    [--add-container-label=&lt;label&gt;...]
     [--signing-key=&lt;key-file&gt;...]
 kiwi-ng system prepare help</screen>
       </section>
@@ -848,6 +851,16 @@ kiwi-ng system prepare help</screen>
           </varlistentry>
           <varlistentry>
             <term>
+              <option>--add-container-label</option>
+            </term>
+            <listitem>
+              <para>add a container label in the container configuration metadata. It
+                            overwrites the label with the provided key-value pair in case it was
+                            already defined in the XML description</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
               <option>--add-package</option>
             </term>
             <listitem>
@@ -860,7 +873,10 @@ kiwi-ng system prepare help</screen>
               <option>--add-repo</option>
             </term>
             <listitem>
-              <para>See the kiwi::system::build manual page for further details</para>
+              <para>Add a new repository to the existing repository setup in the XML
+                            description. This option can be specified multiple times.
+                            For details about the provided option values see the <emphasis role="bold">–set-repo</emphasis>
+                            information below</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -938,7 +954,76 @@ kiwi-ng system prepare help</screen>
               <option>--set-repo</option>
             </term>
             <listitem>
-              <para>See the kiwi::system::build manual page for further details</para>
+              <para>Overwrite the first repository entry in the XML description with the
+                            provided information:</para>
+              <itemizedlist>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">source</emphasis>
+                  </para>
+                  <para>source url, pointing to a package repository which must be in a format
+                                    supported by the selected package manager. See the URI_TYPES section for
+                                    details about the supported source locators.</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">type</emphasis>
+                  </para>
+                  <para>repository type, could be one of <literal>rpm-md</literal>, <literal>rpm-dir</literal> or <literal>yast2</literal>.</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">alias</emphasis>
+                  </para>
+                  <para>An alias name for the repository. If not specified kiwi calculates
+                                    an alias name as result from a sha sum. The sha sum is used to uniquely
+                                    identify the repository, but not very expressive. We recommend to
+                                    set an expressive and uniq alias name.</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">priority</emphasis>
+                  </para>
+                  <para>A number indicating the repository priority. How the value is evaluated
+                                    depends on the selected package manager. Please refer to the package
+                                    manager documentation for details about the supported priority ranges
+                                    and their meaning.</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">imageinclude</emphasis>
+                  </para>
+                  <para>Set to either <emphasis role="bold">true</emphasis> or <emphasis role="bold">false</emphasis> to specify if this repository
+                                    should be part of the system image repository setup or not.</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">package_gpgcheck</emphasis>
+                  </para>
+                  <para>Set to either <emphasis role="bold">true</emphasis> or <emphasis role="bold">false</emphasis> to specify if this repository
+                                    should validate the package signatures.</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--set-container-derived-from</option>
+            </term>
+            <listitem>
+              <para>overwrite the source location of the base container for the selected
+                            image type. The setting is only effective if the configured image type
+                            is setup with an initial derived_from reference</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--set-container-tag</option>
+            </term>
+            <listitem>
+              <para>overwrite the container tag in the container configuration.
+                            The setting is only effective if the container configuraiton
+                            provides an initial tag value</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -1025,6 +1110,9 @@ kiwi-ng system build --description=&lt;directory&gt; --target-dir=&lt;directory&
     [--add-package=&lt;name&gt;...]
     [--add-bootstrap-package=&lt;name&gt;...]
     [--delete-package=&lt;name&gt;...]
+    [--set-container-derived-from=&lt;uri&gt;]
+    [--set-container-tag=&lt;name&gt;]
+    [--add-container-label=&lt;label&gt;...]
     [--signing-key=&lt;key-file&gt;...]
 kiwi-ng system build help</screen>
       </section>
@@ -1047,6 +1135,16 @@ kiwi-ng system build help</screen>
             <listitem>
               <para>specify package to install as part of the early kiwi bootstrap phase.
                             The option can be specified multiple times</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--add-container-label</option>
+            </term>
+            <listitem>
+              <para>add a container label in the container configuration metadata. It
+                            overwrites the label with the provided key-value pair in case it was
+                            already defined in the XML description</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -1189,6 +1287,26 @@ kiwi-ng system build help</screen>
                                     should validate the package signatures.</para>
                 </listitem>
               </itemizedlist>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--set-container-derived-from</option>
+            </term>
+            <listitem>
+              <para>overwrite the source location of the base container for the selected
+                            image type. The setting is only effective if the configured image type
+                            is setup with an initial derived_from reference</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--set-container-tag</option>
+            </term>
+            <listitem>
+              <para>overwrite the container tag in the container configuration.
+                            The setting is only effective if the container configuraiton
+                            provides an initial tag value</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -26088,6 +26206,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.solver.repository.base.SolverRepositoryBase.get_repo_type">
+                  <term>
+                    <property>kiwi.solver.repository.base.SolverRepositoryBase.get_repo_type</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.solver.repository.base.SolverRepositoryBase.is_uptodate">
                   <term>
                     <property>kiwi.solver.repository.base.SolverRepositoryBase.is_uptodate</property>
@@ -30664,30 +30792,23 @@ end</screen>
             <listitem>
               <para>Bases: </para>
               <para>
-                <emphasis role="bold">Normalize url types available in a kiwi configuration into
-                            standard mime types</emphasis>
+                <emphasis role="bold">Normalize url types</emphasis>
               </para>
+              <para>Allow to translate the available KIWI repo source types
+                        into standard mime types</para>
               <variablelist role="field_list">
                 <varlistentry>
                   <term>Parameters</term>
                   <listitem>
                     <itemizedlist>
                       <listitem>
-                        <para><literal>repo_type</literal> () – repository type name. Only needed if the uri
-                                            is not enough to determine the repository type
-                                            e.g for yast2 vs. rpm-md obs repositories</para>
+                        <para><literal>uri</literal> () – URI, remote or local repository location</para>
                       </listitem>
                       <listitem>
-                        <para><literal>uri</literal> () – URI, repository location, file</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>mount_stack</literal> () – list of mounted locations</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>remote_uri_types</literal> () – dictionary of remote uri type names</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>local_uri_type</literal> () – dictionary of local uri type names</para>
+                        <para><literal>repo_type</literal> () – repository type name, defaults to ‘rpm-md’ and is only
+                                            effectively used when building inside of the open
+                                            build service which maps local repositories to a
+                                            specific environment</para>
                       </listitem>
                     </itemizedlist>
                   </listitem>
@@ -31151,6 +31272,12 @@ end</screen>
                                 separates the information in a comma separated list of values</para>
                     <variablelist role="field_list">
                       <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>option</literal> () – comma separated option string</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
                         <term>Returns</term>
                         <listitem>
                           <para>common option value representation</para>
@@ -31196,6 +31323,12 @@ end</screen>
                     <para>Make sure to provide a common result for option values which
                                 separates the information in a comma separated list of values</para>
                     <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>option</literal> () – comma separated option string</para>
+                        </listitem>
+                      </varlistentry>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
