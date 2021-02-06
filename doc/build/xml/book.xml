@@ -11403,6 +11403,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_obs_api_server_url">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_obs_api_server_url</property>
+                  </term>
+                  <listitem>
+                    <para>Provides the default API server url to access the
+                                public open buildservice API</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>url path</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_obs_download_server_url">
                   <term>
                     <property>kiwi.defaults.Defaults.get_obs_download_server_url</property>
@@ -15396,6 +15421,44 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>byte value or None</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.runtime_config.RuntimeConfig.get_obs_api_server_url">
+                  <term>
+                    <property>kiwi.runtime_config.RuntimeConfig.get_obs_api_server_url</property>
+                  </term>
+                  <listitem>
+                    <para>Return URL of buildservice API server in:</para>
+                    <variablelist>
+                      <varlistentry>
+                        <term>obs:</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para>api_url: …</para>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                    <para>if no configuration exists the API server from
+                                the Defaults class is returned</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>URL type data</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
