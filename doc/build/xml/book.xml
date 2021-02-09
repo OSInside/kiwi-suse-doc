@@ -15245,6 +15245,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>The KIWI runtime configuration file is a yaml formatted file
                         containing information to control the behavior of the tools
                         used by KIWI.</para>
+              <variablelist role="field_list">
+                <varlistentry>
+                  <term>Parameters</term>
+                  <listitem>
+                    <para><literal>reread</literal> () – reread runtime config</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.runtime_config.RuntimeConfig.get_bundle_compression">
                   <term>
