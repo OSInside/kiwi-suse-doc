@@ -34,22 +34,22 @@
       </listitem>
       <listitem>
         <para>
-          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:suse">Build Tests SUSE(x86)</link>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:tumbleweed">Build Tests TumbleWeed(x86)</link>
         </para>
       </listitem>
       <listitem>
         <para>
-          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_arm:suse">Build Tests SUSE(arm)</link>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_arm:tumbleweed">Build Tests TumbleWeed(arm)</link>
         </para>
       </listitem>
       <listitem>
         <para>
-          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_s390:suse">Build Tests SUSE(s390)</link>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_s390:tumbleweed">Build Tests TumbleWeed(s390)</link>
         </para>
       </listitem>
       <listitem>
         <para>
-          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_ppc:suse">Build Tests SUSE(ppc64le)</link>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_ppc:tumbleweed">Build Tests TumbleWeed(ppc64le)</link>
         </para>
       </listitem>
       <listitem>
@@ -75,6 +75,11 @@
       <listitem>
         <para>
           <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:ubuntu">Build Tests Ubuntu(x86)</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:debian">Build Tests Ubuntu(x86)</link>
         </para>
       </listitem>
       <listitem>
