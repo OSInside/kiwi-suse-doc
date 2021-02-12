@@ -15487,6 +15487,53 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_config.RuntimeConfig.get_obs_api_credentials">
+                  <term>
+                    <property>kiwi.runtime_config.RuntimeConfig.get_obs_api_credentials</property>
+                  </term>
+                  <listitem>
+                    <para>Return OBS API credentials if configured:</para>
+                    <variablelist>
+                      <varlistentry>
+                        <term>obs:</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <variablelist>
+                                <varlistentry>
+                                  <term>user:</term>
+                                  <listitem>
+                                    <itemizedlist>
+                                      <listitem>
+                                        <para>user_name: user_credentials</para>
+                                      </listitem>
+                                    </itemizedlist>
+                                  </listitem>
+                                </varlistentry>
+                              </variablelist>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>List of Dicts with credentials per user</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_config.RuntimeConfig.get_obs_api_server_url">
                   <term>
                     <property>kiwi.runtime_config.RuntimeConfig.get_obs_api_server_url</property>
