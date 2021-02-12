@@ -54,6 +54,16 @@
       </listitem>
       <listitem>
         <para>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:rawhide">Build Tests RawHide(x86)</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:leap">Build Tests Leap(x86)</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:fedora">Build Tests Fedora(x86)</link>
         </para>
       </listitem>
@@ -79,7 +89,7 @@
       </listitem>
       <listitem>
         <para>
-          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:debian">Build Tests Ubuntu(x86)</link>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:debian">Build Tests Debian(x86)</link>
         </para>
       </listitem>
       <listitem>
