@@ -9366,10 +9366,40 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
         <variablelist>
           <varlistentry xml:id="kiwi.command.command_type">
             <term>
-              <property>kiwi.command.command_type</property>
+              <literal>kiwi.command.command_type</literal>
             </term>
             <listitem>
-              <para>alias of <literal>kiwi.command.command</literal></para>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.command.command_type.error">
+                  <term>
+                    <property>kiwi.command.command_type.error</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.command.command_type.output">
+                  <term>
+                    <property>kiwi.command.command_type.output</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.command.command_type.returncode">
+                  <term>
+                    <property>kiwi.command.command_type.returncode</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 2</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
