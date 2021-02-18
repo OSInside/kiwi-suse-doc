@@ -1708,6 +1708,166 @@ kiwi-ng image info help</screen>
       <para>The following sections describe the concept and general workflow
                 of building appliances with KIWI NG 9.23.16.</para>
     </note>
+    <section xml:id="systemdeps" xml:base="concept_and_workflow/systemdeps">
+      <title>Host Requirements To Build Images</title>
+      <para>When building OS images, several tools and sub-systems are used
+            and required on the host KIWI NG is called at. For example, to
+            build a virtual disk image, several tools needs to be available
+            on the host that builds the image. This includes tools for
+            partition table setup or tools to create filesystems.</para>
+      <para>The number of required components depends on the selected image
+            type and the <emphasis>features</emphasis> used with the image. We cannot expect
+            the users of KIWI NG to know about each and every component that
+            is needed to build the image. Therefore a concept to help with
+            the host requirements exists and is named <literal>kiwi-systemdeps</literal></para>
+      <para>The <literal>kiwi-systemdeps</literal> concept consists out of a collection of
+            sub-packages provided with the <literal>python-kiwi</literal> main package. Each
+            individual package requires a number of tools and subsystem packages
+            which belongs to the package category. There are the following
+            systemdeps packages:</para>
+      <variablelist>
+        <varlistentry>
+          <term><literal>kiwi-systemdeps-core</literal>:</term>
+          <listitem>
+            <itemizedlist>
+              <listitem>
+                <para>Supports building the simple root archive <literal>tbz</literal> image type.</para>
+              </listitem>
+              <listitem>
+                <para>Installs the package managers which are supported by the
+                                target distribution as well as the <literal>tar</literal> archiving tool.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><literal>kiwi-systemdeps-containers</literal>:</term>
+          <listitem>
+            <itemizedlist>
+              <listitem>
+                <para>Supports building <literal>docker</literal> and <literal>appx</literal> image types.</para>
+              </listitem>
+              <listitem>
+                <para>Installs the distribution specific tool chain to build OCI
+                                compliant and WSL container images.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><literal>kiwi-systemdeps-iso-media</literal>:</term>
+          <listitem>
+            <itemizedlist>
+              <listitem>
+                <para>Supports building <literal>iso</literal> image types and <literal>oem</literal> install media.</para>
+              </listitem>
+              <listitem>
+                <para>Installs all tools required to build ISO filesystems.</para>
+              </listitem>
+              <listitem>
+                <para>Depends on the <literal>-core</literal>, <literal>-filesystems</literal> and <literal>-bootloaders</literal>
+                                kiwi-systemdeps packages.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><literal>kiwi-systemdeps-bootloaders</literal>:</term>
+          <listitem>
+            <itemizedlist>
+              <listitem>
+                <para>Supports building bootable <literal>oem</literal> and <literal>iso</literal> image types.</para>
+              </listitem>
+              <listitem>
+                <para>Installs all bootloader tools depending on the host architecture
+                                to allow setup and install of the bootloader. The pulled in
+                                components are required for any image that is able to boot
+                                through some BIOS or firmware.</para>
+              </listitem>
+              <listitem>
+                <para>Depends on the <literal>-core</literal> kiwi-systemdeps packages.</para>
+              </listitem>
+            </itemizedlist>
+            <note>
+              <para>The <literal>iso</literal> type is an exception which might not require the
+                            <literal>-bootloaders</literal> systemdeps. In case of the <literal>firmware</literal> attribute
+                            to be set to <literal>bios</literal>, KIWI NG builds bootable ISO images still
+                            based on isolinux which is provided with the <literal>-iso-media</literal>
+                            systemdeps. However, by default, any KIWI NG created ISO image
+                            is BIOS and EFI capable and based on the grub bootloader which
+                            causes a requirement to the <literal>-bootloaders</literal> systemdeps.</para>
+            </note>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><literal>kiwi-systemdeps-filesystems</literal>:</term>
+          <listitem>
+            <itemizedlist>
+              <listitem>
+                <para>Supports building <literal>fs-type</literal>, <literal>oem</literal>, <literal>pxe</literal>,
+                                <literal>kis</literal> and live <literal>iso</literal> image types.</para>
+              </listitem>
+              <listitem>
+                <para>Installs all tools to create filesystems supported with KIWI NG.
+                                The pulled in components are needed for any image type that
+                                needs to create a filesystem. This excludes the archive based
+                                image types like <literal>docker</literal>, <literal>appx</literal> or <literal>tbz</literal>. The package also
+                                installs tools one level below the actual filesystem creation
+                                toolkit. These are components to manage loop devices as well
+                                as partition table setup and subsystem support like LVM and LUKS.</para>
+              </listitem>
+              <listitem>
+                <para>Depends on the <literal>-core</literal> kiwi-systemdeps packages.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><literal>kiwi-systemdeps-disk-images</literal>:</term>
+          <listitem>
+            <itemizedlist>
+              <listitem>
+                <para>Supports building the <literal>oem</literal> image type.</para>
+              </listitem>
+              <listitem>
+                <para>Installs all tools to create virtual disks. In KIWI NG, virtual disks
+                                are created using the QEMU toolchain.</para>
+              </listitem>
+              <listitem>
+                <para>Depends on the <literal>-filesystems</literal> and <literal>-bootloaders</literal> kiwi-systemdeps
+                                packages.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><literal>kiwi-systemdeps-image-validation</literal>:</term>
+          <listitem>
+            <itemizedlist>
+              <listitem>
+                <para>Installs the <literal>jing</literal> tool to validate the image description. This is
+                                useful for detailed error reports from KIWI NG in case of an image
+                                description validation error. In addition, the <literal>anymarkup</literal> Python
+                                module is installed if the the option to install recommended packages
+                                is set. With <literal>anymarkup</literal> available, KIWI NG can also handle image
+                                descriptions in another format than the XML markup, like YAML.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <para>Depending on the image type the kiwi-systemdeps packages can help
+            to setup the host system quickly for the task to build an image.
+            In case the host should support <emphasis>everything</emphasis> there is also the
+            main <literal>kiwi-systemdeps</literal> package which has a dependency on all other
+            existing systemdeps packages.</para>
+      <note>
+        <para>Pulling in all <literal>kiwi-systemdeps</literal> packages can result in quite
+                some packages to become installed on the host. This is because
+                the required packages itself comes with a number of dependencies
+                like java for jing as one example.</para>
+      </note>
+    </section>
     <section xml:id="repositories" xml:base="concept_and_workflow/repository_setup">
       <title>Setting up Repositories</title>
       <para>A crucial part of each appliance is the repository
@@ -2644,8 +2804,10 @@ ln -s /etc/machine-id /var/lib/dbus/machine-id</screen>
       <para>KIWI NG supports an additional configuration file for runtime specific
             settings that do not belong into the image description but which are
             persistent and would be unsuitable for command line parameters.</para>
-      <para>The runtime configuration file must adhere to the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://yaml.org/">YAML</link> syntax. KIWI NG searches for the runtime configuration
-            file in the following locations:</para>
+      <para>The runtime configuration file must adhere to the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://yaml.org/">YAML</link> syntax and can be provided via the global
+            <literal>--config</literal> option at call time of KIWI NG. If no config file is
+            provided at the commandline, KIWI NG searches for the runtime
+            configuration file in the following locations:</para>
       <procedure>
         <step>
           <para>
@@ -8834,6 +8996,13 @@ $ git remote add upstream https://github.com/OSInside/kiwi.git</screen>
           <listitem>
             <para>A full LaTeX installation is required to build the PDF documentation
                             .</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Host Requirements To Build Images</term>
+          <listitem>
+            <para>A full set of tools needed to build images and provided by
+                            the <literal>kiwi-systemdeps</literal> package</para>
           </listitem>
         </varlistentry>
       </variablelist>
