@@ -6850,151 +6850,6 @@ system_info:
             Google Compute Engine cloud and registered as image. For further information
             on how to upload to Google see: <literal>google-cloud-sdk</literal> on software.opensuse.org</para>
     </section>
-    <section xml:id="network-boot-server" xml:base="working_with_images/setup_network_bootserver">
-      <title>Setting Up a Network Boot Server</title>
-      <formalpara role="sidebar">
-        <title>Abstract</title>
-        <para>This page provides general information how to setup
-                a network boot server that provides all services
-                needed for the PXE boot protocol</para>
-      </formalpara>
-      <para>To be able to deploy a system through the PXE boot protocol, you need
-            to set up a network boot server providing the services DHCP and tftp.
-            With <literal>dnsmasq</literal> an utility exists which allows to setup all needed
-            services at once:</para>
-      <section xml:id="installing-and-configuring-dhcp-and-tftp-with-dnsmasq">
-        <title>Installing and Configuring DHCP and TFTP with dnsmasq</title>
-        <para>The following instructions can only serve as an example. Depending on your
-                network structure, the IP addresses, ranges and domain settings needs to
-                be adapted to allow the DHCP server to work within your network. If you
-                already have a DHCP server running in your network, make sure that the
-                <literal>filename</literal> and <literal>next-server</literal> directives are correctly set on this server.</para>
-        <para>The following steps describe how to set up dnsmasq to work as
-                DHCP and TFTP server.</para>
-        <procedure>
-          <step>
-            <para>Install the <literal>dnsmasq</literal> package.</para>
-          </step>
-          <step>
-            <para>Create the file <literal>/etc/dnsmasq.conf</literal> and insert the following content</para>
-            <screen language="bash"># Don't function as a DNS server.
-port=0
-
-# Log information about DHCP transactions.
-log-dhcp
-
-# Set the root directory for files available via FTP,
-# usually "/srv/tftpboot":
-tftp-root=TFTP_ROOT_DIR
-
-enable-tftp
-
-dhcp-range=BOOT_SERVER_IP,proxy</screen>
-            <para>In the next step it’s required to decide for the boot method. There
-                        is the PXE loader provided via pxelinux.0 from the syslinux package
-                        and there is the GRUB loader provided via the grub package.</para>
-            <note>
-              <para>Placeholders</para>
-              <para>Replace all placeholders (written in uppercase) with data fitting
-                            your network setup.</para>
-            </note>
-          </step>
-        </procedure>
-        <para>2.1. insert the following content to use pxelinux.0:</para>
-        <screen language="bash"># The boot filename, Server name, Server Ip Address
-dhcp-boot=pxelinux.0,,BOOT_SERVER_IP
-
-# Disable re-use of the DHCP servername and filename fields as extra
-# option space. That's to avoid confusing some old or broken
-# DHCP clients.
-dhcp-no-override
-
-# PXE menu.  The first part is the text displayed to the user.
-# The second is the timeout, in seconds.
-pxe-prompt="Booting FOG Client", 1
-
-# The known types are x86PC, PC98, IA64_EFI, Alpha, Arc_x86,
-# Intel_Lean_Client, IA32_EFI, BC_EFI, Xscale_EFI and X86-64_EFI
-# This option is first and will be the default if there is no input
-# from the user.
-pxe-service=X86PC, "Boot to FOG", pxelinux.0
-pxe-service=X86-64_EFI, "Boot to FOG UEFI", ipxe
-pxe-service=BC_EFI, "Boot to FOG UEFI PXE-BC", ipxe</screen>
-        <note>
-          <para>On boot of a network client with that configuration the default
-                        pxelinux.0 config file is expected at
-                        <literal>TFTP_ROOT_DIR/pxelinux.cfg/default</literal></para>
-        </note>
-        <para>2.2. insert the following content to use grub:</para>
-        <screen language="bash"># The boot filename, Server name, Server Ip Address
-dhcp-boot=boot/grub2/i386-pc/core.0,,BOOT_SERVER_IP</screen>
-        <para>When using grub the referenced dhcp-boot grub module must be genereated.
-                    To do this change the directory to <literal>TFTP_ROOT_DIR</literal> and create
-                    the <literal>setvars.conf</literal> with the following content:</para>
-        <screen language="bash">set root=(tftp)
-set net_default_server=BOOT_SERVER_IP
-set prefix=boot/grub2</screen>
-        <para>Now call the following commands to create the grub module</para>
-        <screen language="bash">$ grub2-mknetdir --net-directory=TFTP_ROOT_DIR --subdir=boot/grub2
-$ grub2-mkimage -O i386-pc-pxe \
-    --output boot/grub2/i386-pc/core.0 \
-    --prefix=/boot/grub2 \
-    -c setvars.conf \
-  pxe tftp</screen>
-        <note>
-          <para>On boot of a network client with that configuration the grub
-                        config file is expected at <literal>TFTP_ROOT_DIR/boot/grub2/grub.cfg</literal></para>
-        </note>
-        <procedure>
-          <step>
-            <para>Run the dnsmasq server by calling:</para>
-            <screen language="bash">systemctl start dnsmasq</screen>
-          </step>
-        </procedure>
-      </section>
-    </section>
-    <section xml:id="yast-on-boot" xml:base="working_with_images/setup_yast_on_first_boot">
-      <title>Setting Up YaST at First Boot</title>
-      <formalpara role="sidebar">
-        <title>Abstract</title>
-        <para>This page provides information how to setup the KIWI NG
-                XML description to start the SUSE YaST system setup
-                utility at first boot of the image</para>
-      </formalpara>
-      <para>To be able to use YaST in a non interactive way, create a
-            YaST profile which tells the autoyast module what to do.
-            To create the profile, run:</para>
-      <screen language="bash">yast autoyast</screen>
-      <para>Once the YaST profile exists, update the KIWI NG XML description
-            as follows:</para>
-      <procedure>
-        <step>
-          <para>Edit the KIWI NG XML file and add the following package to
-                    the <literal>&lt;packages type="image"&gt;</literal> section:</para>
-          <screen language="xml">&lt;package name="yast2-firstboot"/&gt;</screen>
-        </step>
-        <step>
-          <para>Copy the YaST profile file as overlay file to your KIWI NG image
-                    description overlay directory:</para>
-          <screen language="bash">cd IMAGE_DESCRIPTION_DIRECTORY
-mkdir -p root/etc/YaST2
-cp PROFILE_FILE root/etc/YaST2/firstboot.xml</screen>
-        </step>
-        <step>
-          <para>Copy and activate the YaST firstboot template.
-                    This is done by the following instructions which needs to be written
-                    into the KIWI NG <literal>config.sh</literal> which is stored in the image
-                    description directory:</para>
-          <screen language="bash">sysconfig_firsboot=/etc/sysconfig/firstboot
-sysconfig_template=/var/adm/fillup-templates/sysconfig.firstboot
-if [ ! -e "${sysconfig_firsboot}" ]; then
-    cp "${sysconfig_template}" "${sysconfig_firsboot}"
-fi
-
-touch /var/lib/YaST2/reconfig_system</screen>
-        </step>
-      </procedure>
-    </section>
     <section xml:id="setup-vagrant" xml:base="working_with_images/disk_setup_for_vagrant">
       <title>Image Description for Vagrant</title>
       <formalpara role="sidebar">
@@ -7224,108 +7079,75 @@ vagrant ssh</screen>
  &lt;/image&gt;</screen>
       </section>
     </section>
-    <section xml:id="network-live-boot" xml:base="working_with_images/network_live_iso_boot">
-      <title>Booting a Live ISO Image from Network</title>
+    <section xml:id="setup-for-luks" xml:base="working_with_images/disk_setup_for_luks">
+      <title>Image Description Encrypted Disk</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
         <para>This page provides further information for handling
-                ISO images built with KIWI NG and references the following
-                articles:</para>
+                disk images with an encrypted root filesystem setup.
+                The information here is based on top of the following
+                article:</para>
       </formalpara>
       <itemizedlist>
         <listitem>
           <para>
-            <xref linkend="hybrid-iso"/>
+            <xref linkend="simple-disk"/>
           </para>
         </listitem>
       </itemizedlist>
-      <para>In KIWI NG, live ISO images can be configured to boot via the
-            PXE boot protocol. This functionality requires a network boot
-            server setup on the system. Details how to setup such a server
-            can be found in <xref linkend="network-boot-server"/>.</para>
-      <para>After the live ISO was built as shown in <xref linkend="hybrid-iso"/>,
-            the following configuration steps are required to boot from
-            the network:</para>
+      <para>A virtual disk image can be partially or fully encrypted
+            using the LUKS extension supported by KIWI NG. A fully encrypted
+            image also includes the data in <literal>/boot</literal> to be encrypted.
+            Such an image requests the passphrase for the master key
+            to be entered at the bootloader stage. A partialy encrypted
+            image keeps <literal>/boot</literal> unencrypted and on an extra boot partition.
+            Such an image requests the passphrase for the master key later
+            in the boot process when the root partition gets accessed by
+            the systemd mount service. In any case the master passphrase
+            is requested only once.</para>
+      <para>Update the KIWI NG image description as follows:</para>
       <procedure>
         <step>
-          <para>Extract initrd/kernel From Live ISO</para>
-          <para>The PXE boot process loads the configured kernel and initrd from
-                    the PXE server. For this reason, those two files must be extracted
-                    from the live ISO image and copied to the PXE server as follows:</para>
-          <screen language="bash">$ mount Leap-15.1_appliance.x86_64-1.15.1.iso /mnt
-$ cp /mnt/boot/x86_64/loader/initrd /srv/tftpboot/boot/initrd
-$ cp /mnt/boot/x86_64/loader/linux /srv/tftpboot/boot/linux
-$ umount /mnt</screen>
+          <para>Software packages</para>
+          <para>Make sure to add the following package to the package list</para>
           <note>
-            <para>This step must be repeated with any new build of the live ISO image</para>
+            <para>Package names used in the following list match the
+                        package names of the SUSE distribution and might be different
+                        on other distributions.</para>
           </note>
+          <screen language="xml">&lt;package name="cryptsetup"/&gt;</screen>
         </step>
         <step>
-          <para>Export Live ISO To The Network</para>
-          <para>Access to the live ISO file is implemented using the AoE protocol
-                    in KIWI NG. This requires the export of the live ISO file as remote
-                    block device which is typically done with the <command>vblade</command>
-                    toolkit. Install the following package on the system which is
-                    expected to export the live ISO image:</para>
-          <screen language="bash">$ zypper in vblade</screen>
+          <para>Image Type definition</para>
+          <para>Update the oem image type setup as follows</para>
+          <variablelist>
+            <varlistentry>
+              <term>Full disk encryption including <literal>/boot</literal>:</term>
+              <listitem>
+                <screen language="xml">&lt;type image="oem" filesystem="ext4" luks="linux" bootpartition="false"&gt;
+    &lt;oemconfig&gt;
+        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+    &lt;/oemconfig&gt;
+&lt;/type&gt;</screen>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>Encrypted root partition with an unencrypted extra <literal>/boot</literal> partition:</term>
+              <listitem>
+                <screen language="xml">&lt;type image="oem" filesystem="ext4" luks="linux" bootpartition="true"&gt;
+    &lt;oemconfig&gt;
+        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+    &lt;/oemconfig&gt;
+&lt;/type&gt;</screen>
+              </listitem>
+            </varlistentry>
+          </variablelist>
           <note>
-            <para>Not all versions of AoE are compatible with any kernel. This
-                        means the kernel on the system exporting the live ISO image
-                        must provide a compatible aoe kernel module compared to the
-                        kernel used in the live ISO image.</para>
+            <para>The value for the <literal>luks</literal> attribute sets the master passphrase
+                        for the LUKS keyring. Therefore the XML description becomes
+                        security critical and should only be readable by trustworthy
+                        people</para>
           </note>
-          <para>Once done, export the live ISO image as follows:</para>
-          <screen language="bash">$ vbladed 0 1 INTERFACE Leap-15.1_appliance.x86_64-1.15.1.iso</screen>
-          <para>The above command exports the given ISO file as a block storage
-                    device to the network of the given INTERFACE. On any machine
-                    except the one exporting the file, it will appear as
-                    <literal>/dev/etherd/e0.1</literal> once the <command>aoe</command> kernel module
-                    was loaded. The two numbers, 0 and 1 in the above example, classifies
-                    a major and minor number which is used in the device node name
-                    on the reading side, in this case <literal>e0.1</literal>. The numbers given
-                    at export time must match the AOEINTERFACE name as described in
-                    the next step.</para>
-          <note>
-            <para>Only machines in the same network of the given INTERFACE
-                        can see the exported live ISO image. If virtual machines
-                        are the target to boot the live ISO image they could all
-                        be connected through a bridge. In this case INTERFACE
-                        is the bridge device. The availability scope of the live
-                        ISO image on the network is in general not influenced
-                        by KIWI NG and is a task for the network administrators.</para>
-          </note>
-        </step>
-        <step>
-          <para>Setup live ISO boot entry in PXE configuration</para>
-          <note>
-            <para>The following step assumes that the pxelinux.0 loader
-                        has been configured on the boot server to boot up network
-                        clients</para>
-          </note>
-          <para>Edit the file <literal>/srv/tftpboot/pxelinux.cfg/default</literal> and create
-                    a boot entry of the form:</para>
-          <screen language="bash">LABEL Live-Boot
-    kernel boot/linux
-    append initrd=boot/initrd rd.kiwi.live.pxe root=live:AOEINTERFACE=e0.1</screen>
-          <itemizedlist>
-            <listitem>
-              <para>The boot parameter <literal>rd.kiwi.live.pxe</literal> tells the KIWI NG boot process to
-                            setup the network and to load the required <literal>aoe</literal> kernel module.</para>
-            </listitem>
-            <listitem>
-              <para>The boot parameter <literal>root=live:AOEINTERFACE=e0.1</literal> specifies the
-                            interface name as it was exported by the <command>vbladed</command> command
-                            from the last step. Currently only AoE (Ata Over Ethernet)
-                            is supported.</para>
-            </listitem>
-          </itemizedlist>
-        </step>
-        <step>
-          <para>Boot from the Network</para>
-          <para>Within the network which has access to the PXE server and the
-                    exported live ISO image, any network client can now boot the
-                    live system. A test based on QEMU is done as follows:</para>
-          <screen language="bash">$ qemu -boot n</screen>
         </step>
       </procedure>
     </section>
@@ -7620,462 +7442,107 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
         </listitem>
       </itemizedlist>
     </section>
-    <section xml:id="custom-fstab-extension" xml:base="working_with_images/custom_fstab_extension">
-      <title>Add or Update the Fstab File</title>
+    <section xml:id="network-boot-server" xml:base="working_with_images/setup_network_bootserver">
+      <title>Setting Up a Network Boot Server</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
-        <para>This page provides further information for customizing
-                the <literal>/etc/fstab</literal> file which controls the mounting of
-                filesystems at boot time.</para>
+        <para>This page provides general information how to setup
+                a network boot server that provides all services
+                needed for the PXE boot protocol</para>
       </formalpara>
-      <para>In KIWI NG, all major filesystems that were created at image
-            build time are handled by KIWI NG itself and setup in <literal>/etc/fstab</literal>.
-            Thus there is usually no need to add entries or change the
-            ones added by KIWI NG. However depending on where the image is
-            deployed later it might be required to pre-populate fstab
-            entries that are unknown at the time the image is build.</para>
-      <para>Possible use cases are for example:</para>
-      <itemizedlist>
-        <listitem>
-          <para>Adding NFS locations that should be mounted at boot time.
-                    Using autofs would be an alternative to avoid additional
-                    entries to fstab. The information about the NFS location
-                    will make this image specific to the target network. This
-                    will be independent of the mount method, either fstab or
-                    the automount map has to provide it.</para>
-        </listitem>
-        <listitem>
-          <para>Adding or changing entries in a read-only root system
-                    which becomes effective on first boot but can’t be added
-                    at that time because of the read-only characteristics.</para>
-        </listitem>
-      </itemizedlist>
-      <note>
-        <para>Modifications to the fstab file are a critical change. If
-                done wrongly the risk exists that the system will not boot.
-                In addition this type of modification makes the image
-                specific to its target and creates a dependency to the
-                target hardware, network, etc… Thus this feature should
-                be used with care.</para>
-      </note>
-      <para>The optimal way to provide custom fstab information is through a
-            package. If this can’t be done the files can also be provided via
-            the overlay file tree of the image description.</para>
-      <para>KIWI NG supports three ways to modify the contents of the <literal>/etc/fstab</literal>
-            file:</para>
-      <variablelist>
-        <varlistentry>
-          <term>Providing an <literal>/etc/fstab.append</literal> file</term>
-          <listitem>
-            <para>If that file exists in the image root tree, KIWI NG will take its
-                        contents and append it to the existing <literal>/etc/fstab</literal> file. The
-                        provided <literal>/etc/fstab.append</literal> file will be deleted after successful
-                        modification.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Providing an <literal>/etc/fstab.patch</literal> file</term>
-          <listitem>
-            <para>The <literal>/etc/fstab.patch</literal> represents a patch file that will be
-                        applied to <literal>/etc/fstab</literal> using the <literal>patch</literal> program. This method
-                        also allows to change the existing contents of <literal>/etc/fstab</literal>.
-                        On success <literal>/etc/fstab.patch</literal> will be deleted.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Providing an <literal>/etc/fstab.script</literal> file</term>
-          <listitem>
-            <para>The <literal>/etc/fstab.script</literal> represents an executable which is called
-                        as chrooted process. This method is the most flexible one and
-                        allows to apply any change. On success <literal>/etc/fstab.script</literal> will be
-                        deleted.</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-      <note>
-        <para>All three variants to handle the fstab file can be used together.
-                Appending happens first, patching afterwards and the script call
-                is last. When using the script call, there is no validation that
-                checks if the script actually handles fstab or any other
-                file in the image rootfs.</para>
-      </note>
-    </section>
-    <section xml:id="setup-for-luks" xml:base="working_with_images/disk_setup_for_luks">
-      <title>Image Description Encrypted Disk</title>
-      <formalpara role="sidebar">
-        <title>Abstract</title>
-        <para>This page provides further information for handling
-                disk images with an encrypted root filesystem setup.
-                The information here is based on top of the following
-                article:</para>
-      </formalpara>
-      <itemizedlist>
-        <listitem>
-          <para>
-            <xref linkend="simple-disk"/>
-          </para>
-        </listitem>
-      </itemizedlist>
-      <para>A virtual disk image can be partially or fully encrypted
-            using the LUKS extension supported by KIWI NG. A fully encrypted
-            image also includes the data in <literal>/boot</literal> to be encrypted.
-            Such an image requests the passphrase for the master key
-            to be entered at the bootloader stage. A partialy encrypted
-            image keeps <literal>/boot</literal> unencrypted and on an extra boot partition.
-            Such an image requests the passphrase for the master key later
-            in the boot process when the root partition gets accessed by
-            the systemd mount service. In any case the master passphrase
-            is requested only once.</para>
-      <para>Update the KIWI NG image description as follows:</para>
-      <procedure>
-        <step>
-          <para>Software packages</para>
-          <para>Make sure to add the following package to the package list</para>
-          <note>
-            <para>Package names used in the following list match the
-                        package names of the SUSE distribution and might be different
-                        on other distributions.</para>
-          </note>
-          <screen language="xml">&lt;package name="cryptsetup"/&gt;</screen>
-        </step>
-        <step>
-          <para>Image Type definition</para>
-          <para>Update the oem image type setup as follows</para>
-          <variablelist>
-            <varlistentry>
-              <term>Full disk encryption including <literal>/boot</literal>:</term>
-              <listitem>
-                <screen language="xml">&lt;type image="oem" filesystem="ext4" luks="linux" bootpartition="false"&gt;
-    &lt;oemconfig&gt;
-        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
-    &lt;/oemconfig&gt;
-&lt;/type&gt;</screen>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>Encrypted root partition with an unencrypted extra <literal>/boot</literal> partition:</term>
-              <listitem>
-                <screen language="xml">&lt;type image="oem" filesystem="ext4" luks="linux" bootpartition="true"&gt;
-    &lt;oemconfig&gt;
-        &lt;oem-resize&gt;false&lt;/oem-resize&gt;
-    &lt;/oemconfig&gt;
-&lt;/type&gt;</screen>
-              </listitem>
-            </varlistentry>
-          </variablelist>
-          <note>
-            <para>The value for the <literal>luks</literal> attribute sets the master passphrase
-                        for the LUKS keyring. Therefore the XML description becomes
-                        security critical and should only be readable by trustworthy
-                        people</para>
-          </note>
-        </step>
-      </procedure>
-    </section>
-    <section xml:id="building-build-with-profiles" xml:base="working_with_images/build_with_profiles">
-      <title>Building Images with Profiles</title>
-      <para>KIWI NG supports so-called <emphasis>profiles</emphasis> inside the XML image description. Profiles
-            act as namespaces for additional settings to be applied on top of the
-            defaults. For further details, see <xref linkend="image-profiles"/>.</para>
-      <section xml:id="local-builds">
-        <title>Local Builds</title>
-        <para>To execute local KIWI NG builds with a specific, selected profile, add the
-                command line flag <literal>--profile=$PROFILE_NAME</literal>:</para>
-        <screen language="shell-session">$ sudo kiwi-ng --type iso --profile=workstation system build \
-      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
-      --target-dir /tmp/myimage</screen>
-        <para>Consult the manual page of <literal>kiwi</literal> for further details:
-                <xref linkend="db-commands-kiwi-synopsis"/>.</para>
-      </section>
-      <section xml:id="building-with-the-open-build-service">
-        <title>Building with the Open Build Service</title>
-        <para>The Open Build Service (OBS) support profiles via the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-user-guide/cha.obs.multibuild.html">multibuild</link>
-                feature. An example project using this feature is the
-                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/package/show/openSUSE:Factory/openSUSE-Tumbleweed">openSUSE-Tumbleweed</link>
-                image.</para>
-        <para>To enable and use the profiles, follow these steps:</para>
+      <para>To be able to deploy a system through the PXE boot protocol, you need
+            to set up a network boot server providing the services DHCP and tftp.
+            With <literal>dnsmasq</literal> an utility exists which allows to setup all needed
+            services at once:</para>
+      <section xml:id="installing-and-configuring-dhcp-and-tftp-with-dnsmasq">
+        <title>Installing and Configuring DHCP and TFTP with dnsmasq</title>
+        <para>The following instructions can only serve as an example. Depending on your
+                network structure, the IP addresses, ranges and domain settings needs to
+                be adapted to allow the DHCP server to work within your network. If you
+                already have a DHCP server running in your network, make sure that the
+                <literal>filename</literal> and <literal>next-server</literal> directives are correctly set on this server.</para>
+        <para>The following steps describe how to set up dnsmasq to work as
+                DHCP and TFTP server.</para>
         <procedure>
           <step>
-            <para>Add the following XML comment to your <literal>config.xml</literal>:</para>
-            <screen language="xml">&lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;</screen>
-            <para>It must be added before the opening <literal>&lt;image&gt;</literal> element and after the
-                        <literal>&lt;?xml?&gt;</literal> element, e.g.:</para>
-            <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;
-&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
-  &lt;!-- snip --&gt;
-&lt;/image&gt;</screen>
+            <para>Install the <literal>dnsmasq</literal> package.</para>
           </step>
           <step>
-            <para>Add a file <literal>_multibuild</literal> into your package’s repository with the
-                        following contents:</para>
-            <screen language="xml">&lt;multibuild&gt;
-  &lt;flavor&gt;profile_1&lt;/flavor&gt;
-  &lt;flavor&gt;profile_2&lt;/flavor&gt;
-&lt;/multibuild&gt;</screen>
-            <para>Add a line <literal>&lt;flavor&gt;$PROFILE&lt;/flavor&gt;</literal> for each profile that
-                        you want OBS to build.</para>
+            <para>Create the file <literal>/etc/dnsmasq.conf</literal> and insert the following content</para>
+            <screen language="bash"># Don't function as a DNS server.
+port=0
+
+# Log information about DHCP transactions.
+log-dhcp
+
+# Set the root directory for files available via FTP,
+# usually "/srv/tftpboot":
+tftp-root=TFTP_ROOT_DIR
+
+enable-tftp
+
+dhcp-range=BOOT_SERVER_IP,proxy</screen>
+            <para>In the next step it’s required to decide for the boot method. There
+                        is the PXE loader provided via pxelinux.0 from the syslinux package
+                        and there is the GRUB loader provided via the grub package.</para>
+            <note>
+              <para>Placeholders</para>
+              <para>Replace all placeholders (written in uppercase) with data fitting
+                            your network setup.</para>
+            </note>
           </step>
         </procedure>
-        <para>Note, by default, OBS excludes the build <emphasis role="bold">without</emphasis> any profile
-                enabled.</para>
-        <para>Running a build of a multibuild enabled repository via <literal>osc</literal> can be
-                achieved via the <literal>-M $PROFILE</literal> flag:</para>
-        <screen language="shell-session">$ osc build -M $PROFILE</screen>
-      </section>
-    </section>
-    <section xml:id="building-in-the-open-build-service" xml:base="working_with_images/build_in_buildservice">
-      <title>Building in the Open Build Service</title>
-      <note>
-        <para>
-          <emphasis role="bold">Abstract</emphasis>
-        </para>
-        <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.23.16 inside of the Open Build Service.
-                A tutorial on the Open Buildservice itself can be found here:
-                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
-      </note>
-      <para>The next generation KIWI NG is fully integrated with the Open Build Service.
-            In order to start it’s best to checkout one of the integration test
-            image build projects from the base Testing project
-            <literal>Virtualization:Appliances:Images:Testing_$ARCH:$DISTRO</literal> at:</para>
-      <para>
-        <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org"/>
-      </para>
-      <para>For example the test images for SUSE on x86 can be found <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:suse">here</link>.</para>
-      <section xml:id="advantages-of-using-the-open-build-service-obs">
-        <title>Advantages of using the Open Build Service (OBS)</title>
-        <para>The Open Build Service offers multiple advantages over running KIWI NG
-                locally:</para>
-        <itemizedlist>
-          <listitem>
-            <para>OBS will host the latest successful build for you without having to setup
-                        a server yourself.</para>
-          </listitem>
-          <listitem>
-            <para>As KIWI NG is fully integrated into OBS, OBS will automatically rebuild your
-                        images if one of the included packages or one of its dependencies or KIWI NG
-                        itself get updated.</para>
-          </listitem>
-          <listitem>
-            <para>The builds will no longer have to be executed on your own machine, but
-                        will run on OBS, thereby saving you resources. Nevertheless, if a build
-                        fails, you get a notification via email (if enabled in your user’s
-                        preferences).</para>
-          </listitem>
-        </itemizedlist>
-      </section>
-      <section xml:id="differences-between-building-locally-and-on-obs">
-        <title>Differences Between Building Locally and on OBS</title>
-        <para>Note, there is a number of differences when building images with KIWI NG using
-                the Open Build Service. Your image that build locally just fine, might not
-                build without modifications.</para>
-        <para>The notable differences to running KIWI NG locally include:</para>
-        <itemizedlist>
-          <listitem>
-            <para>OBS will pick the KIWI NG package from the repositories configured in your
-                        project, which will most likely not be the same version that you are
-                        running locally.
-                        This is especially relevant when building images for older versions like
-                        SUSE Linux Enterprise. Therefore, include the custom appliances
-                        repository as described in the following section:
-                        <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#obs-recommended-settings">Recommendations</link>.</para>
-          </listitem>
-          <listitem>
-            <para>When KIWI NG runs on OBS, OBS will extract the list of packages from
-                        <literal>config.xml</literal> and use it to create a build root. In contrast to a
-                        local build (where your distributions package manager will resolve the
-                        dependencies and install the packages), OBS will <emphasis role="bold">not</emphasis> build your image
-                        if there are multiple packages that could be chosen to satisfy the
-                        dependencies of your packages . This shows errors like this:</para>
-            <screen language="bash">unresolvable: have choice for SOMEPACKAGE: SOMEPAKAGE_1 SOMEPACKAGE_2</screen>
-            <para>This can be solved by explicitly specifying one of the two packages in
-                        the project configuration via the following setting:</para>
-            <screen language="bash">Prefer: SOMEPACKAGE_1</screen>
-            <para>Place the above line into the project configuration, which can be
-                        accessed either via the web interface (click on the tab <literal>Project
-Config</literal> on your project’s main page) or via <literal>osc meta -e prjconf</literal>.</para>
-            <warning>
-              <para>We strongly encourage you to remove your repositories from
-                            <literal>config.xml</literal> and move them to the repository configuration in
-                            your project’s settings. This usually prevents the issue of having the
-                            choice for multiple package version and results in a much smoother
-                            experience when using OBS.</para>
-            </warning>
-          </listitem>
-          <listitem>
-            <para>By default, OBS builds only a single build type and the default
-                        profile. If your appliance uses multiple build types, put
-                        each build type into a profile, as OBS cannot handle multiple build
-                        types.</para>
-            <para>There are two options to build multiple profiles on OBS:</para>
-            <procedure>
-              <step>
-                <para>Use the <literal>&lt;image&gt;</literal> element and add it bellow the XML
-                                declaration (<literal>&lt;?xml ..?&gt;</literal>):</para>
-                <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+        <para>2.1. insert the following content to use pxelinux.0:</para>
+        <screen language="bash"># The boot filename, Server name, Server Ip Address
+dhcp-boot=pxelinux.0,,BOOT_SERVER_IP
 
-&lt;!-- OBS-Profiles: foo_profile bar_profile --&gt;
+# Disable re-use of the DHCP servername and filename fields as extra
+# option space. That's to avoid confusing some old or broken
+# DHCP clients.
+dhcp-no-override
 
-&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
-  &lt;!-- image description with the profiles foo_profile and bar_profile
-&lt;/image&gt;</screen>
-              </step>
-              <step>
-                <para>Use the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-user-guide/cha.obs.multibuild.html">multibuild</link> feature.</para>
-              </step>
-            </procedure>
-            <para>The first option is simpler to use, but has the disadvantage that your
-                        appliances are built sequentially. The <literal>multibuild</literal> feature allows to
-                        build each profile as a single package, thereby enabling parallel execution,
-                        but requires an additional <literal>_multibuild</literal> file. For the above example
-                        <literal>config.xml</literal> would have to be adapted as follows:</para>
-            <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+# PXE menu.  The first part is the text displayed to the user.
+# The second is the timeout, in seconds.
+pxe-prompt="Booting FOG Client", 1
 
-&lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;
-
-&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
-  &lt;!-- image description with the profiles foo_profile and bar_profile
-&lt;/image&gt;</screen>
-            <para>The file <literal>_multibuild</literal> would have the following contents:</para>
-            <screen language="xml">&lt;multibuild&gt;
-  &lt;flavor&gt;foo_profile&lt;/flavor&gt;
-  &lt;flavor&gt;bar_profile&lt;/flavor&gt;
-&lt;/multibuild&gt;</screen>
-          </listitem>
-          <listitem>
-            <para>Subfolders in OBS projects are ignored by default by <command>osc</command> and
-                        must be explicitly added via <command>osc add $FOLDER</command>. Bear that
-                        in mind when adding the overlay files inside the <literal>root/</literal> directory
-                        to your project.</para>
-          </listitem>
-          <listitem>
-            <para>OBS ignores file permissions. Therefore <literal>config.sh</literal> and
-                        <literal>images.sh</literal> will <emphasis role="bold">always</emphasis> be executed through BASH (see also:
-                        <xref linkend="working-with-kiwi-user-defined-scripts"/>).</para>
-          </listitem>
-        </itemizedlist>
-      </section>
-      <section xml:id="obs-recommended-settings">
-        <title>Recommendations</title>
-        <section xml:id="working-with-obs">
-          <title>Working with OBS</title>
-          <para>Although OBS is an online service, it is not necessary to test every change
-                    by uploading it. OBS will use the same process as <literal>osc build</literal> does, so if
-                    your image builds locally via <literal>osc build</literal> it should also build online on
-                    OBS.</para>
-        </section>
-        <section xml:id="repository-configuration">
-          <title>Repository Configuration</title>
-          <para>When setting up the project, enable the <literal>images</literal> repository: the <literal>images</literal>
-                    repository’s checkbox can be found at the bottom of the selection screen
-                    that appears when clicking <literal>Add from a Distribution</literal> in the <literal>Repositories</literal>
-                    tab. Or specify it manually in the project configuration (it can be
-                    accessed via <literal>osc meta -e prj</literal>):</para>
-          <screen language="xml">&lt;repository name="images"&gt;
-  &lt;arch&gt;x86_64&lt;/arch&gt;
-&lt;/repository&gt;</screen>
-          <para>Furthermore, OBS requires additional repositories from which it obtains
-                    your dependent packages. These repositories can be provided in two ways:</para>
-          <procedure>
-            <step>
-              <para>Add the repositories to the project configuration on OBS and omit them
-                            from <literal>config.xml</literal>. Provide only the following repository inside
-                            the image description:</para>
-              <screen language="xml">&lt;repository type="rpm-md"&gt;
-  &lt;source path="obsrepositories:/"/&gt;
-&lt;/repository&gt;</screen>
-              <para>This instructs OBS to inject the repositories from your project into
-                            your appliance.</para>
-              <para>Additional repositories can be added by invoking <literal>osc meta -e prj</literal> and
-                            adding a line of the following form as a child of <literal>&lt;repository
-name="images"&gt;</literal>:</para>
-              <screen language="xml">&lt;path project="$OBS_PROJECT" repository="$REPOSITORY_NAME"/&gt;</screen>
-              <para>The order in which you add repositories matters: if a package is present
-                            in multiple repositories, then it is taken from the <emphasis role="bold">first</emphasis>
-                            repository. The <emphasis role="bold">last</emphasis> repository is subject to path expansion: its
-                            repository paths are included as well.</para>
-              <para>Don’t forget to add the repository from the
-                            <literal>Virtualization:Appliances:Builder</literal> project, providing the latest stable
-                            version of KIWI NG (which you are very likely using for your local builds).</para>
-              <para>The following example repository configuration  adds the
-                            repositories from the <literal>Virtualization:Appliances:Builder</literal> project and
-                            those from the latest snapshot of openSUSE Tumbleweed:</para>
-              <screen language="xml">&lt;project name="Virtualization:Appliances:Images:openSUSE-Tumbleweed"&gt;
-  &lt;title&gt;Tumbleweed JeOS images&lt;/title&gt;
-  &lt;description&gt;Host JeOS images for Tumbleweed&lt;/description&gt;
-  &lt;repository name="images"&gt;
-    &lt;path project="Virtualization:Appliances:Builder" repository="Factory"/&gt;
-    &lt;path project="openSUSE:Factory" repository="snapshot"/&gt;
-    &lt;arch&gt;x86_64&lt;/arch&gt;
-  &lt;/repository&gt;
-&lt;/project&gt;</screen>
-              <para>The above can be simplified further using the path expansion of the last
-                            repository to:</para>
-              <screen language="xml">&lt;project name="Virtualization:Appliances:Images:openSUSE-Tumbleweed"&gt;
-  &lt;title&gt;Tumbleweed JeOS images&lt;/title&gt;
-  &lt;description&gt;Host JeOS images for Tumbleweed&lt;/description&gt;
-  &lt;repository name="images"&gt;
-    &lt;path project="Virtualization:Appliances:Builder" repository="Factory"/&gt;
-    &lt;arch&gt;x86_64&lt;/arch&gt;
-  &lt;/repository&gt;
-&lt;/project&gt;</screen>
-              <para>Now <literal>Virtualization:Appliances:Builder</literal> is the last repository, which’
-                            repositories are included into the search path. As
-                            <literal>openSUSE:Factory/snapshot</literal> is among these, it can be omitted from the
-                            repository list.</para>
-            </step>
-            <step>
-              <para>Keep the repositories in your <literal>config.xml</literal> configuration file. If
-                            you have installed the latest stable KIWI NG as described in
-                            <xref linkend="kiwi-installation"/> then you should add the following repository to
-                            your projects configuration (accessible via <command>osc meta -e
-                                prjconf</command>), so that OBS will pick the latest stable KIWI NG version too:</para>
-              <screen language="xml">&lt;repository name="images"&gt;
-  &lt;path project="Virtualization:Appliances:Builder" repository="$DISTRO"/&gt;
-  &lt;arch&gt;x86_64&lt;/arch&gt;
-&lt;/repository&gt;</screen>
-              <para>Replace <literal>$DISTRO</literal> with the appropriate name for the distribution that
-                            you are currently building and optionally adjust the architecture.</para>
-            </step>
-          </procedure>
-          <para>We recommend to use the first method, as it integrates better into
-                    OBS. Note that your image description will then no longer build outside of
-                    OBS though. If building locally is required, use the second method.</para>
-          <warning>
-            <para>Adding the repositories to project’s configuration makes it impossible
-                        to build images for different distributions from the same project.</para>
-            <para>Since the repositories are added for every package in your project, all
-                        your image builds will share the same repositories, thereby resulting in
-                        conflicts for different distributions.</para>
-            <para>We recommend to create a separate project for each distribution. If that
-                        is impossible, you can keep all your repositories (including
-                        <literal>Virtualization:Appliances:Builder</literal>) in <literal>config.xml</literal>. That however
-                        usually requires a large number of workarounds via <literal>Prefer:</literal> settings in
-                        the project configuration and is thus <emphasis role="bold">not</emphasis> recommended.</para>
-          </warning>
-        </section>
-        <section xml:id="project-configuration">
-          <title>Project Configuration</title>
-          <para>The Open Build Service will by default create the same output file as KIWI NG
-                    when run locally, but with a custom filename ending (that is unfortunately
-                    unpredictable). This has the consequence that the download URL of your
-                    image will change with every rebuild (and thus break automated
-                    scripts). OBS can create symbolic links with static names to the latest
-                    build by adding the following line to the project configuration:</para>
-          <screen language="bash">Repotype: staticlinks</screen>
-          <para>If build Vagrant images (see <xref linkend="setup-vagrant"/>) add the repository-type
-                    <literal>vagrant</literal>. OBS creates a <literal>boxes/</literal> subdirectory in your download
-                    repositories, which contains JSON files for Vagrant .</para>
-          <para>If you have added your repositories to <literal>config.xml</literal>, you probably see
-                    errors of the following type:</para>
-          <screen language="bash">unresolvable: have choice for SOMEPACKAGE: SOMEPAKAGE_1 SOMEPACKAGE_2</screen>
-          <para>Instead of starting from scratch and manually adding <literal>Prefer:</literal> statements
-                    to the project configuration, we recommend to copy the current project
-                    configuration of the testing project
-                    <literal>Virtualization:Appliances:Images:Testing_$ARCH:$DISTRO</literal> into your own project.
-                    It provides a good starting point and can be adapted to your OBS project.</para>
-        </section>
+# The known types are x86PC, PC98, IA64_EFI, Alpha, Arc_x86,
+# Intel_Lean_Client, IA32_EFI, BC_EFI, Xscale_EFI and X86-64_EFI
+# This option is first and will be the default if there is no input
+# from the user.
+pxe-service=X86PC, "Boot to FOG", pxelinux.0
+pxe-service=X86-64_EFI, "Boot to FOG UEFI", ipxe
+pxe-service=BC_EFI, "Boot to FOG UEFI PXE-BC", ipxe</screen>
+        <note>
+          <para>On boot of a network client with that configuration the default
+                        pxelinux.0 config file is expected at
+                        <literal>TFTP_ROOT_DIR/pxelinux.cfg/default</literal></para>
+        </note>
+        <para>2.2. insert the following content to use grub:</para>
+        <screen language="bash"># The boot filename, Server name, Server Ip Address
+dhcp-boot=boot/grub2/i386-pc/core.0,,BOOT_SERVER_IP</screen>
+        <para>When using grub the referenced dhcp-boot grub module must be genereated.
+                    To do this change the directory to <literal>TFTP_ROOT_DIR</literal> and create
+                    the <literal>setvars.conf</literal> with the following content:</para>
+        <screen language="bash">set root=(tftp)
+set net_default_server=BOOT_SERVER_IP
+set prefix=boot/grub2</screen>
+        <para>Now call the following commands to create the grub module</para>
+        <screen language="bash">$ grub2-mknetdir --net-directory=TFTP_ROOT_DIR --subdir=boot/grub2
+$ grub2-mkimage -O i386-pc-pxe \
+    --output boot/grub2/i386-pc/core.0 \
+    --prefix=/boot/grub2 \
+    -c setvars.conf \
+  pxe tftp</screen>
+        <note>
+          <para>On boot of a network client with that configuration the grub
+                        config file is expected at <literal>TFTP_ROOT_DIR/boot/grub2/grub.cfg</literal></para>
+        </note>
+        <procedure>
+          <step>
+            <para>Run the dnsmasq server by calling:</para>
+            <screen language="bash">systemctl start dnsmasq</screen>
+          </step>
+        </procedure>
       </section>
     </section>
     <section xml:id="build-legacy-pxe" xml:base="working_with_images/legacy_netboot_root_filesystem">
@@ -8511,6 +7978,592 @@ $ nbd-server</screen>
           <screen language="bash">$ qemu -boot n</screen>
         </step>
       </procedure>
+    </section>
+    <section xml:id="network-live-boot" xml:base="working_with_images/network_live_iso_boot">
+      <title>Booting a Live ISO Image from Network</title>
+      <formalpara role="sidebar">
+        <title>Abstract</title>
+        <para>This page provides further information for handling
+                ISO images built with KIWI NG and references the following
+                articles:</para>
+      </formalpara>
+      <itemizedlist>
+        <listitem>
+          <para>
+            <xref linkend="hybrid-iso"/>
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>In KIWI NG, live ISO images can be configured to boot via the
+            PXE boot protocol. This functionality requires a network boot
+            server setup on the system. Details how to setup such a server
+            can be found in <xref linkend="network-boot-server"/>.</para>
+      <para>After the live ISO was built as shown in <xref linkend="hybrid-iso"/>,
+            the following configuration steps are required to boot from
+            the network:</para>
+      <procedure>
+        <step>
+          <para>Extract initrd/kernel From Live ISO</para>
+          <para>The PXE boot process loads the configured kernel and initrd from
+                    the PXE server. For this reason, those two files must be extracted
+                    from the live ISO image and copied to the PXE server as follows:</para>
+          <screen language="bash">$ mount Leap-15.1_appliance.x86_64-1.15.1.iso /mnt
+$ cp /mnt/boot/x86_64/loader/initrd /srv/tftpboot/boot/initrd
+$ cp /mnt/boot/x86_64/loader/linux /srv/tftpboot/boot/linux
+$ umount /mnt</screen>
+          <note>
+            <para>This step must be repeated with any new build of the live ISO image</para>
+          </note>
+        </step>
+        <step>
+          <para>Export Live ISO To The Network</para>
+          <para>Access to the live ISO file is implemented using the AoE protocol
+                    in KIWI NG. This requires the export of the live ISO file as remote
+                    block device which is typically done with the <command>vblade</command>
+                    toolkit. Install the following package on the system which is
+                    expected to export the live ISO image:</para>
+          <screen language="bash">$ zypper in vblade</screen>
+          <note>
+            <para>Not all versions of AoE are compatible with any kernel. This
+                        means the kernel on the system exporting the live ISO image
+                        must provide a compatible aoe kernel module compared to the
+                        kernel used in the live ISO image.</para>
+          </note>
+          <para>Once done, export the live ISO image as follows:</para>
+          <screen language="bash">$ vbladed 0 1 INTERFACE Leap-15.1_appliance.x86_64-1.15.1.iso</screen>
+          <para>The above command exports the given ISO file as a block storage
+                    device to the network of the given INTERFACE. On any machine
+                    except the one exporting the file, it will appear as
+                    <literal>/dev/etherd/e0.1</literal> once the <command>aoe</command> kernel module
+                    was loaded. The two numbers, 0 and 1 in the above example, classifies
+                    a major and minor number which is used in the device node name
+                    on the reading side, in this case <literal>e0.1</literal>. The numbers given
+                    at export time must match the AOEINTERFACE name as described in
+                    the next step.</para>
+          <note>
+            <para>Only machines in the same network of the given INTERFACE
+                        can see the exported live ISO image. If virtual machines
+                        are the target to boot the live ISO image they could all
+                        be connected through a bridge. In this case INTERFACE
+                        is the bridge device. The availability scope of the live
+                        ISO image on the network is in general not influenced
+                        by KIWI NG and is a task for the network administrators.</para>
+          </note>
+        </step>
+        <step>
+          <para>Setup live ISO boot entry in PXE configuration</para>
+          <note>
+            <para>The following step assumes that the pxelinux.0 loader
+                        has been configured on the boot server to boot up network
+                        clients</para>
+          </note>
+          <para>Edit the file <literal>/srv/tftpboot/pxelinux.cfg/default</literal> and create
+                    a boot entry of the form:</para>
+          <screen language="bash">LABEL Live-Boot
+    kernel boot/linux
+    append initrd=boot/initrd rd.kiwi.live.pxe root=live:AOEINTERFACE=e0.1</screen>
+          <itemizedlist>
+            <listitem>
+              <para>The boot parameter <literal>rd.kiwi.live.pxe</literal> tells the KIWI NG boot process to
+                            setup the network and to load the required <literal>aoe</literal> kernel module.</para>
+            </listitem>
+            <listitem>
+              <para>The boot parameter <literal>root=live:AOEINTERFACE=e0.1</literal> specifies the
+                            interface name as it was exported by the <command>vbladed</command> command
+                            from the last step. Currently only AoE (Ata Over Ethernet)
+                            is supported.</para>
+            </listitem>
+          </itemizedlist>
+        </step>
+        <step>
+          <para>Boot from the Network</para>
+          <para>Within the network which has access to the PXE server and the
+                    exported live ISO image, any network client can now boot the
+                    live system. A test based on QEMU is done as follows:</para>
+          <screen language="bash">$ qemu -boot n</screen>
+        </step>
+      </procedure>
+    </section>
+    <section xml:id="yast-on-boot" xml:base="working_with_images/setup_yast_on_first_boot">
+      <title>Setting Up YaST at First Boot</title>
+      <formalpara role="sidebar">
+        <title>Abstract</title>
+        <para>This page provides information how to setup the KIWI NG
+                XML description to start the SUSE YaST system setup
+                utility at first boot of the image</para>
+      </formalpara>
+      <para>To be able to use YaST in a non interactive way, create a
+            YaST profile which tells the autoyast module what to do.
+            To create the profile, run:</para>
+      <screen language="bash">yast autoyast</screen>
+      <para>Once the YaST profile exists, update the KIWI NG XML description
+            as follows:</para>
+      <procedure>
+        <step>
+          <para>Edit the KIWI NG XML file and add the following package to
+                    the <literal>&lt;packages type="image"&gt;</literal> section:</para>
+          <screen language="xml">&lt;package name="yast2-firstboot"/&gt;</screen>
+        </step>
+        <step>
+          <para>Copy the YaST profile file as overlay file to your KIWI NG image
+                    description overlay directory:</para>
+          <screen language="bash">cd IMAGE_DESCRIPTION_DIRECTORY
+mkdir -p root/etc/YaST2
+cp PROFILE_FILE root/etc/YaST2/firstboot.xml</screen>
+        </step>
+        <step>
+          <para>Copy and activate the YaST firstboot template.
+                    This is done by the following instructions which needs to be written
+                    into the KIWI NG <literal>config.sh</literal> which is stored in the image
+                    description directory:</para>
+          <screen language="bash">sysconfig_firsboot=/etc/sysconfig/firstboot
+sysconfig_template=/var/adm/fillup-templates/sysconfig.firstboot
+if [ ! -e "${sysconfig_firsboot}" ]; then
+    cp "${sysconfig_template}" "${sysconfig_firsboot}"
+fi
+
+touch /var/lib/YaST2/reconfig_system</screen>
+        </step>
+      </procedure>
+    </section>
+    <section xml:id="custom-fstab-extension" xml:base="working_with_images/custom_fstab_extension">
+      <title>Add or Update the Fstab File</title>
+      <formalpara role="sidebar">
+        <title>Abstract</title>
+        <para>This page provides further information for customizing
+                the <literal>/etc/fstab</literal> file which controls the mounting of
+                filesystems at boot time.</para>
+      </formalpara>
+      <para>In KIWI NG, all major filesystems that were created at image
+            build time are handled by KIWI NG itself and setup in <literal>/etc/fstab</literal>.
+            Thus there is usually no need to add entries or change the
+            ones added by KIWI NG. However depending on where the image is
+            deployed later it might be required to pre-populate fstab
+            entries that are unknown at the time the image is build.</para>
+      <para>Possible use cases are for example:</para>
+      <itemizedlist>
+        <listitem>
+          <para>Adding NFS locations that should be mounted at boot time.
+                    Using autofs would be an alternative to avoid additional
+                    entries to fstab. The information about the NFS location
+                    will make this image specific to the target network. This
+                    will be independent of the mount method, either fstab or
+                    the automount map has to provide it.</para>
+        </listitem>
+        <listitem>
+          <para>Adding or changing entries in a read-only root system
+                    which becomes effective on first boot but can’t be added
+                    at that time because of the read-only characteristics.</para>
+        </listitem>
+      </itemizedlist>
+      <note>
+        <para>Modifications to the fstab file are a critical change. If
+                done wrongly the risk exists that the system will not boot.
+                In addition this type of modification makes the image
+                specific to its target and creates a dependency to the
+                target hardware, network, etc… Thus this feature should
+                be used with care.</para>
+      </note>
+      <para>The optimal way to provide custom fstab information is through a
+            package. If this can’t be done the files can also be provided via
+            the overlay file tree of the image description.</para>
+      <para>KIWI NG supports three ways to modify the contents of the <literal>/etc/fstab</literal>
+            file:</para>
+      <variablelist>
+        <varlistentry>
+          <term>Providing an <literal>/etc/fstab.append</literal> file</term>
+          <listitem>
+            <para>If that file exists in the image root tree, KIWI NG will take its
+                        contents and append it to the existing <literal>/etc/fstab</literal> file. The
+                        provided <literal>/etc/fstab.append</literal> file will be deleted after successful
+                        modification.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Providing an <literal>/etc/fstab.patch</literal> file</term>
+          <listitem>
+            <para>The <literal>/etc/fstab.patch</literal> represents a patch file that will be
+                        applied to <literal>/etc/fstab</literal> using the <literal>patch</literal> program. This method
+                        also allows to change the existing contents of <literal>/etc/fstab</literal>.
+                        On success <literal>/etc/fstab.patch</literal> will be deleted.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Providing an <literal>/etc/fstab.script</literal> file</term>
+          <listitem>
+            <para>The <literal>/etc/fstab.script</literal> represents an executable which is called
+                        as chrooted process. This method is the most flexible one and
+                        allows to apply any change. On success <literal>/etc/fstab.script</literal> will be
+                        deleted.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <note>
+        <para>All three variants to handle the fstab file can be used together.
+                Appending happens first, patching afterwards and the script call
+                is last. When using the script call, there is no validation that
+                checks if the script actually handles fstab or any other
+                file in the image rootfs.</para>
+      </note>
+    </section>
+    <section xml:id="building-build-with-profiles" xml:base="working_with_images/build_with_profiles">
+      <title>Building Images with Profiles</title>
+      <para>KIWI NG supports so-called <emphasis>profiles</emphasis> inside the XML image description. Profiles
+            act as namespaces for additional settings to be applied on top of the
+            defaults. For further details, see <xref linkend="image-profiles"/>.</para>
+      <section xml:id="local-builds">
+        <title>Local Builds</title>
+        <para>To execute local KIWI NG builds with a specific, selected profile, add the
+                command line flag <literal>--profile=$PROFILE_NAME</literal>:</para>
+        <screen language="shell-session">$ sudo kiwi-ng --type iso --profile=workstation system build \
+      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
+      --target-dir /tmp/myimage</screen>
+        <para>Consult the manual page of <literal>kiwi</literal> for further details:
+                <xref linkend="db-commands-kiwi-synopsis"/>.</para>
+      </section>
+      <section xml:id="building-with-the-open-build-service">
+        <title>Building with the Open Build Service</title>
+        <para>The Open Build Service (OBS) support profiles via the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-user-guide/cha.obs.multibuild.html">multibuild</link>
+                feature. An example project using this feature is the
+                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/package/show/openSUSE:Factory/openSUSE-Tumbleweed">openSUSE-Tumbleweed</link>
+                image.</para>
+        <para>To enable and use the profiles, follow these steps:</para>
+        <procedure>
+          <step>
+            <para>Add the following XML comment to your <literal>config.xml</literal>:</para>
+            <screen language="xml">&lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;</screen>
+            <para>It must be added before the opening <literal>&lt;image&gt;</literal> element and after the
+                        <literal>&lt;?xml?&gt;</literal> element, e.g.:</para>
+            <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;
+&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+  &lt;!-- snip --&gt;
+&lt;/image&gt;</screen>
+          </step>
+          <step>
+            <para>Add a file <literal>_multibuild</literal> into your package’s repository with the
+                        following contents:</para>
+            <screen language="xml">&lt;multibuild&gt;
+  &lt;flavor&gt;profile_1&lt;/flavor&gt;
+  &lt;flavor&gt;profile_2&lt;/flavor&gt;
+&lt;/multibuild&gt;</screen>
+            <para>Add a line <literal>&lt;flavor&gt;$PROFILE&lt;/flavor&gt;</literal> for each profile that
+                        you want OBS to build.</para>
+          </step>
+        </procedure>
+        <para>Note, by default, OBS excludes the build <emphasis role="bold">without</emphasis> any profile
+                enabled.</para>
+        <para>Running a build of a multibuild enabled repository via <literal>osc</literal> can be
+                achieved via the <literal>-M $PROFILE</literal> flag:</para>
+        <screen language="shell-session">$ osc build -M $PROFILE</screen>
+      </section>
+    </section>
+    <section xml:id="building-in-the-open-build-service" xml:base="working_with_images/build_in_buildservice">
+      <title>Building in the Open Build Service</title>
+      <note>
+        <para>
+          <emphasis role="bold">Abstract</emphasis>
+        </para>
+        <para>This document gives a brief overview how to build images with
+                KIWI NG in version 9.23.16 inside of the Open Build Service.
+                A tutorial on the Open Buildservice itself can be found here:
+                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
+      </note>
+      <para>The next generation KIWI NG is fully integrated with the Open Build Service.
+            In order to start it’s best to checkout one of the integration test
+            image build projects from the base Testing project
+            <literal>Virtualization:Appliances:Images:Testing_$ARCH:$DISTRO</literal> at:</para>
+      <para>
+        <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org"/>
+      </para>
+      <para>For example the test images for SUSE on x86 can be found <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:suse">here</link>.</para>
+      <section xml:id="advantages-of-using-the-open-build-service-obs">
+        <title>Advantages of using the Open Build Service (OBS)</title>
+        <para>The Open Build Service offers multiple advantages over running KIWI NG
+                locally:</para>
+        <itemizedlist>
+          <listitem>
+            <para>OBS will host the latest successful build for you without having to setup
+                        a server yourself.</para>
+          </listitem>
+          <listitem>
+            <para>As KIWI NG is fully integrated into OBS, OBS will automatically rebuild your
+                        images if one of the included packages or one of its dependencies or KIWI NG
+                        itself get updated.</para>
+          </listitem>
+          <listitem>
+            <para>The builds will no longer have to be executed on your own machine, but
+                        will run on OBS, thereby saving you resources. Nevertheless, if a build
+                        fails, you get a notification via email (if enabled in your user’s
+                        preferences).</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="differences-between-building-locally-and-on-obs">
+        <title>Differences Between Building Locally and on OBS</title>
+        <para>Note, there is a number of differences when building images with KIWI NG using
+                the Open Build Service. Your image that build locally just fine, might not
+                build without modifications.</para>
+        <para>The notable differences to running KIWI NG locally include:</para>
+        <itemizedlist>
+          <listitem>
+            <para>OBS will pick the KIWI NG package from the repositories configured in your
+                        project, which will most likely not be the same version that you are
+                        running locally.
+                        This is especially relevant when building images for older versions like
+                        SUSE Linux Enterprise. Therefore, include the custom appliances
+                        repository as described in the following section:
+                        <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#obs-recommended-settings">Recommendations</link>.</para>
+          </listitem>
+          <listitem>
+            <para>When KIWI NG runs on OBS, OBS will extract the list of packages from
+                        <literal>config.xml</literal> and use it to create a build root. In contrast to a
+                        local build (where your distributions package manager will resolve the
+                        dependencies and install the packages), OBS will <emphasis role="bold">not</emphasis> build your image
+                        if there are multiple packages that could be chosen to satisfy the
+                        dependencies of your packages . This shows errors like this:</para>
+            <screen language="bash">unresolvable: have choice for SOMEPACKAGE: SOMEPAKAGE_1 SOMEPACKAGE_2</screen>
+            <para>This can be solved by explicitly specifying one of the two packages in
+                        the project configuration via the following setting:</para>
+            <screen language="bash">Prefer: SOMEPACKAGE_1</screen>
+            <para>Place the above line into the project configuration, which can be
+                        accessed either via the web interface (click on the tab <literal>Project
+Config</literal> on your project’s main page) or via <literal>osc meta -e prjconf</literal>.</para>
+            <warning>
+              <para>We strongly encourage you to remove your repositories from
+                            <literal>config.xml</literal> and move them to the repository configuration in
+                            your project’s settings. This usually prevents the issue of having the
+                            choice for multiple package version and results in a much smoother
+                            experience when using OBS.</para>
+            </warning>
+          </listitem>
+          <listitem>
+            <para>By default, OBS builds only a single build type and the default
+                        profile. If your appliance uses multiple build types, put
+                        each build type into a profile, as OBS cannot handle multiple build
+                        types.</para>
+            <para>There are two options to build multiple profiles on OBS:</para>
+            <procedure>
+              <step>
+                <para>Use the <literal>&lt;image&gt;</literal> element and add it bellow the XML
+                                declaration (<literal>&lt;?xml ..?&gt;</literal>):</para>
+                <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;!-- OBS-Profiles: foo_profile bar_profile --&gt;
+
+&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
+  &lt;!-- image description with the profiles foo_profile and bar_profile
+&lt;/image&gt;</screen>
+              </step>
+              <step>
+                <para>Use the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-user-guide/cha.obs.multibuild.html">multibuild</link> feature.</para>
+              </step>
+            </procedure>
+            <para>The first option is simpler to use, but has the disadvantage that your
+                        appliances are built sequentially. The <literal>multibuild</literal> feature allows to
+                        build each profile as a single package, thereby enabling parallel execution,
+                        but requires an additional <literal>_multibuild</literal> file. For the above example
+                        <literal>config.xml</literal> would have to be adapted as follows:</para>
+            <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;
+
+&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
+  &lt;!-- image description with the profiles foo_profile and bar_profile
+&lt;/image&gt;</screen>
+            <para>The file <literal>_multibuild</literal> would have the following contents:</para>
+            <screen language="xml">&lt;multibuild&gt;
+  &lt;flavor&gt;foo_profile&lt;/flavor&gt;
+  &lt;flavor&gt;bar_profile&lt;/flavor&gt;
+&lt;/multibuild&gt;</screen>
+          </listitem>
+          <listitem>
+            <para>Subfolders in OBS projects are ignored by default by <command>osc</command> and
+                        must be explicitly added via <command>osc add $FOLDER</command>. Bear that
+                        in mind when adding the overlay files inside the <literal>root/</literal> directory
+                        to your project.</para>
+          </listitem>
+          <listitem>
+            <para>OBS ignores file permissions. Therefore <literal>config.sh</literal> and
+                        <literal>images.sh</literal> will <emphasis role="bold">always</emphasis> be executed through BASH (see also:
+                        <xref linkend="working-with-kiwi-user-defined-scripts"/>).</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+      <section xml:id="obs-recommended-settings">
+        <title>Recommendations</title>
+        <section xml:id="working-with-obs">
+          <title>Working with OBS</title>
+          <para>Although OBS is an online service, it is not necessary to test every change
+                    by uploading it. OBS will use the same process as <literal>osc build</literal> does, so if
+                    your image builds locally via <literal>osc build</literal> it should also build online on
+                    OBS.</para>
+        </section>
+        <section xml:id="repository-configuration">
+          <title>Repository Configuration</title>
+          <para>When setting up the project, enable the <literal>images</literal> repository: the <literal>images</literal>
+                    repository’s checkbox can be found at the bottom of the selection screen
+                    that appears when clicking <literal>Add from a Distribution</literal> in the <literal>Repositories</literal>
+                    tab. Or specify it manually in the project configuration (it can be
+                    accessed via <literal>osc meta -e prj</literal>):</para>
+          <screen language="xml">&lt;repository name="images"&gt;
+  &lt;arch&gt;x86_64&lt;/arch&gt;
+&lt;/repository&gt;</screen>
+          <para>Furthermore, OBS requires additional repositories from which it obtains
+                    your dependent packages. These repositories can be provided in two ways:</para>
+          <procedure>
+            <step>
+              <para>Add the repositories to the project configuration on OBS and omit them
+                            from <literal>config.xml</literal>. Provide only the following repository inside
+                            the image description:</para>
+              <screen language="xml">&lt;repository type="rpm-md"&gt;
+  &lt;source path="obsrepositories:/"/&gt;
+&lt;/repository&gt;</screen>
+              <para>This instructs OBS to inject the repositories from your project into
+                            your appliance.</para>
+              <para>Additional repositories can be added by invoking <literal>osc meta -e prj</literal> and
+                            adding a line of the following form as a child of <literal>&lt;repository
+name="images"&gt;</literal>:</para>
+              <screen language="xml">&lt;path project="$OBS_PROJECT" repository="$REPOSITORY_NAME"/&gt;</screen>
+              <para>The order in which you add repositories matters: if a package is present
+                            in multiple repositories, then it is taken from the <emphasis role="bold">first</emphasis>
+                            repository. The <emphasis role="bold">last</emphasis> repository is subject to path expansion: its
+                            repository paths are included as well.</para>
+              <para>Don’t forget to add the repository from the
+                            <literal>Virtualization:Appliances:Builder</literal> project, providing the latest stable
+                            version of KIWI NG (which you are very likely using for your local builds).</para>
+              <para>The following example repository configuration  adds the
+                            repositories from the <literal>Virtualization:Appliances:Builder</literal> project and
+                            those from the latest snapshot of openSUSE Tumbleweed:</para>
+              <screen language="xml">&lt;project name="Virtualization:Appliances:Images:openSUSE-Tumbleweed"&gt;
+  &lt;title&gt;Tumbleweed JeOS images&lt;/title&gt;
+  &lt;description&gt;Host JeOS images for Tumbleweed&lt;/description&gt;
+  &lt;repository name="images"&gt;
+    &lt;path project="Virtualization:Appliances:Builder" repository="Factory"/&gt;
+    &lt;path project="openSUSE:Factory" repository="snapshot"/&gt;
+    &lt;arch&gt;x86_64&lt;/arch&gt;
+  &lt;/repository&gt;
+&lt;/project&gt;</screen>
+              <para>The above can be simplified further using the path expansion of the last
+                            repository to:</para>
+              <screen language="xml">&lt;project name="Virtualization:Appliances:Images:openSUSE-Tumbleweed"&gt;
+  &lt;title&gt;Tumbleweed JeOS images&lt;/title&gt;
+  &lt;description&gt;Host JeOS images for Tumbleweed&lt;/description&gt;
+  &lt;repository name="images"&gt;
+    &lt;path project="Virtualization:Appliances:Builder" repository="Factory"/&gt;
+    &lt;arch&gt;x86_64&lt;/arch&gt;
+  &lt;/repository&gt;
+&lt;/project&gt;</screen>
+              <para>Now <literal>Virtualization:Appliances:Builder</literal> is the last repository, which’
+                            repositories are included into the search path. As
+                            <literal>openSUSE:Factory/snapshot</literal> is among these, it can be omitted from the
+                            repository list.</para>
+            </step>
+            <step>
+              <para>Keep the repositories in your <literal>config.xml</literal> configuration file. If
+                            you have installed the latest stable KIWI NG as described in
+                            <xref linkend="kiwi-installation"/> then you should add the following repository to
+                            your projects configuration (accessible via <command>osc meta -e
+                                prjconf</command>), so that OBS will pick the latest stable KIWI NG version too:</para>
+              <screen language="xml">&lt;repository name="images"&gt;
+  &lt;path project="Virtualization:Appliances:Builder" repository="$DISTRO"/&gt;
+  &lt;arch&gt;x86_64&lt;/arch&gt;
+&lt;/repository&gt;</screen>
+              <para>Replace <literal>$DISTRO</literal> with the appropriate name for the distribution that
+                            you are currently building and optionally adjust the architecture.</para>
+            </step>
+          </procedure>
+          <para>We recommend to use the first method, as it integrates better into
+                    OBS. Note that your image description will then no longer build outside of
+                    OBS though. If building locally is required, use the second method.</para>
+          <warning>
+            <para>Adding the repositories to project’s configuration makes it impossible
+                        to build images for different distributions from the same project.</para>
+            <para>Since the repositories are added for every package in your project, all
+                        your image builds will share the same repositories, thereby resulting in
+                        conflicts for different distributions.</para>
+            <para>We recommend to create a separate project for each distribution. If that
+                        is impossible, you can keep all your repositories (including
+                        <literal>Virtualization:Appliances:Builder</literal>) in <literal>config.xml</literal>. That however
+                        usually requires a large number of workarounds via <literal>Prefer:</literal> settings in
+                        the project configuration and is thus <emphasis role="bold">not</emphasis> recommended.</para>
+          </warning>
+        </section>
+        <section xml:id="project-configuration">
+          <title>Project Configuration</title>
+          <para>The Open Build Service will by default create the same output file as KIWI NG
+                    when run locally, but with a custom filename ending (that is unfortunately
+                    unpredictable). This has the consequence that the download URL of your
+                    image will change with every rebuild (and thus break automated
+                    scripts). OBS can create symbolic links with static names to the latest
+                    build by adding the following line to the project configuration:</para>
+          <screen language="bash">Repotype: staticlinks</screen>
+          <para>If build Vagrant images (see <xref linkend="setup-vagrant"/>) add the repository-type
+                    <literal>vagrant</literal>. OBS creates a <literal>boxes/</literal> subdirectory in your download
+                    repositories, which contains JSON files for Vagrant .</para>
+          <para>If you have added your repositories to <literal>config.xml</literal>, you probably see
+                    errors of the following type:</para>
+          <screen language="bash">unresolvable: have choice for SOMEPACKAGE: SOMEPAKAGE_1 SOMEPACKAGE_2</screen>
+          <para>Instead of starting from scratch and manually adding <literal>Prefer:</literal> statements
+                    to the project configuration, we recommend to copy the current project
+                    configuration of the testing project
+                    <literal>Virtualization:Appliances:Images:Testing_$ARCH:$DISTRO</literal> into your own project.
+                    It provides a good starting point and can be adapted to your OBS project.</para>
+        </section>
+      </section>
+    </section>
+    <section xml:id="suse-media" xml:base="working_with_images/use_suse_media">
+      <title>Using SUSE Product ISO To Build</title>
+      <formalpara role="sidebar">
+        <title>Abstract</title>
+        <para>This page provides information how to use the SUSE
+                media ISO with KIWI NG</para>
+      </formalpara>
+      <para>When building an image with KIWI NG, the image description usually
+            points to a number of public/private package source repositories
+            from which the new image root tree will be created. Alternatively
+            the vendor provided product ISO image(s) can be used. The contents
+            of the ISO (DVD) media also provides package source repositories
+            but organized in a vendor specific structure. As a user it’s
+            important to know about this structure such that the KIWI NG
+            image description can consume it.</para>
+      <para>To use a SUSE product media the following steps are required:</para>
+      <procedure>
+        <step>
+          <para>Mount the ISO media from file or DVD drive:</para>
+        </step>
+      </procedure>
+      <screen language="bash">$ sudo mount Product_ISO_file.iso|DVD_drive /media/suse</screen>
+      <procedure>
+        <step>
+          <para>Lookup all <literal>Product</literal> and <literal>Module</literal> directories:</para>
+          <para>Below <literal>/media/suse</literal> there is a directory structure which
+                    provides package repositories in directories starting
+                    with <literal>Product-XXX</literal> and <literal>Module-XXX</literal>. It depends on the
+                    package list in the KIWI NG image description from which
+                    location a package or a dependency of the package is
+                    taken. Therefore it is best practice to browse through
+                    all the directories and create a <literal>&lt;repository&gt;</literal> definition
+                    for each of them in the KIWI NG image description like
+                    the following example shows:</para>
+          <screen language="xml">&lt;repository alias="DVD-1-Product-SLES"&gt;
+    &lt;source path="file:///media/suse/Product-SLES"/&gt;
+&lt;/repository&gt;
+
+&lt;repository alias="DVD-1-Module-Basesystem"&gt;
+    &lt;source path="file:///media/suse/Module-Basesystem"/&gt;
+&lt;/repository&gt;</screen>
+        </step>
+      </procedure>
+      <para>Once all the individual product and module repos has been created
+            in the KIWI NG image description, the build process can be started
+            as usual.</para>
+      <note>
+        <para>Because of the manual mount process the <literal>/media/suse</literal> location
+                stays busy after KIWI NG has created the image. The cleanup of
+                this resource is a responsibility of the user and not done
+                by KIWI NG</para>
+      </note>
     </section>
   </chapter>
   <chapter xml:id="contributing" xml:base="contributing">
@@ -26699,6 +26752,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.solver.sat.Sat.set_dist_type">
+                  <term>
+                    <property>kiwi.solver.sat.Sat.set_dist_type</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.solver.sat.Sat.solve">
                   <term>
                     <property>kiwi.solver.sat.Sat.solve</property>
@@ -31238,9 +31301,8 @@ end</screen>
                   <listitem>
                     <para>Translate repository location according to their URI type</para>
                     <para>Depending on the URI type the provided location needs to
-                                be adapted e.g loop mounted in case of an ISO or updated
-                                by the service URL in case of an open buildservice project
-                                name</para>
+                                be adapted e.g updated by the service URL in case of an
+                                open buildservice project name</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Raises</term>
