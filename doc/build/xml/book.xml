@@ -1624,6 +1624,184 @@ kiwi-ng image info help</screen>
       </section>
     </section>
   </chapter>
+  <chapter xml:id="troubleshooting" xml:base="troubleshooting">
+    <title>Troubleshooting</title>
+    <note>
+      <para>
+        <emphasis role="bold">Abstract</emphasis>
+      </para>
+      <para>This document describes situations which leads to issues
+                during build or boot time of the image build with KIWI NG.
+                The suggested solutions are considered best practice but
+                are just one out of other possible solution candidates.</para>
+    </note>
+    <section xml:id="incompatible-filesystem-settings-on-host-vs-image" xml:base="troubleshooting/filesystems">
+      <title>Incompatible Filesystem Settings on Host vs. Image</title>
+      <note>
+        <para>
+          <emphasis role="bold">Abstract</emphasis>
+        </para>
+        <para>This page provides further information how to solve
+                image boot problems if the filesystem tool chain on
+                the image build host is incompatible with the
+                image target distribution</para>
+      </note>
+      <para>When KIWI NG builds an image which requests the creation of a
+            filesystem, the required filesystem creation tool, for
+            example <literal>mkfs.xfs</literal>, is called from the host on which KIWI NG
+            gets called. It is expected that the generated filesystem
+            is compatible with the image target distribution. This
+            expectation is not always correct and depends on the
+            compatibility of the filesystem default settings between
+            build host and image target. We know about the following
+            settings that causes an incompatible filesystem which
+            will not be able to be used on boot:</para>
+      <variablelist>
+        <varlistentry>
+          <term>Ext[2,3,4]</term>
+          <listitem>
+            <para>Check <literal>/etc/mke2fs.conf</literal> on the build host and make sure
+                        the configured <literal>inode_size</literal> is the same as the setting used
+                        for the target image. To solve an issue of this type use
+                        the following filesystem creation option in your KIWI NG
+                        image configuration:</para>
+            <screen language="xml">&lt;type fscreateoptions="-I inode-size"/&gt;</screen>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>XFS</term>
+          <listitem>
+            <para>Check the XFS metadata setup on the build host and make sure
+                        the settings are compatible with the target image. XFS has the
+                        default settings compiled in, thus it might be needed to build
+                        the image first and use the <literal>xfs_info</literal> tool in a <literal>disk.sh</literal> script
+                        to fetch the settings at build time of the image. We know from
+                        community reports that the setting <literal>sparse=1</literal> will cause issues
+                        on older versions of grub’s xfs module, which does not know how
+                        to handle this setting properly. To solve an issue of this type
+                        use the following filesystem creation option in your
+                        KIWI NG image configuration:</para>
+            <screen language="xml">&lt;type fscreateoptions="-i sparse=0"/&gt;</screen>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <note>
+        <para>There can be more inconsistencies in the area of filesystems
+                which we haven’t listed here. In general it’s advisable to
+                build the image in a compatible environment. At best the
+                build host distribution is of the same major Linux version
+                than the image target. For this purpose KIWI NG provides the
+                so called <literal>boxed-plugin</literal>. Further details can be found
+                in <xref linkend="self-contained"/></para>
+      </note>
+    </section>
+    <section xml:id="supported-distributions">
+      <title>Build Host Constraints</title>
+      <para>For building images a host system is required that runs the build process.
+                Tools to create the image are used from that host and this creates an
+                indirect dependency to the target image. For example; Building an
+                Ubuntu image requires the apt and dpkg tools and metadata to be available
+                and functional on the host to build an Ubuntu image. There are many more
+                of those host vs. image dependencies and not all of them can be resolved
+                in a clear and clean way.</para>
+      <para>The most compatible environment is provided if the build host is of the same
+                distribution than the target image. In other cases our recommendation is that
+                the build host is of the same distribution than the target and near to the
+                major version (+-1) compared to the target. Such an environment can be
+                found in:</para>
+      <itemizedlist>
+        <listitem>
+          <para>The Open Build Service <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org">OBS</link>.</para>
+        </listitem>
+        <listitem>
+          <para>The KIWI NG boxed plugin: <xref linkend="self-contained"/></para>
+        </listitem>
+      </itemizedlist>
+      <para>In general, our goal is to support any major distribution with KIWI NG. However
+                for building images we rely on core tools which are not under our control.
+                Also several design aspects of distributions like <emphasis role="bold">secure boot</emphasis> and working
+                with <emphasis role="bold">upstream projects</emphasis> are different and not influenced by us. There
+                are many side effects that can be annoying especially if the build host
+                is not of the same distribution vendor than the image target.</para>
+    </section>
+    <section xml:id="architectures">
+      <title>Architectures</title>
+      <para>As described in the section above one requirement between the build host
+                and the image when it comes to architecture support is, that the image
+                architecture should match the build host architecture. Cross arch building
+                would require any core tool that is used to build an image to be cross
+                arch capable. To patch e.g an x86_64 system such that it can build an
+                aarch64 image would require some work on binutils and hacks as well as
+                performance tweaks which is all not worth the effort and still can lead
+                to broken results. Thus we recommend to provide native systems for the
+                target architecture and build there. One possible alternative is to
+                use the kiwi boxed plugin as mentioned above together with a box
+                created for the desired architecture. However keep in mind the
+                performance problematic when running a VM of a different
+                architecture.</para>
+      <para>The majority of the image builds are based on the x86 architecture.
+                As mentioned KIWI NG also supports other architectures, shown in the
+                table below:</para>
+      <informaltable>
+        <tgroup cols="2">
+          <colspec colname="c0" colwidth="14"/>
+          <colspec colname="c1" colwidth="21"/>
+          <thead>
+            <row>
+              <entry>
+                <para>Architecture</para>
+              </entry>
+              <entry>
+                <para>Supported</para>
+              </entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <para>x86_64</para>
+              </entry>
+              <entry>
+                <para>yes</para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>ix86</para>
+              </entry>
+              <entry>
+                <para>yes <emphasis role="bold">note:distro</emphasis></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>s390/s390x</para>
+              </entry>
+              <entry>
+                <para>yes <emphasis role="bold">note:distro</emphasis></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>arm/aarch64</para>
+              </entry>
+              <entry>
+                <para>yes <emphasis role="bold">note:distro</emphasis></para>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <para>ppc64</para>
+              </entry>
+              <entry>
+                <para>yes <emphasis role="bold">note:distro</emphasis></para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+    </section>
+  </chapter>
   <chapter xml:id="self-contained" xml:base="self_contained">
     <title>Building in a Self-Contained Environment</title>
     <note>
@@ -3125,190 +3303,6 @@ install() {
                     look to:</para>
           <screen language="bash">less /run/initramfs/log/boot.kiwi</screen>
         </section>
-      </section>
-    </section>
-    <section xml:id="legacy-kiwi" xml:base="concept_and_workflow/legacy_kiwi">
-      <title>Legacy KIWI vs. KIWI Next Generation (KIWI NG)</title>
-      <note>
-        <para>
-          <emphasis role="bold">Abstract</emphasis>
-        </para>
-        <para>Users currently have the choice for the kiwi legacy version
-                or this next generation kiwi. This document describes the
-                maintenance state of the legacy kiwi version and under which
-                circumstances the use of the legacy kiwi version is required.</para>
-      </note>
-      <para>There is still the former
-            <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/OSInside/kiwi-legacy">KIWI Legacy</link>
-            version and we decided to rewrite it.</para>
-      <para>The reasons to rewrite software from scratch could be very different
-            and should be explained in order to let users understand why it
-            makes sense. We are receiving feedback and defect reports from a
-            variety of groups with different use cases and requirements. It
-            became more and more difficult to handle those requests in good
-            quality and without regressions. At some point we asked ourselves:</para>
-      <para>
-        <literal>Is KIWI Legacy really well prepared for future challenges?</literal>
-      </para>
-      <para>The conclusion was that the former version has some major weaknesses
-            which has to be addressed prior to continue with future development.
-            The following issues are most relevant:</para>
-      <itemizedlist>
-        <listitem>
-          <para>Not based on a modern programming language</para>
-        </listitem>
-        <listitem>
-          <para>Major design flaws but hardly any unit tests. The risk for
-                    regressions on refactoring is high</para>
-        </listitem>
-        <listitem>
-          <para>No arch specific build integration tests</para>
-        </listitem>
-        <listitem>
-          <para>Lots of legacy code for old distributions</para>
-        </listitem>
-      </itemizedlist>
-      <para>In order to address all of these the questions came up:</para>
-      <para>
-        <literal>How to modernize the project without producing regressions?</literal>
-      </para>
-      <para>
-        <literal>How to change/drop features without making anybody unhappy?</literal>
-      </para>
-      <para>As there is no good way to achieve this in the former code base the
-            decision was made to start a rewrite of KIWI Legacy with a maintained and
-            stable version in the background.</para>
-      <para>Users will be able to use both versions in parallel. In addition,
-            KIWI NG will be fully compatible with the current format of
-            the appliance description. This means, users can build an appliance from
-            the same appliance description with KIWI Legacy and
-            KIWI NG, if the distribution and all configured features are
-            supported by the used version.</para>
-      <para>This provides an opportunity for users to test KIWI NG
-            with their appliance descriptions without risk. If it builds and works
-            as expected, I recommend to switch to the KIWI NG. If not,
-            please open an issue on <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/OSInside/kiwi"/>.</para>
-      <para>The KIWI Legacy version will be further developed in maintenance mode.
-            There won’t be any new features added in that code base though.
-            Packages will be available at the known place:
-            <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="http://download.opensuse.org/repositories/Virtualization:/Appliances">KIWI Legacy packages</link></para>
-      <section xml:id="when-do-i-need-to-use-kiwi-legacy">
-        <title>When Do I need to use KIWI Legacy</title>
-        <itemizedlist>
-          <listitem>
-            <para>If you are building images using one of the features of the dropped
-                        features list below.</para>
-          </listitem>
-          <listitem>
-            <para>If you are building images for an older distribution compared to
-                        the list on the main page, see <xref linkend="supported-distributions"/>.</para>
-          </listitem>
-        </itemizedlist>
-      </section>
-      <section xml:id="dropped-features">
-        <title>Dropped Features</title>
-        <para>The following features have been dropped. If you make use of them
-                consider to use the KIWI Legacy version.</para>
-        <variablelist>
-          <varlistentry>
-            <term>Split systems</term>
-            <listitem>
-              <para>The KIWI Legacy version supports building of split systems
-                            which uses a static definition of files and directories marked
-                            as read-only or read-write. Evolving technologies like overlayfs
-                            makes this feature obsolete.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>ZFS filesystem</term>
-            <listitem>
-              <para>The successor for ZFS is Btrfs in the opensource world. All major
-                            distributions put on Btrfs. This and the proprietary attitude of
-                            ZFS obsoletes the feature.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>Reiserfs filesystem</term>
-            <listitem>
-              <para>The number of people using this filesystem is decreasing. For image
-                            building reiserfs was an interesting filesystem however with Btrfs and
-                            XFS there are good non inode based alternatives out there. Therefore we
-                            don’t continue supporting Reiserfs.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>Btrfs seed based live systems</term>
-            <listitem>
-              <para>A Btrfs seed device is an alternative for other copy on write
-                            filesystems like overlayfs. Unfortunately the stability of the seed
-                            device when used as cow part in a live system was not as good as we
-                            provide with overlayfs and clicfs. Therefore this variant is no longer
-                            supported. We might think of adding this feature back if people demand
-                            it.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>lxc container format</term>
-            <listitem>
-              <para>lxc has a successor in docker based on the former lxc technology.
-                            Many distributions also dropped the lxc tools from the distribution
-                            in favour of docker.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>OEM Recovery/Restore</term>
-            <listitem>
-              <para>Recovery/Restore in the world of images has been moved from the
-                            operating system layer into higher layers. For example, in private and
-                            public Cloud environments disk and image recovery as well as backup
-                            strategies are part of Cloud services. Pure operating system recovery
-                            and snapshots for consumer machines are provided as features of the
-                            distribution. SUSE as an example provides this via Rear
-                            (Relax-and-Recover) and snapshot based filesystems (btrfs+snapper).
-                            Therefore the recovery feature offered in the KIWI Legacy version
-                            will not be continued.</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>Partition based install method in OEM install image</term>
-            <listitem>
-              <para>The section <xref linkend="deployment-methods"/> describes the supported OEM
-                            installation procedures. The KIWI Legacy version also provided a method
-                            to install an image based on the partitions of the OEM disk image.
-                            Instead of selecting one target disk to dump the entire image file to,
-                            the user selects target partitions. Target partitions could be located
-                            on several disks. Each partition of the OEM disk image must be mapped
-                            on a selectable target partition. It turned out, users needed a lot of
-                            experience in a very sensitive area of the operating system. This is
-                            contrary to the idea of images to be dumped and be happy. Thus the
-                            partition based install method will not be continued.</para>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-      </section>
-      <section xml:id="compatibility">
-        <title>Compatibility</title>
-        <para>The KIWI Legacy version can be installed and used together with
-                KIWI NG.</para>
-        <note>
-          <para>Automatic Link Creation for <command>kiwi</command> Command</para>
-          <para>Note the python3-kiwi package uses the alternatives mechanism to
-                    setup a symbolic link named <command>kiwi</command> to the real executable
-                    named <command>kiwi-ng</command>. If the link target <literal>/usr/bin/kiwi</literal>
-                    already exists on your system, the alternative setup will skip the
-                    creation of the link target because it already exists.</para>
-        </note>
-        <para>From an appliance description perspective, both versions are fully
-                compatible. Users can build their appliances with both versions and the
-                same appliance description. If the appliance description uses features
-                KIWI NG does not provide, the build will fail with an
-                exception early. If the appliance description uses next generation
-                features like the selection of the initrd system, it’s not possible to
-                build that with the KIWI Legacy, unless the appliance description
-                properly encapsulates the differences into a profile.</para>
-        <para>KIWI NG also provides the <literal>--compat</literal> option and
-                the <command>kiwicompat</command> tool to be able to use the same commandline
-                as provided with the KIWI Legacy version.</para>
       </section>
     </section>
     <section xml:id="overview">
@@ -5164,104 +5158,6 @@ $ kiwi-ng system create $ARGS</screen>
           </listitem>
         </varlistentry>
       </variablelist>
-    </section>
-    <section xml:id="supported-distributions">
-      <title>Build Host Constraints</title>
-      <para>For building images a host system is required that runs the build process.
-                Tools to create the image are used from that host and this creates an
-                indirect dependency to the target image. For example; Building an
-                Ubuntu image requires the apt and dpkg tools and metadata to be available
-                and functional on the host to build an Ubuntu image. There are many more
-                of those host vs. image dependencies and not all of them can be resolved
-                in a clear and clean way.</para>
-      <para>The most compatible environment is provided if the build host is of the same
-                distribution than the target image. This always applies for the Open Build
-                Service (OBS). In other cases our recommendation is that the build host
-                is of the same distribution than the target and near to the major
-                version (+-1) compared to the target.</para>
-      <para>In general, our goal is to support any major distribution with KIWI NG. However
-                for building images we rely on core tools which are not under our control.
-                Also several design aspects of distributions like <emphasis role="bold">secure boot</emphasis> and working
-                with <emphasis role="bold">upstream projects</emphasis> are different and not influenced by us. There
-                are many side effects that can be annoying especially if the build host
-                is not of the same distribution vendor than the image target.</para>
-    </section>
-    <section xml:id="architectures">
-      <title>Architectures</title>
-      <para>As described in the section above one requirement between the build host
-                and the image when it comes to architecture support is, that the image
-                architecture should match the build host architecture. Cross arch building
-                would require any core tool that is used to build an image to be cross
-                arch capable. To patch e.g an x86_64 system such that it can build an
-                aarch64 image would require some work on binutils and hacks as well as
-                performance tweaks which is all not worth the effort and still can lead
-                to broken results. Thus we recommend to provide native systems for the
-                target architecture and build there. One possible alternative is to
-                use the kiwi boxed plugin as documented here: <xref linkend="self-contained"/>
-                together with a box created for the desired architecture. However keep
-                in mind the performance problematic when running a VM of a different
-                architecture.</para>
-      <para>The majority of the image builds are based on the x86 architecture.
-                As mentioned KIWI NG also supports other architectures, shown in the
-                table below:</para>
-      <informaltable>
-        <tgroup cols="2">
-          <colspec colname="c0" colwidth="14"/>
-          <colspec colname="c1" colwidth="21"/>
-          <thead>
-            <row>
-              <entry>
-                <para>Architecture</para>
-              </entry>
-              <entry>
-                <para>Supported</para>
-              </entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>
-                <para>x86_64</para>
-              </entry>
-              <entry>
-                <para>yes</para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>ix86</para>
-              </entry>
-              <entry>
-                <para>yes <emphasis role="bold">note:distro</emphasis></para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>s390/s390x</para>
-              </entry>
-              <entry>
-                <para>yes <emphasis role="bold">note:distro</emphasis></para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>arm/aarch64</para>
-              </entry>
-              <entry>
-                <para>yes <emphasis role="bold">note:distro</emphasis></para>
-              </entry>
-            </row>
-            <row>
-              <entry>
-                <para>ppc64</para>
-              </entry>
-              <entry>
-                <para>no (alpha-phase)</para>
-              </entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </informaltable>
     </section>
   </chapter>
   <chapter xml:id="building-types" xml:base="building_images">
