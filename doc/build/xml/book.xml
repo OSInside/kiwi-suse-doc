@@ -28454,30 +28454,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase.create_box_img</property>
                   </term>
                   <listitem>
-                    <para>Provider specific image creation step: this function creates the actual
-                                box image. It must be implemented by a child class.</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>temp_image_dir</literal> () – path to a temporary directory inside which the image
-                                            should be built</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Returns</term>
-                        <listitem>
-                          <para>A list of files that were created by this function
-                                            and that should be included in the vagrant box</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para/>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
+                    <para>Provider specific image creation step: this function
+                                creates the actual box image. It must be implemented by a
+                                child class.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -28636,6 +28615,27 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Creates the qcow2 disk image box for libvirt vagrant provider</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>temp_image_dir</literal> () – Path to the temporary directory used to build the box image</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>A list of files relevant for the libvirt box to be
+                                            included in the vagrant box</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -28645,8 +28645,22 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.storage.subformat.vagrant_libvirt.DiskFormatVagrantLibVirt.get_additional_metadata</property>
                   </term>
                   <listitem>
-                    <para>Returns a dictionary containing the virtual image format and the size
-                                of the image.</para>
+                    <para>Provide box metadata needed to create the box in vagrant</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>Returns a dictionary containing the virtual image format
+                                            and the size of the image.</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -28657,6 +28671,20 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Returns settings for the libvirt provider telling vagrant to use kvm.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>ruby code to be evaluated as string</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -28695,10 +28723,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.storage.subformat.vagrant_virtualbox.DiskFormatVagrantVirtualBox.create_box_img</property>
                   </term>
                   <listitem>
-                    <para>Create the virtual machine image for the Virtualbox vagrant provider.</para>
-                    <para>This function creates the vmdk disk image and the ovf file. The latter
-                                is created via the class
-                                <xref linkend="kiwi.storage.subformat.template.virtualbox_ovf.VirtualboxOvfTemplate"/>.</para>
+                    <para>Create the vmdk image for the Virtualbox vagrant provider.</para>
+                    <para>This function creates the vmdk disk image and the ovf file.
+                                The latter is created via the class <literal>VirtualboxOvfTemplate</literal>.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>temp_image_dir</literal> () – Path to the temporary directory used to build the box image</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>A list of files relevant for the virtualbox box to be
+                                            included in the vagrant box</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -28710,6 +28758,20 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   <listitem>
                     <para>Configure the default shared folder to use rsync when guest additions
                                 are not present inside the box.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>ruby code to be evaluated as string</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
