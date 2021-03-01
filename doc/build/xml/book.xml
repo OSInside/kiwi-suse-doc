@@ -12647,6 +12647,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
         <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiConfigFileFormatNotSupported">
+            <term>
+              <literal>kiwi.exceptions.KiwiConfigFileFormatNotSupported</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Exception raised if kiwi description file format is not supported.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
           <varlistentry xml:id="kiwi.exceptions.KiwiConfigFileNotFound">
             <term>
               <literal>kiwi.exceptions.KiwiConfigFileNotFound</literal>
