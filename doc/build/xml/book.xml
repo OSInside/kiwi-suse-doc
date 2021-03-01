@@ -15221,6 +15221,23 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_dracut_module_versions_compatible_to_kiwi">
+                  <term>
+                    <property>kiwi.runtime_checker.RuntimeChecker.check_dracut_module_versions_compatible_to_kiwi</property>
+                  </term>
+                  <listitem>
+                    <para>KIWI images which makes use of kiwi dracut modules
+                                has to use module versions compatible with the version
+                                of this KIWI builder code base. This is important to avoid
+                                inconsistencies between the way how kiwi includes its own
+                                dracut modules and former version of those dracut modules
+                                which could be no longer compatible with the builder.
+                                Therefore this runtime check maintains a min_version constraint
+                                for which we know this KIWI builder to be compatible with.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_efi_mode_for_disk_overlay_correctly_setup">
                   <term>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_efi_mode_for_disk_overlay_correctly_setup</property>
@@ -15411,6 +15428,36 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                                 be either a Xen Server(dom0) or a Xen guest. The image
                                 configuration is checked if the information uniquely identifies
                                 the image as such</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.runtime_checker.dracut_module_type">
+            <term>
+              <literal>kiwi.runtime_checker.dracut_module_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.dracut_module_type.min_version">
+                  <term>
+                    <property>kiwi.runtime_checker.dracut_module_type.min_version</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.dracut_module_type.package">
+                  <term>
+                    <property>kiwi.runtime_checker.dracut_module_type.package</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
