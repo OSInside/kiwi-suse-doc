@@ -21126,6 +21126,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.bootloader.install.base.BootLoaderInstallBase.secure_boot_install">
+                  <term>
+                    <property>kiwi.bootloader.install.base.BootLoaderInstallBase.secure_boot_install</property>
+                  </term>
+                  <listitem>
+                    <para>Run shim-install in self.device for secure boots</para>
+                    <para>Implementation in specialized bootloader install class required</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -21202,6 +21213,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.bootloader.install.grub2.BootLoaderInstallGrub2.secure_boot_install">
+                  <term>
+                    <property>kiwi.bootloader.install.grub2.BootLoaderInstallGrub2.secure_boot_install</property>
+                  </term>
+                  <listitem>
+                    <para>Run shim-install in self.device for secure boots</para>
+                    <para>Implementation in specialized bootloader install class required</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
