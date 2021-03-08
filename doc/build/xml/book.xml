@@ -12300,6 +12300,24 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.set_custom_runtime_config_file">
+                  <term>
+                    <property>kiwi.defaults.Defaults.set_custom_runtime_config_file</property>
+                  </term>
+                  <listitem>
+                    <para>Sets the runtime config file once</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>filename</literal> () – a file path name</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.set_shared_cache_location">
                   <term>
                     <property>kiwi.defaults.Defaults.set_shared_cache_location</property>
