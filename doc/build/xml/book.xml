@@ -32131,7 +32131,8 @@ end</screen>
                 <varlistentry>
                   <term>Parameters</term>
                   <listitem>
-                    <para><literal>device</literal> () – block device node name name</para>
+                    <para><literal>device</literal> () – block device node name name. The device can
+                                    also be specified as UUID=&lt;uuid&gt;</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
