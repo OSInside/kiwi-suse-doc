@@ -3401,7 +3401,7 @@ install() {
                     installed during the image creation process.</para>
         <para>For the package installation, KIWI NG relies on the package manager specified
                     in the <literal>packagemanager</literal> element in <literal>config.xml</literal>. KIWI NG supports the
-                    following package managers: <literal>dnf</literal>, <literal>zypper</literal> (default) and <literal>apt-get</literal>.</para>
+                    following package managers: <literal>dnf</literal>, <literal>zypper</literal> (default) and <literal>apt</literal>.</para>
         <para>The prepare step consists of the following substeps:</para>
         <procedure>
           <step>
@@ -3675,7 +3675,7 @@ $ kiwi-ng system create $ARGS</screen>
                     <para>Debian Based</para>
                   </entry>
                   <entry>
-                    <para>apt-get</para>
+                    <para>apt</para>
                   </entry>
                 </row>
                 <row>
