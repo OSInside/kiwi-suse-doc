@@ -24114,12 +24114,24 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>package_list</literal> () – unused</para>
+                              <para><literal>package_name</literal> () – unused</para>
                             </listitem>
                             <listitem>
-                              <para><literal>log_line</literal> () – unused</para>
+                              <para><literal>package_manager_output</literal> () – unused</para>
                             </listitem>
                           </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>True|False</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24140,12 +24152,24 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>package_list</literal> () – unused</para>
+                              <para><literal>package_name</literal> () – unused</para>
                             </listitem>
                             <listitem>
-                              <para><literal>log_line</literal> () – unused</para>
+                              <para><literal>package_manager_output</literal> () – unused</para>
                             </listitem>
                           </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>True|False</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24401,10 +24425,10 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>package_list</literal> () – list of all packages</para>
+                              <para><literal>package_name</literal> () – package_name</para>
                             </listitem>
                             <listitem>
-                              <para><literal>log_line</literal> () – dnf status line</para>
+                              <para><literal>package_manager_output</literal> () – dnf status line</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -24412,13 +24436,13 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>match or None if there isn’t any match</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>match object, </para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24442,10 +24466,10 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>package_list</literal> () – list of all packages</para>
+                              <para><literal>package_name</literal> () – package_name</para>
                             </listitem>
                             <listitem>
-                              <para><literal>log_line</literal> () – dnf status line</para>
+                              <para><literal>package_manager_output</literal> () – dnf status line</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -24453,13 +24477,13 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>match or None if there isn’t any match</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>match object, </para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24804,10 +24828,10 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>package_list</literal> () – list of all packages</para>
+                              <para><literal>package_name</literal> () – package_name</para>
                             </listitem>
                             <listitem>
-                              <para><literal>log_line</literal> () – zypper status line</para>
+                              <para><literal>package_manager_output</literal> () – zypper status line</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -24815,13 +24839,13 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>match or None if there isn’t any match</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>match object, </para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24845,10 +24869,10 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>package_list</literal> () – list of all packages</para>
+                              <para><literal>package_name</literal> () – package_name</para>
                             </listitem>
                             <listitem>
-                              <para><literal>log_line</literal> () – zypper status line</para>
+                              <para><literal>package_manager_output</literal> () – zypper status line</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -24856,13 +24880,13 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>match or None if there isn’t any match</para>
+                          <para>True|False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>match object, </para>
+                          <para/>
                         </listitem>
                       </varlistentry>
                     </variablelist>
