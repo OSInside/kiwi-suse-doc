@@ -4091,7 +4091,7 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>devicepersistency=”by-uuid|by-label|by-path”:</term>
+              <term>devicepersistency=”by-uuid|by-label”:</term>
               <listitem>
                 <para>Specifies which method to use for persistent device names.
                                 This will affect all files written by kiwi that includes
