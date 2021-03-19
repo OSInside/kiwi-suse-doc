@@ -25776,7 +25776,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>uri</literal> () – unused</para>
                             </listitem>
                             <listitem>
-                              <para><literal>repo_type</literal> – unused</para>
+                              <para><literal>repo_type</literal> () – unused</para>
                             </listitem>
                             <listitem>
                               <para><literal>prio</literal> () – unused</para>
@@ -26005,7 +26005,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>uri</literal> () – repository URI</para>
                             </listitem>
                             <listitem>
-                              <para><literal>repo_type</literal> – repostory type name</para>
+                              <para><literal>repo_type</literal> () – repostory type name</para>
                             </listitem>
                             <listitem>
                               <para><literal>prio</literal> () – dnf repostory priority</para>
@@ -26265,7 +26265,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>uri</literal> () – repository URI</para>
                             </listitem>
                             <listitem>
-                              <para><literal>repo_type</literal> – repostory type name</para>
+                              <para><literal>repo_type</literal> () – repostory type name</para>
                             </listitem>
                             <listitem>
                               <para><literal>prio</literal> () – zypper repostory priority</para>
