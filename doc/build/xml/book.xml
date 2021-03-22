@@ -20027,7 +20027,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>uuid</literal> () – boot device UUID</para>
+                          <para><literal>boot_device</literal> () – boot device node</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -20572,7 +20572,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>root_uuid</literal> () – root device UUID</para>
+                              <para><literal>root_device</literal> () – root device node</para>
                             </listitem>
                             <listitem>
                               <para><literal>boot_options</literal> () – kernel options as string</para>
@@ -20841,7 +20841,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>root_uuid</literal> () – root device UUID</para>
+                              <para><literal>root_device</literal> () – root device node</para>
                             </listitem>
                             <listitem>
                               <para><literal>boot_options</literal> () – kernel options as string</para>
