@@ -7424,6 +7424,15 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
           <para><literal>copy_on_write</literal>: Optional attribute to set the filesystem copy-on-write
                     attribute for this volume.</para>
         </listitem>
+        <listitem>
+          <para><literal>filesystem_check</literal>: Optional attribute to indicate that this
+                    filesystem should perform the validation to become filesystem checked.
+                    The actual constraints if the check is performed or not depends on
+                    systemd and filesystem specific components. If not set or set to
+                    <literal>false</literal> no system component will be triggered to run an eventual
+                    filesystem check, which results in this filesystem to be never checked.
+                    The latter is the default.</para>
+        </listitem>
       </itemizedlist>
       <warning>
         <para>The size attributes for filesystem volumes, as for btrfs, are
