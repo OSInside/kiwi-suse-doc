@@ -12064,13 +12064,13 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>file path or None</para>
+                          <para>grub_loader_type | None</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para/>
+                          <para>NamedTuple</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -12529,6 +12529,36 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.defaults.grub_loader_type">
+            <term>
+              <literal>kiwi.defaults.grub_loader_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.grub_loader_type.binaryname">
+                  <term>
+                    <property>kiwi.defaults.grub_loader_type.binaryname</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.grub_loader_type.filename">
+                  <term>
+                    <property>kiwi.defaults.grub_loader_type.filename</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
