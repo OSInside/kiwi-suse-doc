@@ -8,7 +8,7 @@
   <preface>
     <title>Preface</title>
     <note>
-      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.23.28- the command line
+      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.23.29- the command line
                 utility to build Linux system appliances. KIWI NG is stable and all
                 new features, bugfixes, and improvements will be developed here.
                 Versions older or equal to v7.x.x are out of maintenance and do
@@ -203,7 +203,7 @@
       <para>This document provides a conceptual overview about the steps
                 of creating an image with KIWI NG. It also explains the terminology
                 regarding the concept and process when building system images
-                with KIWI NG 9.23.28.</para>
+                with KIWI NG 9.23.29.</para>
     </note>
     <section xml:id="basic-workflow" xml:base="overview/workflow">
       <title>Basic Workflow</title>
@@ -223,7 +223,7 @@
                 complete the system usually reboots and enters a configuration procedure
                 upon start-up. The configuration may be fully automatic or it may include
                 user interaction.</para>
-        <para>This description applies for version 9.23.28.</para>
+        <para>This description applies for version 9.23.29.</para>
       </note>
       <para>A system image (usually called “image”), is a <emphasis>complete installation</emphasis> of a Linux
             system within a file. The image represents an operational system and,
@@ -514,7 +514,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
       </para>
       <para>This document describes how to start working with KIWI NG, an OS appliance
                 builder.
-                This description applies for version 9.23.28.</para>
+                This description applies for version 9.23.29.</para>
     </note>
     <section xml:id="before-you-start">
       <title>Before you start</title>
@@ -570,7 +570,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
     <title>Working from the Command Line</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) commands
-                for version 9.23.28.</para>
+                for version 9.23.29.</para>
     </note>
     <section xml:id="kiwi-ng" xml:base="commands/kiwi">
       <title>kiwi-ng</title>
@@ -1899,7 +1899,7 @@ kiwi-ng image info help</screen>
         <emphasis role="bold">Abstract</emphasis>
       </para>
       <para>The following sections describe the concept and general workflow
-                of building appliances with KIWI NG 9.23.28.</para>
+                of building appliances with KIWI NG 9.23.29.</para>
     </note>
     <section xml:id="systemdeps" xml:base="concept_and_workflow/systemdeps">
       <title>Host Requirements To Build Images</title>
@@ -3578,13 +3578,13 @@ $ kiwi-ng system create $ARGS</screen>
     <title>Image Description</title>
     <note>
       <para>This document explains the toplevel structure of the
-                KIWI NG image description document for version 9.23.28</para>
+                KIWI NG image description document for version 9.23.29</para>
     </note>
     <section xml:id="image-description-elements" xml:base="image_description/elements">
       <title>Image Description Elements</title>
       <note>
         <para>This document provides a reference for the elements
-                and attributes of the KIWI NG XML document in version 9.23.28</para>
+                and attributes of the KIWI NG XML document in version 9.23.29</para>
       </note>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
@@ -8317,7 +8317,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.23.28 inside of the Open Build Service.
+                KIWI NG in version 9.23.29 inside of the Open Build Service.
                 A tutorial on the Open Buildservice itself can be found here:
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
       </note>
@@ -8626,7 +8626,7 @@ name="images"&gt;</literal>:</para>
       </para>
       <para>This document describes the development process of KIWI NG
                 and how you can be part of it. This description applies
-                to version 9.23.28.</para>
+                to version 9.23.29.</para>
     </note>
     <section xml:id="using-kiwi-ng-in-a-python-project" xml:base="contributing/kiwi_from_python">
       <title>Using KIWI NG in a Python Project</title>
@@ -8636,7 +8636,7 @@ name="images"&gt;</literal>:</para>
         </para>
         <para>KIWI NG is provided as python module under the <emphasis role="bold">kiwi</emphasis> namespace.
                 It is available for the python 3 version. The following
-                description applies for KIWI NG version 9.23.28.</para>
+                description applies for KIWI NG version 9.23.29.</para>
       </note>
       <para>KIWI NG can also function as a module for other Python projects.
             The following example demonstrates how to read an existing image
@@ -8831,7 +8831,7 @@ $ kiwi-ng relax justdoit --now</screen>
         <para>Depending on the demand for custom plugins, the interface
                 to hook in code into other parts of the KIWI NG processing
                 needs to be extended.</para>
-        <para>This description applies for version 9.23.28.</para>
+        <para>This description applies for version 9.23.29.</para>
       </note>
       <section xml:id="the-extension-section">
         <title>The &lt;extension&gt; Section</title>
@@ -9250,7 +9250,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
   <chapter xml:id="api" xml:base="api">
     <title>Python API</title>
     <note>
-      <para>This API documentation covers KIWI NG 9.23.28</para>
+      <para>This API documentation covers KIWI NG 9.23.29</para>
     </note>
     <section xml:id="kiwi-package" xml:base="api/kiwi">
       <title>kiwi Package</title>
@@ -12599,18 +12599,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
               <para>Exception raised if impossible to determine which tar command
                         version is installed on the underlying system</para>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-        <variablelist>
-          <varlistentry xml:id="kiwi.exceptions.KiwiBootImageDumpError">
-            <term>
-              <literal>kiwi.exceptions.KiwiBootImageDumpError</literal>
-            </term>
-            <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
-              <para>Exception raised if an instance of BootImage* can not be
-                        serialized on as file via pickle dump</para>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -19534,26 +19522,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.dump">
-                  <term>
-                    <property>kiwi.boot.image.base.BootImageBase.dump</property>
-                  </term>
-                  <listitem>
-                    <para>Pickle dump this instance to a file. If the object dump
-                                is requested the destructor code will also be disabled
-                                in order to preserve the generated data</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>filename</literal> () – file path name</para>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.get_boot_description_directory">
                   <term>
                     <property>kiwi.boot.image.base.BootImageBase.get_boot_description_directory</property>
@@ -19850,7 +19818,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>basename</literal> () – base initrd file name</para>
                             </listitem>
                             <listitem>
-                              <para><literal>install_initrd</literal> () – installation media initrd</para>
+                              <para><literal>install_initrd</literal> () – unused</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -19870,7 +19838,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>filename</literal> () – file path name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>filename</literal> () – file path name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>install_media</literal> () – unused</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -19893,7 +19868,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>module</literal> () – module to include</para>
                             </listitem>
                             <listitem>
-                              <para><literal>install_media</literal> () – include the module for install initrds</para>
+                              <para><literal>install_media</literal> () – unused</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -19918,7 +19893,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>module</literal> () – module to omit</para>
                             </listitem>
                             <listitem>
-                              <para><literal>install_media</literal> () – omit the module for install initrds</para>
+                              <para><literal>install_media</literal> () – unused</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -19969,7 +19944,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>modules</literal> () – list of the modules to include</para>
                             </listitem>
                             <listitem>
-                              <para><literal>install_media</literal> () – lists the modules for install initrds</para>
+                              <para><literal>install_media</literal> () – unused</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -22122,9 +22097,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <itemizedlist>
                       <listitem>
                         <para>image=”oem”</para>
-                      </listitem>
-                      <listitem>
-                        <para>image=”vmx”</para>
                       </listitem>
                     </itemizedlist>
                     <variablelist role="field_list">
