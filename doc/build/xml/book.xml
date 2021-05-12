@@ -19478,6 +19478,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <listitem>
                         <para><literal>signing_keys</literal> () – list of package signing keys</para>
                       </listitem>
+                      <listitem>
+                        <para><literal>target_arch</literal> () – target architecture</para>
+                      </listitem>
                     </itemizedlist>
                   </listitem>
                 </varlistentry>
@@ -30137,6 +30140,9 @@ end</screen>
                             </listitem>
                             <listitem>
                               <para><literal>signing_keys</literal> () – Keys imported to the package manager</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>target_arch</literal> () – Target architecture name</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
