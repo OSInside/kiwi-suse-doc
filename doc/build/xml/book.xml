@@ -419,9 +419,12 @@
   <chapter xml:id="kiwi-installation" xml:base="installation">
     <title>Installation</title>
     <note>
-      <para>This document describes how to install KIWI NG. Apart from the preferred
-                method to install KIWI NG via rpm, it is also available on <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://pypi.org/project/kiwi/">pypi</link> and can be installed via pip.</para>
+      <para>This document describes how to install KIWI NG.</para>
     </note>
+    <para>Apart from the preferred method to install KIWI NG via a distribution
+            package manager, it is also available on <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://pypi.org/project/kiwi/">pypi</link>
+            and can be installed using Python’s package manager pip as follows:</para>
+    <screen language="shell-session">$ sudo pip install kiwi</screen>
     <section xml:id="installation-from-obs">
       <title>Installation from OBS</title>
       <para>The most up to date packages of KIWI NG can be found on the Open Build Service
@@ -441,62 +444,56 @@
           <para>Insert the copied URL from the last step into your shell. The <literal>DIST</literal>
                         placeholder contains the respective distribution.
                         Use <command>zypper addrepo</command> to add it to the list of your repositories:</para>
-          <screen language="shell-session">$ sudo zypper addrepo http://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/&lt;DIST&gt; appliance-builder</screen>
-          <para>If your distribution is not using <command>zypper</command>, please use your
-                        package manager’s appropriate command instead. For <command>dnf</command> that
-                        is:</para>
-          <screen language="shell-session">$ sudo dnf config-manager --add-repo https://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/&lt;DIST&gt;/Virtualization:Appliances:Builder.repo</screen>
+          <screen language="shell-session">$ sudo zypper addrepo \
+      http://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/&lt;DIST&gt; \
+      kiwi-appliance-builder</screen>
         </step>
-        <step>
-          <para>Add the repositories’ signing-key to your package manager’s
-                        database. For rpm run:</para>
-          <screen language="shell-session">$ sudo rpm --import https://build.opensuse.org/projects/Virtualization:Appliances:Builder/public_key</screen>
-          <para>And verify that you got the correct key:</para>
-          <screen language="shell-session">$ rpm -qi gpg-pubkey-74cbe823-* | gpg2
-gpg: WARNING: no command supplied.  Trying to guess what you mean ...
-pub   dsa1024 2009-05-04 [SC] [expires: 2020-10-09]
-      F7E82012C74FD0B85F5334DC994B195474CBE823
-uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliances@build.opensuse.org&gt;</screen>
-        </step>
-      </procedure>
-      <note>
-        <para><command>rpm</command> requires network utilities in order to download and
-                    import remote keys. Make sure <command>curl</command> is installed before
-                    trying to import remote keys using <command>rpm</command>.</para>
-        <para>Alternatively, the package manager, if not executed in non-interactive mode,
-                    will ask you to trust or not the public key of the new repository when
-                    refreshing repositories or installing new packages. If trusted the package
-                    manager will automatically import it.</para>
-      </note>
-      <procedure>
         <step>
           <para>Install KIWI NG:</para>
-          <screen language="shell-session">$ sudo zypper in python3-kiwi</screen>
+          <screen language="shell-session">$ sudo zypper --gpg-auto-import-keys install python3-kiwi</screen>
         </step>
       </procedure>
-    </section>
-    <section xml:id="installation-from-your-distribution-s-repositories">
-      <title>Installation from your distribution’s repositories</title>
       <note>
-        <para>There are many packages that contain the name KIWI NG in their name, some
-                    of these are even python packages. Please double check the packages’
-                    description whether it is actually the KIWI NG Appliance builder before
-                    installing it.</para>
+        <para>Other Distributions</para>
+        <para>If your distribution is not using <command>zypper</command>, please use your
+                    package manager’s appropriate command instead. For <command>dnf</command>,
+                    as an example, that is:</para>
+        <screen language="shell-session">$ sudo dnf config-manager \
+      --add-repo https://download.opensuse.org/repositories/Virtualization:/Appliances:/Builder/&lt;DIST&gt;/Virtualization:Appliances:Builder.repo
+
+$ sudo dnf install python3-kiwi</screen>
       </note>
-      <para>Some Linux distributions ship KIWI NG in their official repositories. These
-                include openSUSE Tumbleweed, openSUSE Leap, and Fedora since
-                version 28. Note, these packages tend to not be as up to date as the
-                packages from OBS, so some features described here might not exist yet.</para>
-      <para>To install KIWI NG on openSUSE, run the following command:</para>
-      <screen language="shell-session">$ sudo zypper install python3-kiwi</screen>
-      <para>On Fedora, use the following command instead:</para>
-      <screen language="shell-session">$ sudo dnf install kiwi-cli</screen>
     </section>
-    <section xml:id="installation-from-pypi">
-      <title>Installation from PyPI</title>
-      <para>KIWI NG can be obtained from the Python Package Index (PyPi) via Python’s
-                package manager pip:</para>
-      <screen language="shell-session">$ pip install kiwi</screen>
+    <section xml:id="installation-from-distribution-repositories">
+      <title>Installation from Distribution Repositories</title>
+      <para>Some Linux distributions ship KIWI NG in their official repositories. These
+                include <emphasis role="bold">openSUSE</emphasis> and <emphasis role="bold">Fedora</emphasis> since version 28. Note, these packages tend to
+                not be as up to date as the packages from OBS, so some features described
+                here might not exist yet.</para>
+      <note>
+        <para>There are many packages that contain the name <emphasis>kiwi</emphasis> in their name, some
+                    of these are not even python packages. Please double check the packages’
+                    description whether it is actually the KIWI NG Appliance builder before
+                    installing it. Please also note, depending on how the responsible
+                    packager has integrated KIWI NG into the distribution, the install
+                    name can be different from the instructions provided in:
+                    <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#installation-from-obs">Installation from OBS</link></para>
+      </note>
+      <para>To install KIWI NG for the desired distribution, run the following command:</para>
+      <variablelist>
+        <varlistentry>
+          <term>Leap/Tumbleweed:</term>
+          <listitem>
+            <screen language="shell-session">$ sudo zypper install python3-kiwi</screen>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Fedora/Rawhide:</term>
+          <listitem>
+            <screen language="shell-session">$ sudo dnf install kiwi-cli</screen>
+          </listitem>
+        </varlistentry>
+      </variablelist>
     </section>
     <section xml:id="example-descriptions">
       <title>Example Appliance Descriptions</title>
@@ -544,7 +541,7 @@ $ tree -L 3 kiwi/build-tests</screen>
         <step>
           <para>Install KIWI NG first, either via your distributions’ package manager (see
                         <xref linkend="kiwi-installation"/>) or via:</para>
-          <screen language="bash">$ pip install kiwi</screen>
+          <screen language="bash">$ sudo pip install kiwi</screen>
         </step>
         <step>
           <para>Clone the KIWI NG repository containing example appliances (see
@@ -582,7 +579,7 @@ $ tree -L 3 kiwi/build-tests</screen>
       <para>Running an image actually means booting the operating system. In order to
                 do that attach the disk image to a virtual system. In this example we use
                 QEMU and boot it as follows:</para>
-      <screen language="bash">$ qemu -boot c \
+      <screen language="bash">$ sudo qemu -boot c \
     -drive file=kiwi-test-image-disk.x86_64-1.15.3.raw,format=raw,if=virtio \
     -m 4096 -serial stdio</screen>
     </section>
@@ -5284,7 +5281,8 @@ $ kiwi-ng system create $ARGS</screen>
       --target-dir /tmp/myimage</screen>
       <para>The resulting image is saved in the folder <literal>/tmp/myimage</literal> and can
             be tested with QEMU:</para>
-      <screen language="bash">$ qemu -cdrom kiwi-test-image-live.x86_64-1.15.3.iso \
+      <screen language="bash">$ sudo qemu -cdrom \
+      kiwi-test-image-live.x86_64-1.15.3.iso \
       -m 4096 -serial stdio</screen>
       <para>The image is now complete and ready to use. See <xref linkend="iso-to-usb-stick"/> and
             <xref linkend="iso-as-file-to-usb-stick"/> for further information concerning
@@ -5454,7 +5452,7 @@ $ kiwi-ng system create $ARGS</screen>
       <para>The created image will be in the target directory <literal>/tmp/myimage</literal> with
             the file extension <literal>.raw</literal>.</para>
       <para>The live image can then be tested with QEMU:</para>
-      <screen language="bash">$ qemu \
+      <screen language="bash">$ sudo qemu \
     -drive file=kiwi-test-image-disk-simple.x86_64-1.15.3.raw,format=raw,if=virtio \
     -m 4096</screen>
       <para>For further information how to setup the image to work within a cloud
@@ -5852,7 +5850,7 @@ $ kiwi-ng system create $ARGS</screen>
           </step>
           <step>
             <para>Boot the target disk</para>
-            <screen language="bash">$ qemu -hda target_disk -m 4096 -serial stdio</screen>
+            <screen language="bash">$ sudo qemu -hda target_disk -m 4096 -serial stdio</screen>
             <para>At first boot of the target_disk the system is expanded to the
                         configured storage layout. By default the system root partition
                         and filesystem is resized to the maximum free space available.</para>
@@ -5872,7 +5870,8 @@ $ kiwi-ng system create $ARGS</screen>
           <step>
             <para>Boot the installation image as CD/DVD with the
                         target disk attached.</para>
-            <screen language="bash">$ qemu -cdrom kiwi-test-image-disk.x86_64-1.15.3.install.iso -hda target_disk \
+            <screen language="bash">$ sudo qemu -cdrom \
+      kiwi-test-image-disk.x86_64-1.15.3.install.iso -hda target_disk \
       -boot d -m 4096 -serial stdio</screen>
             <note>
               <para>USB Stick Deployment</para>
@@ -5989,7 +5988,7 @@ scp kiwi-test-image-disk.x86_64-1.15.3.config.bootoptions PXE_SERVER_IP:/srv/tft
           <step>
             <para>Connect the client to the network and boot QEMU with the target disk
                         attached to the virtual machine.</para>
-            <screen language="bash">$ qemu -boot n -hda target_disk -m 4096</screen>
+            <screen language="bash">$ sudo qemu -boot n -hda target_disk -m 4096</screen>
             <note>
               <para>QEMU bridged networking</para>
               <para>In order to let qemu connect to the network we recommend to
@@ -7268,7 +7267,8 @@ vagrant ssh</screen>
       </itemizedlist>
       <para>An image built with the above setup can be tested in QEMU as
             follows:</para>
-      <screen language="bash">$ qemu -cdrom {exc_image_base_name}.x86_64-1.15.3.install.iso \
+      <screen language="bash">$ sudo qemu -cdrom \
+      {exc_image_base_name}.x86_64-1.15.3.install.iso \
       -serial stdio</screen>
       <note>
         <para>Enough Main Memory</para>
@@ -7722,7 +7722,7 @@ UNIONFS_CONFIG=/dev/ram2,/dev/ram1,overlay</screen>
         <step>
           <para>Connect the client to the network and boot. This can also be done
                     in a virtualized environment using QEMU as follows:</para>
-          <screen language="bash">$ qemu -boot n -m 4096</screen>
+          <screen language="bash">$ sudo qemu -boot n -m 4096</screen>
         </step>
       </procedure>
       <section xml:id="pxe-legacy-client-config">
@@ -8054,7 +8054,7 @@ $ nbd-server</screen>
           <para>Within the network which has access to the PXE server and the
                     exported root filesystem image, any network client can now boot the
                     system. A test based on QEMU can be done as follows:</para>
-          <screen language="bash">$ qemu -boot n</screen>
+          <screen language="bash">$ sudo qemu -boot n</screen>
         </step>
       </procedure>
     </section>
@@ -8159,7 +8159,7 @@ $ umount /mnt</screen>
           <para>Within the network which has access to the PXE server and the
                     exported live ISO image, any network client can now boot the
                     live system. A test based on QEMU is done as follows:</para>
-          <screen language="bash">$ qemu -boot n</screen>
+          <screen language="bash">$ sudo qemu -boot n</screen>
         </step>
       </procedure>
     </section>
