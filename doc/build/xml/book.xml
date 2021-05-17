@@ -584,7 +584,7 @@ $ tree -L 3 kiwi/build-tests</screen>
                 QEMU and boot it as follows:</para>
       <screen language="bash">$ qemu -boot c \
     -drive file=kiwi-test-image-disk.x86_64-1.15.3.raw,format=raw,if=virtio \
-    -m 4096</screen>
+    -m 4096 -serial stdio</screen>
     </section>
     <section xml:id="tweak-and-customize-your-image">
       <title>Tweak and Customize your Image</title>
@@ -5284,7 +5284,8 @@ $ kiwi-ng system create $ARGS</screen>
       --target-dir /tmp/myimage</screen>
       <para>The resulting image is saved in the folder <literal>/tmp/myimage</literal> and can
             be tested with QEMU:</para>
-      <screen language="bash">$ qemu -cdrom kiwi-test-image-live.x86_64-1.15.3.iso -m 4096</screen>
+      <screen language="bash">$ qemu -cdrom kiwi-test-image-live.x86_64-1.15.3.iso \
+      -m 4096 -serial stdio</screen>
       <para>The image is now complete and ready to use. See <xref linkend="iso-to-usb-stick"/> and
             <xref linkend="iso-as-file-to-usb-stick"/> for further information concerning
             deployment.</para>
@@ -5851,7 +5852,7 @@ $ kiwi-ng system create $ARGS</screen>
           </step>
           <step>
             <para>Boot the target disk</para>
-            <screen language="bash">$ qemu -hda target_disk -m 4096</screen>
+            <screen language="bash">$ qemu -hda target_disk -m 4096 -serial stdio</screen>
             <para>At first boot of the target_disk the system is expanded to the
                         configured storage layout. By default the system root partition
                         and filesystem is resized to the maximum free space available.</para>
@@ -5871,7 +5872,8 @@ $ kiwi-ng system create $ARGS</screen>
           <step>
             <para>Boot the installation image as CD/DVD with the
                         target disk attached.</para>
-            <screen language="bash">$ qemu -cdromkiwi-test-image-disk.x86_64-1.15.3.install.iso -hda target_disk -boot d -m 4096</screen>
+            <screen language="bash">$ qemu -cdrom kiwi-test-image-disk.x86_64-1.15.3.install.iso -hda target_disk \
+      -boot d -m 4096 -serial stdio</screen>
             <note>
               <para>USB Stick Deployment</para>
               <para>Like any other ISO image built with KIWI NG, also the installation
@@ -6505,7 +6507,8 @@ scp kiwi-test-image-disk.x86_64-1.15.3.config.bootoptions PXE_SERVER_IP:/srv/tft
     -kernel /tmp/myimage/*.kernel \
     -initrd /tmp/myimage/*.initrd.xz \
     -append $(cat /tmp/myimage/*.append) \
-    -hda /tmp/myimage/kiwi-test-image-pxe.*-1.15.3 \</screen>
+    -hda /tmp/myimage/kiwi-test-image-pxe.*-1.15.3 \
+    -serial stdio</screen>
       <note>
         <para>For testing the components of a KIS image a deployment infrastructure
                 and also a deployment process is usually needed. One example of a
@@ -7265,7 +7268,8 @@ vagrant ssh</screen>
       </itemizedlist>
       <para>An image built with the above setup can be tested in QEMU as
             follows:</para>
-      <screen language="bash">$ qemu -cdrom {exc_image_base_name}.x86_64-1.15.3.install.iso</screen>
+      <screen language="bash">$ qemu -cdrom {exc_image_base_name}.x86_64-1.15.3.install.iso \
+      -serial stdio</screen>
       <note>
         <para>Enough Main Memory</para>
         <para>The machine, no matter if it’s a virtual machine like QEMU
