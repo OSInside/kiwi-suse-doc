@@ -500,10 +500,32 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
     </section>
     <section xml:id="example-descriptions">
       <title>Example Appliance Descriptions</title>
-      <para>There is a GitHub project hosting example appliance descriptions to be used
-                with the next generation KIWI NG. Users who need an example to start with
-                should clone the project as follows:</para>
-      <screen language="shell-session">$ git clone https://github.com/OSInside/kiwi-descriptions</screen>
+      <para>There are two places for example appliance descriptions:</para>
+      <variablelist>
+        <varlistentry>
+          <term>The KIWI NG build tests:</term>
+          <listitem>
+            <para>The KIWI NG project itself hosts a collection of appliance descriptions
+                            which are used for integration testing of the KIWI NG builder itself.
+                            These descriptions are required to build prior any KIWI NG release
+                            and are also used as the base for this documentation. Please check
+                            them out when working with this reference guide:</para>
+            <screen language="shell-session">$ git clone https://github.com/OSInside/kiwi
+
+$ tree -L 3 kiwi/build-tests</screen>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>The KIWI NG community descriptions project:</term>
+          <listitem>
+            <para>There is a GitHub project hosting example appliance descriptions to be used
+                            with the next generation KIWI NG. Contributions from the community makes up
+                            the contents of this repository and users who need an example for a specific
+                            use case and distribution can clone the project as follows:</para>
+            <screen language="shell-session">$ git clone https://github.com/OSInside/kiwi-descriptions</screen>
+          </listitem>
+        </varlistentry>
+      </variablelist>
     </section>
   </chapter>
   <chapter xml:id="quick-start" xml:base="quickstart">
@@ -525,14 +547,17 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
           <screen language="bash">$ pip install kiwi</screen>
         </step>
         <step>
-          <para>Clone the repository containing example appliances (see
+          <para>Clone the KIWI NG repository containing example appliances (see
                         <xref linkend="example-descriptions"/>):</para>
-          <screen language="bash">$ git clone https://github.com/OSInside/kiwi-descriptions</screen>
+          <screen language="bash">$ git clone https://github.com/OSInside/kiwi</screen>
         </step>
       </procedure>
     </section>
     <section xml:id="choose-a-first-image">
       <title>Choose a First Image</title>
+      <para>Find example appliance descriptions in the KIWI NG repository checkout
+                as follows:</para>
+      <screen language="bash">$ tree -L 3 kiwi/build-tests</screen>
       <para>Take a look which images are available in the example appliances repository
                 and select one that matches your desired image as close as possible. Or
                 just use the one given in the examples below.</para>
@@ -542,12 +567,13 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
       <para>Your first image will be a simple system disk image which can run
                 in any full virtualization system like QEMU. Invoke the following KIWI NG
                 command in order to build it:</para>
-      <screen language="bash">$ sudo kiwi-ng --profile=Disk --type oem system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
+      <screen language="bash">$ sudo kiwi-ng system build \
+    --description kiwi/build-tests/x86/leap/test-image-disk \
+    --set-repo obs://openSUSE:Leap:15.3/standard \
     --target-dir /tmp/myimage</screen>
       <para>The resulting image will be placed into the folder <literal>/tmp/myimage</literal>
                 with the suffix <literal>.raw</literal>.</para>
-      <para>If you don’t wish to create a openSUSE Leap 15.1 image,
+      <para>If you don’t wish to create a openSUSE Leap 15.3 image,
                 substitute the folder following the <literal>--description</literal> option with another
                 folder that contains the image description which you selected.</para>
     </section>
@@ -557,7 +583,7 @@ uid           Virtualization:Appliances OBS Project &lt;Virtualization:Appliance
                 do that attach the disk image to a virtual system. In this example we use
                 QEMU and boot it as follows:</para>
       <screen language="bash">$ qemu -boot c \
-    -drive file=Leap-15.1_appliance.x86_64-1.15.1.raw,format=raw,if=virtio \
+    -drive file=kiwi-test-image-disk.x86_64-1.15.3.raw,format=raw,if=virtio \
     -m 4096</screen>
     </section>
     <section xml:id="tweak-and-customize-your-image">
@@ -741,20 +767,12 @@ kiwi-ng help</screen>
       </section>
       <section xml:id="db-commands-kiwi-example">
         <title>EXAMPLE</title>
-        <screen language="bash">$ git clone https://github.com/OSInside/kiwi-descriptions
+        <screen language="bash">$ git clone https://github.com/OSInside/kiwi
 
-$ kiwi --type oem system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
+$ sudo kiwi-ng system build \
+    --description kiwi/build-tests/x86/leap/test-image-disk \
+    --set-repo obs://openSUSE:Leap:15.3/standard \
     --target-dir /tmp/myimage</screen>
-      </section>
-      <section xml:id="db-commands-kiwi-compat">
-        <title>COMPATIBILITY</title>
-        <para>This version of KIWI NG uses a different caller syntax compared to
-                former versions. However there is a compatibility mode which allows
-                to use a legacy KIWI NG commandline as follows:</para>
-        <screen language="bash">$ kiwi compat \
-    --build kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
-    --type oem -d /tmp/myimage</screen>
       </section>
     </section>
     <section xml:id="kiwi-ng-result-list" xml:base="commands/result_list">
@@ -1883,7 +1901,8 @@ kiwi-ng image info help</screen>
                 <literal>boxbuild</literal> and <literal>build</literal> options is done using the <literal>--</literal> separator like
                 shown in the following example:</para>
       <screen language="bash">$ kiwi-ng --type iso system boxbuild --box leap -- \
-      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
+      --description kiwi/build-tests/x86/leap/test-image-disk \
+      --set-repo obs://openSUSE:Leap:15.3/standard \
       --target-dir /tmp/myimage</screen>
       <note>
         <para>The provided <literal>--description</literal> and <literal>--target-dir</literal> options are
@@ -2073,24 +2092,24 @@ kiwi-ng image info help</screen>
                 defined, as KIWI NG will otherwise not be able to fetch any packages.</para>
         <para>A repository is added to the description via the <literal>repository</literal> element,
                 which is a child of the top-level <literal>image</literal> element:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+        <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;!-- snip --&gt;
     &lt;repository type="rpm-md" alias="kiwi" priority="1"&gt;
-        &lt;source path="obs://Virtualization:Appliances:Builder/openSUSE_Leap_15.1"/&gt;
+        &lt;source path="obs://Virtualization:Appliances:Builder/openSUSE_Leap_15.3"/&gt;
     &lt;/repository&gt;
     &lt;repository type="rpm-md" alias="OS" imageinclude="true"&gt;
-        &lt;source path="obs://openSUSE:Leap:15.1/standard"/&gt;
+        &lt;source path="{exc_repo}"/&gt;
     &lt;/repository&gt;
 &lt;/image&gt;</screen>
         <para>In the above snippet we defined two repositories:</para>
         <procedure>
           <step>
             <para>The repository belonging to the KIWI NG project:
-                        <emphasis>obs://Virtualization:Appliances:Builder/openSUSE_Leap_15.1</emphasis> at the Open Build Service (OBS)</para>
+                        <emphasis>obs://Virtualization:Appliances:Builder/openSUSE_Leap_15.3</emphasis> at the Open Build Service (OBS)</para>
           </step>
           <step>
             <para>The RPM repository belonging to the OS project:
-                        <emphasis>obs://openSUSE:Leap:15.1/standard</emphasis>, at the Open Build Service (OBS). The translated
+                        <emphasis>{exc_repo}</emphasis>, at the Open Build Service (OBS). The translated
                         http URL will also be included in the final appliance.</para>
           </step>
         </procedure>
@@ -2185,7 +2204,7 @@ kiwi-ng image info help</screen>
       <para>On top of the <xref linkend="repositories"/> setup the package setup is
             required. KIWI NG allows the end user to completely customize the selection
             of packages via the <literal>packages</literal> element.</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+      <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;packages type="bootstrap"&gt;
         &lt;package name="udev"/&gt;
         &lt;package name="filesystem"/&gt;
@@ -2230,7 +2249,7 @@ kiwi-ng image info help</screen>
         <title>The <literal>package</literal> element</title>
         <para>The <literal>package</literal> element represents a single package to be installed (or
                 removed), whose name is specified via the mandatory <literal>name</literal> attribute:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+        <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="bootstrap"&gt;
         &lt;package name="udev"/&gt;
@@ -2244,7 +2263,7 @@ kiwi-ng image info help</screen>
                 (like <command>dnf</command> or <command>zypper</command>) can install packages via their
                 <literal>Provides:</literal>. This can be used to add a package that provides a certain
                 capability (e.g. <literal>Provides: /usr/bin/my-binary</literal>) via:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+        <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="bootstrap"&gt;
         &lt;package name="/usr/bin/my-binary"/&gt;
@@ -2257,7 +2276,7 @@ kiwi-ng image info help</screen>
         <para>Packages can also be included only on specific host architectures via the
                 <literal>arch</literal> attribute. KIWI NG compares the <literal>arch</literal> attributes value with the host
                 architecture that builds the image according to the output of <literal>uname -m</literal>.</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+        <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="image"&gt;
         &lt;package name="grub2"/&gt;
@@ -2329,7 +2348,7 @@ kiwi-ng image info help</screen>
                 custom program in <literal>config.sh</literal>. We ship its source code via an
                 <literal>archive</literal> element and add the build tools (<literal>ninja</literal>, <literal>meson</literal> and <literal>clang</literal>) to
                 <literal>&lt;packages type="image"&gt;</literal> and <literal>&lt;packages type="uninstall"&gt;</literal>:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+        <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;!-- snip --&gt;
     &lt;packages type="image"&gt;
         &lt;package name="ca-certificates"/&gt;
@@ -2401,7 +2420,7 @@ popd</screen>
                 <literal>packages</literal> collection. This useful to exclude certain packages from being
                 installed when using patterns with <literal>patternType="plusRecommended"</literal> as shown
                 in the following example:</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+        <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;packages type="image" patternType="plusRecommended"&gt;
         &lt;namedCollection name="network-server"/&gt;
         &lt;package name="grub2"/&gt;
@@ -2431,7 +2450,7 @@ popd</screen>
             type but with different settings. In the following example, two virtual
             machine images of the <literal>oem</literal> type are configured: one for QEMU (using the
             <literal>qcow2</literal> format) and one for VMWare (using the <literal>vmdk</literal> format).</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+      <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;profiles&gt;
         &lt;profile name="QEMU" description="virtual machine for QEMU"/&gt;
         &lt;profile name="VMWare" description="virtual machine for VMWare"/&gt;
@@ -2475,7 +2494,7 @@ popd</screen>
       <title>Adding Users</title>
       <para>User accounts can be added or modified via the <literal>users</literal> element, which
             supports a list of multiple <literal>user</literal> child elements:</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+      <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;users&gt;
         &lt;user
             password="this_is_soo_insecure"
@@ -3115,7 +3134,7 @@ ln -s /etc/machine-id /var/lib/dbus/machine-id</screen>
         <para>Along with this setting it is now mandatory to provide a reference to
                 a boot image description in the <literal>boot</literal> attribute like in the
                 following example:</para>
-        <screen language="none">&lt;type ... boot="netboot/suse-leap15.1"/&gt;</screen>
+        <screen language="none">&lt;type ... boot="netboot/suse-tumbleweed"/&gt;</screen>
         <para>Such boot descriptions for the OEM and PXE types are currently still
                 provided by the KIWI NG packages but will be moved into its own repository
                 and package soon.</para>
@@ -3456,10 +3475,7 @@ install() {
                                 <literal>glibc-locale</literal> to specify as part of the bootstrap. The dependency
                                 chain of these two packages is usually sufficient to populate the
                                 bootstrap environment with all required software to support the
-                                installation of packages into the new root tree. The aforementioned two
-                                packages might not be enough for every distribution. Consult the
-                                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/OSInside/kiwi-descriptions/">kiwi-descriptions repository</link> containing examples
-                                for various Linux distributions.</para>
+                                installation of packages into the new root tree.</para>
             </note>
           </step>
           <step>
@@ -3589,11 +3605,11 @@ $ kiwi-ng system create $ARGS</screen>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
         <para>The toplevel of any KIWI NG image description</para>
-        <screen language="xml">&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+        <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
     &lt;!-- descendants --&gt;
 &lt;/image&gt;</screen>
         <para>The image definition starts with an image tag and requires the schema
-                format at version 7.2. The attribute name specifies the name
+                format at version 7.4. The attribute name specifies the name
                 of the image which is also used for the filenames created by KIWI. Because
                 we don’t want spaces in filenames the name attribute must not have any
                 spaces in its name.</para>
@@ -4574,7 +4590,7 @@ $ kiwi-ng system create $ARGS</screen>
           <para>The location of a repository is specified by the path attribute of the
                     mandatory source child element:</para>
           <screen language="xml">&lt;repository alias="kiwi"&gt;
-  &lt;source path="obs://Virtualization:Appliances:Builder/openSUSE_Leap_15.1"/&gt;
+  &lt;source path="obs://Virtualization:Appliances:Builder/openSUSE_Leap_15.3"/&gt;
 &lt;/repository&gt;</screen>
           <para>The location specification may include
                     the <literal>%arch</literal> macro which will expand to the architecture of the image
@@ -5059,15 +5075,15 @@ $ kiwi-ng system create $ARGS</screen>
         </step>
       </procedure>
       <para>More specific  the result files for a given image name and version such
-                as <literal>Leap-15.1_appliance</literal> and <literal>1.15.1</literal> will be:</para>
+                as <literal>{exc_image_base_name}</literal> and <literal>1.15.3</literal> will be:</para>
       <itemizedlist>
         <listitem>
           <para><emphasis role="bold">image packages</emphasis>:
-                        <literal>Leap-15.1_appliance.x86_64-1.15.1.packages</literal></para>
+                        <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.packages</literal></para>
         </listitem>
         <listitem>
           <para><emphasis role="bold">image verified</emphasis>:
-                        <literal>Leap-15.1_appliance.x86_64-1.15.1.verified</literal></para>
+                        <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.verified</literal></para>
         </listitem>
       </itemizedlist>
       <para>In addition to the image binaries itself that depend on the image type:</para>
@@ -5079,7 +5095,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">root archive</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.tar.xz</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.tar.xz</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -5092,7 +5108,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">filesystem image</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.ext4</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.ext4</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -5104,7 +5120,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">live image</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.iso</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.iso</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -5121,15 +5137,15 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">disk image</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.raw</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.raw</literal></para>
               </listitem>
               <listitem>
                 <para><emphasis role="bold">installation image (optional)</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.install.iso</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.install.iso</literal></para>
               </listitem>
               <listitem>
                 <para><emphasis role="bold">installation pxe archive (optional)</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.install.tar</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.install.tar</literal></para>
               </listitem>
             </itemizedlist>
             <para>The disk image can also be provided in one of the various virtual disk
@@ -5140,7 +5156,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">disk image</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.qcow2</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.qcow2</literal></para>
               </listitem>
             </itemizedlist>
             <para>instead of the <literal>raw</literal> default disk format.</para>
@@ -5154,7 +5170,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">container</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.docker.tar.xz</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.docker.tar.xz</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -5168,7 +5184,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">container</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.oci.tar.xz</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.oci.tar.xz</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -5181,7 +5197,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">container</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.appx</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.appx</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -5195,7 +5211,7 @@ $ kiwi-ng system create $ARGS</screen>
             <itemizedlist>
               <listitem>
                 <para><emphasis role="bold">kis archive</emphasis>:
-                                    <literal>Leap-15.1_appliance.x86_64-1.15.1.tar.xz</literal></para>
+                                    <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.tar.xz</literal></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -5229,7 +5245,7 @@ $ kiwi-ng system create $ARGS</screen>
             testing and demo- and debugging-purposes.</para>
       <para>To add a live ISO build to your appliance, create a  element with
             <literal>image</literal> set to <literal>iso</literal> in your <literal>config.xml</literal> as shown below:</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="Tumbleweed_appliance"&gt;
+      <screen language="xml">&lt;image schemaversion="7.4" name="Tumbleweed_appliance"&gt;
   &lt;!-- snip --&gt;
   &lt;preferences&gt;
     &lt;type image="iso" primary="true" flags="overlay" hybridpersistent_filesystem="ext4" hybridpersistent="true"/&gt;
@@ -5262,12 +5278,13 @@ $ kiwi-ng system create $ARGS</screen>
       </itemizedlist>
       <para>With the appropriate settings present in <literal>config.xml</literal> KIWI NG can now
             build the image:</para>
-      <screen language="bash">$ sudo kiwi-ng --type iso system build \
-      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
+      <screen language="bash">$ sudo kiwi-ng system build \
+      --description kiwi/build-tests/x86/leap/test-image-live \
+      --set-repo obs://openSUSE:Leap:15.3/standard \
       --target-dir /tmp/myimage</screen>
       <para>The resulting image is saved in the folder <literal>/tmp/myimage</literal> and can
             be tested with QEMU:</para>
-      <screen language="bash">$ qemu -cdrom Leap-15.1_appliance.x86_64-1.15.1.iso -m 4096</screen>
+      <screen language="bash">$ qemu -cdrom kiwi-test-image-live.x86_64-1.15.3.iso -m 4096</screen>
       <para>The image is now complete and ready to use. See <xref linkend="iso-to-usb-stick"/> and
             <xref linkend="iso-as-file-to-usb-stick"/> for further information concerning
             deployment.</para>
@@ -5388,7 +5405,7 @@ $ kiwi-ng system create $ARGS</screen>
             disabled. An example configuration for a 42 GB large VMDK image with
             512 MB RAM, an IDE controller and a bridged network interface is shown
             below:</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="Tumbleweed_appliance"&gt;
+      <screen language="xml">&lt;image schemaversion="7.4" name="Tumbleweed_appliance"&gt;
   &lt;!-- snip --&gt;
   &lt;preferences&gt;
     &lt;type image="oem" filesystem="ext4" format="vmdk"&gt;
@@ -5429,14 +5446,15 @@ $ kiwi-ng system create $ARGS</screen>
       <para>Once your image description is finished (or you are content with a image
             from the <xref linkend="example-descriptions"/> and use one of
             them) build the image with KIWI NG:</para>
-      <screen language="bash">$ sudo kiwi-ng --type oem system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
-    --target-dir /tmp/myimage</screen>
+      <screen language="bash">$ sudo kiwi-ng system build \
+     --description kiwi/build-tests/x86/leap/test-image-disk-simple \
+     --set-repo obs://openSUSE:Leap:15.3/standard \
+     --target-dir /tmp/myimage</screen>
       <para>The created image will be in the target directory <literal>/tmp/myimage</literal> with
             the file extension <literal>.raw</literal>.</para>
       <para>The live image can then be tested with QEMU:</para>
       <screen language="bash">$ qemu \
-    -drive file=Leap-15.1_appliance.x86_64-1.15.1.raw,format=raw,if=virtio \
+    -drive file=kiwi-test-image-disk-simple.x86_64-1.15.3.raw,format=raw,if=virtio \
     -m 4096</screen>
       <para>For further information how to setup the image to work within a cloud
             framework see:</para>
@@ -5764,7 +5782,8 @@ $ kiwi-ng system create $ARGS</screen>
         <step>
           <para>Build the image with KIWI NG:</para>
           <screen language="bash">$ sudo kiwi-ng --type oem system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
+    --description kiwi/build-tests/x86/leap/test-image-disk \
+    --set-repo obs://openSUSE:Leap:15.3/standard \
     --target-dir /tmp/myimage</screen>
           <para>Find the following result images below <literal>/tmp/myimage</literal>.</para>
           <itemizedlist>
@@ -5828,7 +5847,7 @@ $ kiwi-ng system create $ARGS</screen>
           </step>
           <step>
             <para>Dump disk image on target disk.</para>
-            <screen language="bash">$ dd if=Leap-15.1_appliance.x86_64-1.15.1.raw of=target_disk conv=notrunc</screen>
+            <screen language="bash">$ dd if=kiwi-test-image-disk.x86_64-1.15.3.raw of=target_disk conv=notrunc</screen>
           </step>
           <step>
             <para>Boot the target disk</para>
@@ -5852,7 +5871,7 @@ $ kiwi-ng system create $ARGS</screen>
           <step>
             <para>Boot the installation image as CD/DVD with the
                         target disk attached.</para>
-            <screen language="bash">$ qemu -cdromLeap-15.1_appliance.x86_64-1.15.1.install.iso -hda target_disk -boot d -m 4096</screen>
+            <screen language="bash">$ qemu -cdromkiwi-test-image-disk.x86_64-1.15.3.install.iso -hda target_disk -boot d -m 4096</screen>
             <note>
               <para>USB Stick Deployment</para>
               <para>Like any other ISO image built with KIWI NG, also the installation
@@ -5875,7 +5894,7 @@ $ kiwi-ng system create $ARGS</screen>
           <step>
             <para>Make sure to create an installation PXE TAR archive along with your
                         disk image by replacing the following setup in
-                        kiwi-descriptions/suse/x86_64/suse-leap-15.1/config.xml</para>
+                        kiwi/build-tests/x86/leap/test-image-disk/appliance.kiwi</para>
             <para>Instead of</para>
             <screen language="xml">&lt;type image="oem" installiso="true"/&gt;</screen>
             <para>setup</para>
@@ -5883,19 +5902,19 @@ $ kiwi-ng system create $ARGS</screen>
           </step>
           <step>
             <para>Rebuild the image, unpack the resulting
-                        <literal>Leap-15.1_appliance.x86_64-1.15.1.install.tar.xz</literal>
+                        <literal>kiwi-test-image-disk.x86_64-1.15.3.install.tar.xz</literal>
                         file to a temporary directory and copy the initrd and kernel images to
                         the PXE server:</para>
             <procedure>
               <step>
                 <para>Unpack installation tarball</para>
                 <screen language="bash">mkdir /tmp/pxe &amp;&amp; cd /tmp/pxe
-tar -xf Leap-15.1_appliance.x86_64-1.15.1.install.tar.xz</screen>
+tar -xf kiwi-test-image-disk.x86_64-1.15.3.install.tar.xz</screen>
               </step>
               <step>
                 <para>Copy kernel and initrd used for pxe boot</para>
-                <screen language="bash">scp pxeboot.Leap-15.1_appliance.x86_64-1.15.1.initrd.xz PXE_SERVER_IP:/srv/tftpboot/boot/initrd
-scp pxeboot.Leap-15.1_appliance.x86_64-1.15.1.kernel PXE_SERVER_IP:/srv/tftpboot/boot/linux</screen>
+                <screen language="bash">scp pxeboot.kiwi-test-image-disk.x86_64-1.15.3.initrd.xz PXE_SERVER_IP:/srv/tftpboot/boot/initrd
+scp pxeboot.kiwi-test-image-disk.x86_64-1.15.3.kernel PXE_SERVER_IP:/srv/tftpboot/boot/linux</screen>
               </step>
             </procedure>
           </step>
@@ -5907,14 +5926,14 @@ scp pxeboot.Leap-15.1_appliance.x86_64-1.15.1.kernel PXE_SERVER_IP:/srv/tftpboot
             <procedure>
               <step>
                 <para>Copy system image and MD5 checksum</para>
-                <screen language="bash">scp Leap-15.1_appliance.x86_64-1.15.1.xz PXE_SERVER_IP:/srv/tftpboot/image/
-scp Leap-15.1_appliance.x86_64-1.15.1.md5 PXE_SERVER_IP:/srv/tftpboot/image/</screen>
+                <screen language="bash">scp kiwi-test-image-disk.x86_64-1.15.3.xz PXE_SERVER_IP:/srv/tftpboot/image/
+scp kiwi-test-image-disk.x86_64-1.15.3.md5 PXE_SERVER_IP:/srv/tftpboot/image/</screen>
               </step>
               <step>
                 <para>Copy kernel, initrd and bootoptions used for booting the system via kexec</para>
-                <screen language="bash">scp Leap-15.1_appliance.x86_64-1.15.1.initrd PXE_SERVER_IP:/srv/tftpboot/image/
-scp Leap-15.1_appliance.x86_64-1.15.1.kernel PXE_SERVER_IP:/srv/tftpboot/image/
-scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftpboot/image/</screen>
+                <screen language="bash">scp kiwi-test-image-disk.x86_64-1.15.3.initrd PXE_SERVER_IP:/srv/tftpboot/image/
+scp kiwi-test-image-disk.x86_64-1.15.3.kernel PXE_SERVER_IP:/srv/tftpboot/image/
+scp kiwi-test-image-disk.x86_64-1.15.3.config.bootoptions PXE_SERVER_IP:/srv/tftpboot/image/</screen>
                 <note>
                   <para>The config.bootoptions file is used together with kexec to boot the
                                     previously dumped image. The information in that file references the
@@ -5932,7 +5951,7 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
             <para>Edit your PXE configuration (for example <literal>pxelinux.cfg/default</literal>) on
                         the PXE server and add these parameters to the append line, typically
                         looking like this:</para>
-            <screen language="bash">append initrd=boot/initrd rd.kiwi.install.pxe rd.kiwi.install.image=tftp://192.168.100.16/image/Leap-15.1_appliance.x86_64-1.15.1.xz</screen>
+            <screen language="bash">append initrd=boot/initrd rd.kiwi.install.pxe rd.kiwi.install.image=tftp://192.168.100.16/image/kiwi-test-image-disk.x86_64-1.15.3.xz</screen>
             <para>The location of the image is specified as a source URI which can point
                         to any location supported by the <literal>curl</literal> command. KIWI NG calls <literal>curl</literal> to fetch
                         the data from this URI. This also means your image, MD5 file, system kernel
@@ -6242,16 +6261,17 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
         </step>
         <step>
           <para>Build the image with KIWI NG:</para>
-          <screen language="bash">$ sudo kiwi-ng --type docker system build \
-    --description kiwi-descriptions/suse/x86_64/suse-tumbleweed-docker \
+          <screen language="bash">$ sudo kiwi-ng system build \
+    --description kiwi/build-tests/x86/leap/test-image-docker \
+    --set-repo obs://openSUSE:Leap:15.3/standard \
     --target-dir /tmp/myimage</screen>
         </step>
         <step>
           <para>Test the Docker image.</para>
           <para>First load the new image</para>
-          <screen language="bash">$ docker load -i openSUSE-Tumbleweed-container-image.x86_64-1.0.4.docker.tar.xz</screen>
+          <screen language="bash">$ docker load -i kiwi-test-image-docker.x86_64-1.15.3.docker.tar.xz</screen>
           <para>then run the loaded image:</para>
-          <screen language="bash">$ docker run -it opensuse:42.2 /bin/bash</screen>
+          <screen language="bash">$ docker run -it buildsystem /bin/bash</screen>
         </step>
       </procedure>
     </section>
@@ -6380,7 +6400,7 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
           <step>
             <para>Setup the image type:</para>
             <para>Edit the XML description file:
-                        <literal>kiwi-descriptions/suse/x86_64/suse-tumbleweed/config.xml</literal>
+                        <literal>kiwi/build-tests/x86/tumbleweed/test-image-wsl/appliance.kiwi</literal>
                         and add the following type and containerconfig:</para>
             <screen language="xml">&lt;type image="appx" metadata_path="/meta/data"&gt;
     &lt;containerconfig name="Tumbleweed"&gt;
@@ -6403,8 +6423,9 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
           </step>
           <step>
             <para>Build the image with KIWI NG:</para>
-            <screen language="bash">$ sudo kiwi-ng --type appx system build \
-    --description kiwi-descriptions/suse/x86_64/suse-tumbleweed \
+            <screen language="bash">$ sudo kiwi-ng system build \
+    --description kiwi/build-tests/x86/tumbleweed/test-image-wsl \
+    --set-repo http://download.opensuse.org/tumbleweed/repo/oss \
     --target-dir /tmp/myimage</screen>
           </step>
         </procedure>
@@ -6473,8 +6494,9 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
             image as well.</para>
       <para>With the appropriate settings present in <literal>config.xml</literal> KIWI NG can now
             build the image:</para>
-      <screen language="bash">$ sudo kiwi-ng --profile KIS system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
+      <screen language="bash">$ sudo kiwi-ng --type kis system build \
+    --description kiwi/build-tests/x86/tumbleweed/test-image-pxe \
+    --set-repo http://download.opensuse.org/tumbleweed/repo/oss \
     --target-dir /tmp/myimage</screen>
       <para>The resulting image components are saved in the folder <literal>/tmp/myimage</literal>.
             Outside of a deployment infrastructure the example KIS image can be
@@ -6483,7 +6505,7 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
     -kernel /tmp/myimage/*.kernel \
     -initrd /tmp/myimage/*.initrd.xz \
     -append $(cat /tmp/myimage/*.append) \
-    -hda /tmp/myimage/Leap-15.1_appliance.*-1.15.1 \</screen>
+    -hda /tmp/myimage/kiwi-test-image-pxe.*-1.15.3 \</screen>
       <note>
         <para>For testing the components of a KIS image a deployment infrastructure
                 and also a deployment process is usually needed. One example of a
@@ -6537,7 +6559,7 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
                         the following operation can not be revoked and will destroy all
                         data on the selected device</para>
           </warning>
-          <screen language="bash">$ dd if=Leap-15.1_appliance.x86_64-1.15.1.iso of=/dev/&lt;stickdevice&gt;</screen>
+          <screen language="bash">$ dd if={exc_image_base_name}.x86_64-1.15.3.iso of=/dev/&lt;stickdevice&gt;</screen>
         </step>
         <step>
           <para>Boot from your USB Stick</para>
@@ -6597,7 +6619,7 @@ scp Leap-15.1_appliance.x86_64-1.15.1.config.bootoptions PXE_SERVER_IP:/srv/tftp
           <para>Call the <literal>live-grub-stick</literal> command as follows:</para>
           <para>Assuming “/dev/sdz1” was the FAT32 partition selected from the
                     output of the <literal>lsblk</literal> command:</para>
-          <screen language="bash">$ sudo live-grub-stick Leap-15.1_appliance.x86_64-1.15.1.iso /dev/sdz1</screen>
+          <screen language="bash">$ sudo live-grub-stick {exc_image_base_name}.x86_64-1.15.3.iso /dev/sdz1</screen>
         </step>
         <step>
           <para>Boot from your USB Stick</para>
@@ -7074,7 +7096,7 @@ vagrant ssh</screen>
                 customized one (the libvirt profile in the following example):</para>
         <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 
-&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
   &lt;!-- description goes here --&gt;
   &lt;profiles&gt;
     &lt;profile name="libvirt" description="Vagrant Box for Libvirt"/&gt;
@@ -7243,7 +7265,7 @@ vagrant ssh</screen>
       </itemizedlist>
       <para>An image built with the above setup can be tested in QEMU as
             follows:</para>
-      <screen language="bash">$ qemu -cdrom Leap-15.1_appliance.x86_64-1.15.1.install.iso</screen>
+      <screen language="bash">$ qemu -cdrom {exc_image_base_name}.x86_64-1.15.3.install.iso</screen>
       <note>
         <para>Enough Main Memory</para>
         <para>The machine, no matter if it’s a virtual machine like QEMU
@@ -7416,7 +7438,7 @@ ExecStart=/bin/bash /usr/local/bin/create_part</screen>
             using <literal>systemdisk</literal>. This element is a child of the .
             Volumes themselves are added via (multiple) <literal>volume</literal> child
             elements of the <literal>systemdisk</literal> element:</para>
-      <screen language="xml">&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
+      <screen language="xml">&lt;image schemaversion="7.4" name="openSUSE-Leap-15.1"&gt;
   &lt;type image="oem" filesystem="btrfs" preferlvm="true"&gt;
     &lt;systemdisk name="vgroup"&gt;
       &lt;volume name="usr/lib" size="1G" label="library"/&gt;
@@ -7646,7 +7668,8 @@ $ grub2-mkimage -O i386-pc-pxe \
         <step>
           <para>Build the image with KIWI NG:</para>
           <screen language="bash">$ sudo kiwi-ng --type pxe system build \
-    --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
+    --description kiwi/build-tests/x86/tumbleweed/test-image-pxe \
+    --set-repo http://download.opensuse.org/tumbleweed/repo/oss \
     --target-dir /tmp/mypxe-result</screen>
         </step>
         <step>
@@ -7660,8 +7683,8 @@ $ cp *.kernel /srv/tftpboot/boot/linux</screen>
         </step>
         <step>
           <para>Copy the system image and its MD5 sum to <literal>/srv/tftpboot/image</literal>:</para>
-          <screen language="bash">$ cp Leap-15.1_appliance.x86_64-1.15.1 /srv/tftpboot/image
-$ cp Leap-15.1_appliance.x86_64-1.15.1.md5 /srv/tftpboot/image</screen>
+          <screen language="bash">$ cp kiwi-test-image-pxe.x86_64-1.15.3 /srv/tftpboot/image
+$ cp kiwi-test-image-pxe.x86_64-1.15.3.md5 /srv/tftpboot/image</screen>
         </step>
         <step>
           <para>Adjust the PXE configuration file.
@@ -7681,7 +7704,7 @@ LABEL KIWI-Boot
           <para>Create the image client configuration file:</para>
           <screen language="bash">$ vi /srv/tftpboot/KIWI/config.default
 
-IMAGE=/dev/ram1;Leap-15.1_appliance.x86_64;1.15.1;192.168.100.2;4096
+IMAGE=/dev/ram1;kiwi-test-image-pxe.x86_64;1.15.3;192.168.100.2;4096
 UNIONFS_CONFIG=/dev/ram2,/dev/ram1,overlay</screen>
           <para>All PXE boot based deployment methods are controlled by a client
                     configuration file. The above configuration tells the client where
@@ -7770,12 +7793,12 @@ UNIONFS_CONFIG=tmpfs,nbd,overlay</screen>
           <para>To deploy the image on a local disk the following setup
                     is required:</para>
           <note>
-            <para>In the referenced suse-leap-15.1 XML description the <literal>pxe</literal>
+            <para>In the referenced x86/tumbleweed/test-image-pxe XML description the <literal>pxe</literal>
                         type must be changed as follows and the image needs to be
                         rebuild:</para>
-            <screen language="xml">&lt;type image="pxe" filesystem="ext3" boot="netboot/suse-leap15.1"/&gt;</screen>
+            <screen language="xml">&lt;type image="pxe" filesystem="ext3" boot="netboot/suse-tumbleweed"/&gt;</screen>
           </note>
-          <screen language="bash">IMAGE="/dev/sda2;Leap-15.1_appliance.x86_64;1.15.1;192.168.100.2;4096"
+          <screen language="bash">IMAGE="/dev/sda2;kiwi-test-image-pxe.x86_64;1.15.3;192.168.100.2;4096"
 DISK="/dev/sda"
 PART="5;S;X,X;L;/"</screen>
           <para>The setup above will create a partition table on sda with a 5MB swap
@@ -7788,13 +7811,13 @@ PART="5;S;X,X;L;/"</screen>
           <para>To deploy the image on a local disk with prior software RAID
                     configuration, the following setup is required:</para>
           <note>
-            <para>In the referenced suse-leap-15.1 XML description the <literal>pxe</literal>
+            <para>In the referenced x86/tumbleweed/test-image-pxe XML description the <literal>pxe</literal>
                         type must be changed as follows and the image needs to be
                         rebuild:</para>
-            <screen language="xml">&lt;type image="pxe" filesystem="ext3" boot="netboot/suse-leap15.1"/&gt;</screen>
+            <screen language="xml">&lt;type image="pxe" filesystem="ext3" boot="netboot/suse-tumbleweed"/&gt;</screen>
           </note>
           <screen language="bash">RAID="1;/dev/sda;/dev/sdb"
-IMAGE="/dev/md1;Leap-15.1_appliance.x86_64;1.15.1;192.168.100.2;4096"
+IMAGE="/dev/md1;kiwi-test-image-pxe.x86_64;1.15.3;192.168.100.2;4096"
 PART="5;S;x,x;L;/"</screen>
           <para>The first parameter of the RAID line is the RAID level. So far only raid1
                     (mirroring) is supported. The second and third parameter specifies the
@@ -7918,7 +7941,7 @@ PART="5;S;x,x;L;/"</screen>
       <itemizedlist>
         <listitem>
           <para>Create dracut configuration to include the <literal>kiwi-overlay</literal> module</para>
-          <screen language="bash">$ cd kiwi-descriptions/suse/x86_64/suse-leap-15.1
+          <screen language="bash">$ cd kiwi/build-tests/x86/tumbleweed/test-image-pxe
 $ mkdir -p root/etc/dracut.conf.d
 $ cd root/etc/dracut.conf.d
 $ echo 'add_dracutmodules+=" kiwi-overlay "' &gt; overlay.conf</screen>
@@ -7954,7 +7977,7 @@ $ cp *.kernel /srv/tftpboot/boot/linux</screen>
                                     kernel used inside of the root filesystem image.</para>
                 </note>
                 <para>Once done, export the filesystem from the KIS build above as follows:</para>
-                <screen language="bash">$ vbladed 0 1 IFACE Leap-15.1_appliance.x86_64-1.15.1</screen>
+                <screen language="bash">$ vbladed 0 1 IFACE {exc_image_base_name}.x86_64-1.15.3</screen>
                 <para>The above command exports the given filesystem image file as a block
                                 storage device to the network of the given IFACE. On any machine except
                                 the one exporting the file, it will appear as <literal>/dev/etherd/e0.1</literal>
@@ -7974,7 +7997,7 @@ $ cp *.kernel /srv/tftpboot/boot/linux</screen>
                 <para>Install the <literal>nbd</literal> package on the system which is expected
                                 to export the root filesystem</para>
                 <para>Once done, export the filesystem from the KIS build above as follows:</para>
-                <screen language="bash">$ losetup /dev/loop0 Leap-15.1_appliance.x86_64-1.15.1
+                <screen language="bash">$ losetup /dev/loop0 {exc_image_base_name}.x86_64-1.15.3
 
 $ vi /etc/nbd-server/config
 
@@ -8059,7 +8082,7 @@ $ nbd-server</screen>
           <para>The PXE boot process loads the configured kernel and initrd from
                     the PXE server. For this reason, those two files must be extracted
                     from the live ISO image and copied to the PXE server as follows:</para>
-          <screen language="bash">$ mount Leap-15.1_appliance.x86_64-1.15.1.iso /mnt
+          <screen language="bash">$ mount {exc_image_base_name}.x86_64-1.15.3.iso /mnt
 $ cp /mnt/boot/x86_64/loader/initrd /srv/tftpboot/boot/initrd
 $ cp /mnt/boot/x86_64/loader/linux /srv/tftpboot/boot/linux
 $ umount /mnt</screen>
@@ -8082,7 +8105,7 @@ $ umount /mnt</screen>
                         kernel used in the live ISO image.</para>
           </note>
           <para>Once done, export the live ISO image as follows:</para>
-          <screen language="bash">$ vbladed 0 1 INTERFACE Leap-15.1_appliance.x86_64-1.15.1.iso</screen>
+          <screen language="bash">$ vbladed 0 1 INTERFACE {exc_image_base_name}.x86_64-1.15.3.iso</screen>
           <para>The above command exports the given ISO file as a block storage
                     device to the network of the given INTERFACE. On any machine
                     except the one exporting the file, it will appear as
@@ -8267,8 +8290,9 @@ touch /var/lib/YaST2/reconfig_system</screen>
         <title>Local Builds</title>
         <para>To execute local KIWI NG builds with a specific, selected profile, add the
                 command line flag <literal>--profile=$PROFILE_NAME</literal>:</para>
-        <screen language="shell-session">$ sudo kiwi-ng --type iso --profile=workstation system build \
-      --description kiwi-descriptions/suse/x86_64/suse-leap-15.1 \
+        <screen language="shell-session">$ sudo kiwi-ng --type oem --profile libvirt system build \
+      --description kiwi/build-tests/x86/leap/test-image-vagrant \
+      --set-repo obs://openSUSE:Leap:15.3/standard \
       --target-dir /tmp/myimage</screen>
         <para>Consult the manual page of <literal>kiwi</literal> for further details:
                 <xref linkend="db-commands-kiwi-synopsis"/>.</para>
@@ -8276,9 +8300,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
       <section xml:id="building-with-the-open-build-service">
         <title>Building with the Open Build Service</title>
         <para>The Open Build Service (OBS) support profiles via the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://openbuildservice.org/help/manuals/obs-user-guide/cha.obs.multibuild.html">multibuild</link>
-                feature. An example project using this feature is the
-                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/package/show/openSUSE:Factory/openSUSE-Tumbleweed">openSUSE-Tumbleweed</link>
-                image.</para>
+                feature.</para>
         <para>To enable and use the profiles, follow these steps:</para>
         <procedure>
           <step>
@@ -8288,7 +8310,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
                         <literal>&lt;?xml?&gt;</literal> element, e.g.:</para>
             <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;
-&lt;image schemaversion="7.2" name="Leap-15.1_appliance"&gt;
+&lt;image schemaversion="7.4" name="kiwi-test-image-vagrant"&gt;
   &lt;!-- snip --&gt;
 &lt;/image&gt;</screen>
           </step>
@@ -8328,7 +8350,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
       <para>
         <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org"/>
       </para>
-      <para>For example the test images for SUSE on x86 can be found <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:suse">here</link>.</para>
+      <para>For example the test images for SUSE on x86 can be found <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:leap">here</link>.</para>
       <section xml:id="advantages-of-using-the-open-build-service-obs">
         <title>Advantages of using the Open Build Service (OBS)</title>
         <para>The Open Build Service offers multiple advantages over running KIWI NG
@@ -8403,7 +8425,7 @@ Config</literal> on your project’s main page) or via <literal>osc meta -e prjc
 
 &lt;!-- OBS-Profiles: foo_profile bar_profile --&gt;
 
-&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
+&lt;image schemaversion="7.4" name="openSUSE-Leap-15.1"&gt;
   &lt;!-- image description with the profiles foo_profile and bar_profile
 &lt;/image&gt;</screen>
               </step>
@@ -8420,7 +8442,7 @@ Config</literal> on your project’s main page) or via <literal>osc meta -e prjc
 
 &lt;!-- OBS-Profiles: @BUILD_FLAVOR@ --&gt;
 
-&lt;image schemaversion="7.2" name="openSUSE-Leap-15.1"&gt;
+&lt;image schemaversion="7.4" name="openSUSE-Leap-15.1"&gt;
   &lt;!-- image description with the profiles foo_profile and bar_profile
 &lt;/image&gt;</screen>
             <para>The file <literal>_multibuild</literal> would have the following contents:</para>
