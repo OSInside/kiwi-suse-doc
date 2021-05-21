@@ -15334,22 +15334,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>
                 <emphasis role="bold">Implements build consistency checks at runtime</emphasis>
               </para>
-              <para>The schema of an image description covers structure and syntax of
-                        the provided data. The RuntimeChecker provides methods to perform
-                        further semantic checks which allows to recognize potential build
-                        or boot problems early.</para>
-              <itemizedlist>
-                <listitem>
-                  <variablelist role="field_list">
-                    <varlistentry>
-                      <term>param object xml_state</term>
-                      <listitem>
-                        <para>Instance of XMLState</para>
-                      </listitem>
-                    </varlistentry>
-                  </variablelist>
-                </listitem>
-              </itemizedlist>
               <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_appx_naming_conventions_valid">
                   <term>
@@ -15568,7 +15552,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_repositories_configured</property>
                   </term>
                   <listitem>
-                    <para>Verify that that there are repositories configured</para>
+                    <para>Verify that there are repositories configured</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
