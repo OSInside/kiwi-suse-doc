@@ -4278,9 +4278,13 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>initrd_system=”kiwi|dracut”:</term>
+              <term>initrd_system=”kiwi|dracut|none”:</term>
               <listitem>
-                <para>Specify which initrd builder to use, default is set to <literal>dracut</literal></para>
+                <para>Specify which initrd builder to use, default is set to <literal>dracut</literal>.
+                                If set to <literal>none</literal> the image is build without an initrd. Depending
+                                on the image type this can lead to a non bootable system as its
+                                now a kernel responsibility if the given root device can be
+                                mounted or not.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -17727,12 +17731,12 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <para>Name of initrd system to use</para>
                     <para>Depending on the image type a specific initrd system is
                                 either pre selected or free of choice according to the
-                                XML type setup</para>
+                                XML type setup.</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>dracut, kiwi or None</para>
+                          <para>‘dracut’, ‘kiwi’ or ‘none’</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -19471,30 +19475,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>
                 <emphasis role="bold">Base class for boot image(initrd) task</emphasis>
               </para>
-              <variablelist role="field_list">
-                <varlistentry>
-                  <term>Parameters</term>
-                  <listitem>
-                    <itemizedlist>
-                      <listitem>
-                        <para><literal>xml_state</literal> () – Instance of <literal>XMLState</literal></para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>target_dir</literal> () – target dir to store the initrd</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>root_dir</literal> () – system image root directory</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>signing_keys</literal> () – list of package signing keys</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>target_arch</literal> () – target architecture</para>
-                      </listitem>
-                    </itemizedlist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.cleanup">
                   <term>
@@ -19518,7 +19498,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>mbrid</literal> () – instance of ImageIdentifier</para>
+                              <para><literal>mbrid</literal> (<xref linkend="kiwi.system.identifier.SystemIdentifier"/>) – instance of SystemIdentifier</para>
                             </listitem>
                             <listitem>
                               <para><literal>basename</literal> () – base initrd file name</para>
@@ -19579,10 +19559,24 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para/>
+                          <para>
+                            <xref linkend="kiwi.boot.image.base.boot_names_type"/>
+                          </para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.base.BootImageBase.has_initrd_support">
+                  <term>
+                    <property>kiwi.boot.image.base.BootImageBase.has_initrd_support</property>
+                  </term>
+                  <listitem>
+                    <para>Indicates if this instance supports actual creation of an initrd</para>
+                    <para>The method needs to be overwritten by the subclass
+                                implementing preparation and creation of an initrd</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -19797,6 +19791,36 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
             </listitem>
           </varlistentry>
         </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.boot.image.base.boot_names_type">
+            <term>
+              <literal>kiwi.boot.image.base.boot_names_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.initrd_name">
+                  <term>
+                    <property>kiwi.boot.image.base.boot_names_type.initrd_name</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.kernel_name">
+                  <term>
+                    <property>kiwi.boot.image.base.boot_names_type.kernel_name</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
       </section>
       <section xml:id="module-kiwi.boot.image.dracut_kiwi-boot-image-dracut-module">
         <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.boot.image.dracut"><literal>kiwi.boot.image.dracut</literal></link> Module</title>
@@ -19825,7 +19849,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>mbrid</literal> () – unused</para>
+                              <para><literal>mbrid</literal> (<xref linkend="kiwi.system.identifier.SystemIdentifier"/>) – unused</para>
                             </listitem>
                             <listitem>
                               <para><literal>basename</literal> () – base initrd file name</para>
@@ -19837,6 +19861,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.dracut.BootImageDracut.has_initrd_support">
+                  <term>
+                    <property>kiwi.boot.image.dracut.BootImageDracut.has_initrd_support</property>
+                  </term>
+                  <listitem>
+                    <para>This instance supports initrd preparation and creation</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -20033,7 +20067,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para><literal>mbrid</literal> () – instance of ImageIdentifier</para>
+                              <para><literal>mbrid</literal> (<xref linkend="kiwi.system.identifier.SystemIdentifier"/>) – instance of ImageIdentifier</para>
                             </listitem>
                             <listitem>
                               <para><literal>basename</literal> () – base initrd file name</para>
@@ -20045,6 +20079,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.builtin_kiwi.BootImageKiwi.has_initrd_support">
+                  <term>
+                    <property>kiwi.boot.image.builtin_kiwi.BootImageKiwi.has_initrd_support</property>
+                  </term>
+                  <listitem>
+                    <para>This instance supports initrd preparation and creation</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
