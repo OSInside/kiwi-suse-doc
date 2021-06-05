@@ -3795,7 +3795,7 @@ $ kiwi-ng system create $ARGS</screen>
                     relative to <literal>/usr/share/zoneinfo</literal>. For example, specify
                     Europe/Berlin for <literal>/usr/share/zoneinfo/Europe/Berlin</literal>.</para>
           <screen language="xml">&lt;preferences&gt;
-  &lt;keytable&gt;Europe/Berlin&lt;/keytable&gt;
+  &lt;timezone&gt;Europe/Berlin&lt;/timezone&gt;
 &lt;/preferences&gt;</screen>
         </section>
         <section xml:id="preferences-locale">
