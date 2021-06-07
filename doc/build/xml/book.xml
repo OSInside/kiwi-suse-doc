@@ -2642,36 +2642,9 @@ test -f /.profile &amp;&amp; . /.profile
           <para>The following list describes all functions provided by <literal>.kconfig</literal>:</para>
           <variablelist>
             <varlistentry>
-              <term>baseCleanMount</term>
-              <listitem>
-                <para>Unmount the filesystems <literal>/proc</literal>, <literal>/dev/pts</literal>, <literal>/sys</literal> and
-                                <literal>/proc/sys/fs/binfmt_misc</literal>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseGetPackagesForDeletion</term>
-              <listitem>
-                <para>Return the name(s) of the packages marked for deletion in the image
-                                description.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseGetProfilesUsed</term>
-              <listitem>
-                <para>Return the name(s) of profiles used to build this image.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
               <term>baseSetRunlevel {value}</term>
               <listitem>
                 <para>Set the default run level.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseSetupUserPermissions</term>
-              <listitem>
-                <para>Set the ownership of all home directories and their content to the correct
-                                users and groups listed in <literal>/etc/passwd</literal>.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -2680,19 +2653,6 @@ test -f /.profile &amp;&amp; . /.profile
                 <para>Helper function for the <literal>baseStrip*</literal> functions, reads the list of files
                                 to check from stdin for removing
                                 params: files which should be kept</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseStripDocs {list of docu names to keep}</term>
-              <listitem>
-                <para>Remove all documentation files, except for the ones given as the
-                                parameter.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseStripInfos {list of info-files to keep}</term>
-              <listitem>
-                <para>Remove all info files, except for the one given as the parameter.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -2708,20 +2668,6 @@ test -f /.profile &amp;&amp; . /.profile
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>baseStripMans {list of manpages to keep}</term>
-              <listitem>
-                <para>Remove all manual pages, except for the ones given as the parameter.</para>
-                <para>Example:</para>
-                <screen language="bash">baseStripMans more less</screen>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>suseImportBuildKey</term>
-              <listitem>
-                <para>Add the SUSE build keys to the RPM database.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
               <term>baseStripUnusedLibs</term>
               <listitem>
                 <para>Remove libraries which are not directly linked against applications
@@ -2732,12 +2678,6 @@ test -f /.profile &amp;&amp; . /.profile
               <term>baseUpdateSysConfig {filename} {variable} {value}</term>
               <listitem>
                 <para>Update the contents of a sysconfig variable</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>suseConfig</term>
-              <listitem>
-                <para>This function is deprecated and is a NOP.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -2805,26 +2745,12 @@ test -f /.profile &amp;&amp; . /.profile
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>suseActivateDefaultServices</term>
-              <listitem>
-                <para>Activates the <literal>network</literal> and <literal>cron</literal> services to run at boot.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
               <term>suseSetupProduct</term>
               <listitem>
                 <para>Creates the <literal>/etc/products.d/baseproduct</literal> link
                                 pointing to the product referenced by either <literal>/etc/SuSE-brand</literal> or
                                 <literal>/etc/os-release</literal> or the latest <literal>prod</literal> file available in
                                 <literal>/etc/products.d</literal></para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>suseSetupProductInformation</term>
-              <listitem>
-                <para>Uses <command>zypper</command> to search for the installed product
-                                and installs all product specific packages. This function fails
-                                when <command>zypper</command> is not the appliances package manager.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -2864,13 +2790,6 @@ test -f /.profile &amp;&amp; . /.profile
               <term>Rm {list of files}</term>
               <listitem>
                 <para>Helper function to delete files and log the deletion.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>Rpm {rpm commandline}</term>
-              <listitem>
-                <para>Helper function for calling <literal>rpm</literal>: forwards all commandline arguments to
-                                <literal>rpm</literal> and logs the call.</para>
               </listitem>
             </varlistentry>
           </variablelist>
