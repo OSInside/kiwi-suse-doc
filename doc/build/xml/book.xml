@@ -24867,7 +24867,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>name</literal> () – dnf group name</para>
+                          <para><literal>name</literal> () – dnf group ID name</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
