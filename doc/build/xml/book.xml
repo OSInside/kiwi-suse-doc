@@ -8759,6 +8759,68 @@ $ kiwi-ng relax justdoit --now</screen>
         </procedure>
       </section>
     </section>
+    <section xml:id="write-integration-tests-for-the-scripts" xml:base="contributing/scripts_testing">
+      <title>Write Integration Tests for the Scripts</title>
+      <para>Kiwi ships a set of helper functions that can be used in <literal>config.sh</literal> (see
+            also: <xref linkend="working-with-kiwi-user-defined-scripts"/>). These utilize containers
+            to run the individual functions and verify that they resulted in the desired
+            state.</para>
+      <para>Ensure that you have either <command>podman</command> or <command>docker</command> installed and
+            configured on your system. The integration tests will use <command>podman</command> in
+            <emphasis role="bold">rootless mode</emphasis> by default, if it is installed on your system. You can select
+            <command>docker</command> instead by setting the environment variable
+            <literal>CONTAINER_RUNTIME</literal> to <literal>docker</literal>. Then you can run the integration tests via
+            tox:</para>
+      <screen language="shell-session">$ tox -e scripts -- -n NUMBER_OF_THREADS</screen>
+      <para>It is recommended to leverage <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://testinfra.readthedocs.io/">testinfra</link>
+            and the <literal>shared_container</literal> and <literal>container_per_test</literal> fixtures for writing
+            these integration tests. The fixtures give your test functions a connection to a
+            running container (by default that will be <literal>opensuse/tumbleweed</literal>)
+            <literal>functions.sh</literal> copied to <literal>/bin/functions.sh</literal> inside the
+            container. You can then use the connection to perform some setup, tear down and
+            the actual tests as follows:</para>
+      <screen language="python">def test_RmWorks(shared_container):
+    # create the file /root/foobar
+    shared_container.run_expect([0], "touch /root/foobar")
+    assert shared_container.file("/root/foobar").exists
+
+    # source the functions and execute our function under test
+    shared_container.run_expect([0], ". /bin/functions.sh &amp;&amp; Rm /root/foobar")
+
+    # verify the result
+    assert not shared_container.file("/root/foobar").exists</screen>
+      <para>In this example we used the <literal>shared_container</literal> fixture: it creates a podman
+            container at the start of the test session and gives each function using this
+            fixture the same connection. Therefore you must only use it for tests where you
+            do not perform any mutation of the container that you are not undoing
+            afterwards! If you need to perform extensive mutation that you cannot or do not
+            want to undo yourself, then resort to the <literal>container_per_test</literal> fixture. It
+            will give you a fresh container for each test function. While this makes writing
+            tests simpler, it also increases the runtime significantly, thus only use it
+            when necessary.</para>
+      <section xml:id="running-tests-for-multiple-container-images">
+        <title>Running Tests for multiple container images</title>
+        <para>It is important to test certain functions on multiple operating systems &amp;
+                versions, to e.g. ensure that older tools behave the same way that you expect
+                them to.</para>
+        <para>This can be achieved by leveraging pytest’s <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://docs.pytest.org/en/stable/parametrize.html">fixture parametrization</link> as follows:</para>
+        <screen language="python">@pytest.mark.parametrize(
+    "shared_container",
+    (
+        "Tumbleweed",
+        "Leap-15.3",
+    ),
+    indirect=True,
+)
+def test_something(shared_container):
+    pass</screen>
+        <para>Where we pass multiple image names to the container images to the
+                <literal>shared_container</literal> fixture. Pytest will then look for the image with the given
+                name in the predefined list of containers in <literal>conftest.py</literal>.</para>
+        <para>To add a new container, simply add a new <literal>Container</literal> class to the
+                <literal>CONTAINERS</literal> list and give it appropriate values for <literal>name</literal> and <literal>url</literal>.</para>
+      </section>
+    </section>
     <section xml:id="extending-kiwi-ng-with-custom-operations" xml:base="contributing/schema_extensions">
       <title>Extending KIWI NG with Custom Operations</title>
       <note>
@@ -8990,6 +9052,9 @@ $ source .tox/3/bin/activate</screen>
       <screen language="shell-session">$ deactivate</screen>
       <para>To resume your work, <command>cd</command> into your local Git repository and call:</para>
       <screen language="shell-session">$ source .tox/3/bin/activate</screen>
+      <para>Alternatively, you can launch single commands inside the virtualenv without
+                sourcing it directly:</para>
+      <screen language="shell-session">$ tox -e devel -- kiwi-ng --version</screen>
     </section>
     <section xml:id="running-the-unit-tests">
       <title>Running the Unit Tests</title>
