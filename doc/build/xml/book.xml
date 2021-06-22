@@ -188,8 +188,10 @@
             <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://matrix.org">Matrix</link>
           </para>
           <para>An open network for secure, decentralized communication. Please find the
-                        <literal>#kiwi</literal> room via <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://riot.im/app/">Riot</link> on the web or by using
-                        the supported <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://matrix.org/docs/projects/clients-matrix">clients</link>.</para>
+                        <literal>#kiwi:matrix.org</literal> room via
+                        <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://matrix.to/#kiwi:matrix.org">Matrix</link> on the web
+                        or by using the supported
+                        <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://matrix.org/docs/projects/clients-matrix">clients</link>.</para>
         </listitem>
       </itemizedlist>
     </section>
