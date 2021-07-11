@@ -17778,7 +17778,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>list|None</para>
+                          <para>|</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -18202,7 +18202,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>list|None</para>
+                          <para>|</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29854,7 +29854,7 @@ end</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>tuple|None</para>
+                          <para>|</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29878,7 +29878,7 @@ end</screen>
                       <varlistentry>
                         <term>Return type</term>
                         <listitem>
-                          <para>tuple|None</para>
+                          <para>|</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
