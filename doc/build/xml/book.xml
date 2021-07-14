@@ -11761,6 +11761,38 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_mok_manager">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_mok_manager</property>
+                  </term>
+                  <listitem>
+                    <para>Provides Mok Manager file path</para>
+                    <para>Searches distribution specific locations to find
+                                the Mok Manager EFI binary</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>root_path</literal> () – image root path</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>file path or None</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_obs_api_server_url">
                   <term>
                     <property>kiwi.defaults.Defaults.get_obs_api_server_url</property>
