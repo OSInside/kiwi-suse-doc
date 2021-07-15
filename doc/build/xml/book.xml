@@ -6068,6 +6068,17 @@ scp kiwi-test-image-disk.x86_64-1.15.3.config.bootoptions PXE_SERVER_IP:/srv/tft
                             the first device. <literal>kiwi_oemunattended</literal> in the initrd</para>
             </listitem>
           </varlistentry>
+          <varlistentry>
+            <term>oemconfig.oem-skip-verify Element</term>
+            <listitem>
+              <para>Do not perform the checksum verification process after install
+                            of the image to the target disk. The verification process computes
+                            the checksum of the image byte size installed to the target
+                            and compares this value with the initrd embedded checksum
+                            information at build time of the image. Depending on the size of
+                            the image and machine power the computation can take some time.</para>
+            </listitem>
+          </varlistentry>
         </variablelist>
       </section>
       <section xml:id="installmedia-customize">
