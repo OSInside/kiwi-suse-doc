@@ -2169,6 +2169,24 @@ kiwi-ng image info help</screen>
           <listitem>
             <para><literal>profiles</literal>: List of profiles to which this repository applies.</para>
           </listitem>
+          <listitem>
+            <para><literal>customize</literal>: Script to run custom modifications to the repo file(s).
+                        repo files allows for several customization options which not all of them
+                        are supported to be set by kiwi through the current repository schema.
+                        As the options used do not follow any standard and are not compatible
+                        between package managers and distributions, the only generic way to handle
+                        this is through a script hook which is invoked with the repo file as
+                        parameter for each file created by KIWI NG.</para>
+            <para>An example for a script call to add the <literal>module_hotfixes</literal> option
+                        for a <literal>dnf</literal> compatible repository configuration could look like
+                        this</para>
+            <screen language="bash">repo_file=$1
+echo 'module_hotfixes = 1' &gt;&gt; ${repo_file}</screen>
+            <note>
+              <para>If the script is provided as relative path it will
+                            be searched in the image description directory</para>
+            </note>
+          </listitem>
         </itemizedlist>
         <section xml:id="supported-repository-paths">
           <title>Supported repository paths</title>
@@ -4434,6 +4452,17 @@ $ kiwi-ng system create $ARGS</screen>
                             appended into the repository configuration file. If set the
                             relevant key information needs to be provided on the KIWI NG
                             commandline using the <literal>--signing-key</literal> option</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>customize=”/path/to/custom_script”</term>
+            <listitem>
+              <para>Custom script hook which is invoked with the repo file as parameter
+                            for each file created by KIWI NG.</para>
+              <note>
+                <para>If the script is provided as relative path it will
+                                be searched in the image description directory</para>
+              </note>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -26125,6 +26154,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             <listitem>
                               <para><literal>use_for_bootstrap</literal> () – unused</para>
                             </listitem>
+                            <listitem>
+                              <para><literal>customization_script</literal> () – unused</para>
+                            </listitem>
                           </itemizedlist>
                         </listitem>
                       </varlistentry>
@@ -26226,6 +26258,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Parameters</term>
                         <listitem>
                           <para><literal>custom_args</literal> () – unused</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.repository.base.RepositoryBase.run_repo_customize">
+                  <term>
+                    <property>kiwi.repository.base.RepositoryBase.run_repo_customize</property>
+                  </term>
+                  <listitem>
+                    <para>Run an optional customization script</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>script_path</literal> () – unused</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>repo_file</literal> () – unused</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -26353,6 +26410,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             </listitem>
                             <listitem>
                               <para><literal>use_for_bootstrap</literal> () – unused</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>customization_script</literal> () – custom script called after the repo file was created</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -26613,6 +26673,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             </listitem>
                             <listitem>
                               <para><literal>use_for_bootstrap</literal> () – unused</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>customization_script</literal> () – custom script called after the repo file was created</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
