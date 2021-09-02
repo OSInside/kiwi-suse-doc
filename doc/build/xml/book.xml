@@ -6612,6 +6612,71 @@ scp kiwi-test-image-disk.x86_64-1.15.3.config.bootoptions PXE_SERVER_IP:/srv/tft
         </step>
       </procedure>
     </section>
+    <section xml:id="grub-boot-from-iso" xml:base="working_with_images/iso_to_usb_stick_grub2_boot_from_iso">
+      <title>Booting a Live ISO Images from Grub2</title>
+      <formalpara role="sidebar">
+        <title>Abstract</title>
+        <para>This page provides further information for handling
+                ISO images built with KIWI NG and references the following
+                articles:</para>
+      </formalpara>
+      <itemizedlist>
+        <listitem>
+          <para>
+            <xref linkend="hybrid-iso"/>
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>In KIWI NG, all generated ISO images are created to be hybrid. This means,
+            the image can be used as a CD/DVD or as a disk. This works because
+            the ISO image also has a partition table embedded. With more and more
+            computers delivered without a CD/DVD drive this becomes important.
+            The deployment of such an image onto a disk like an USB stick normally
+            destroys all existing data on this device. It is also not possible to use
+            USB stick as a data storage device. Most USB sticks are pre-formatted
+            with a FAT32 or exFAT Windows File System and to keep the existing data
+            on the stick untouched a different deployment needs to be used.</para>
+      <para>Fortunately Grub2 supports booting directly from ISO files. It does not matter
+            whether it is installed on your computer’s hard drive or on a USB stick.
+            The following deployment process copies the ISO image as an additional file
+            to the USB stick or hard drive. The ability to boot from the disk is configured
+            through a Grub2 feature which allows to loopback mount an ISO file and boot the
+            kernel and initrd directly from the ISO file.</para>
+      <para>The initrd loaded in this process must also be able to loopback
+            mount the ISO file to access the root filesystem and boot the
+            live system. Almost every Linux distribution supports fat32,
+            and more and more of them also support exFAT. For hard drives,
+            Linux filesystems are also supported.</para>
+      <para>The dracut initrd system used by KIWI NG provides this
+            feature upstream called as “iso-scan/filename”. Therefore all KIWI NG generated
+            live ISO images supports this deployment mode.</para>
+      <para>The following procedure shows how to setup Grub2 on your hard drive:</para>
+      <procedure>
+        <step>
+          <para>Copy the ISO image to a folder of your choice on your hard drive.</para>
+        </step>
+        <step>
+          <para>Add the following code to the “grub.cfg” file:</para>
+          <para>Be sure to set the path to the ISO image, you can set your own menu name.
+                    The drive identification for Grub2 can be checked at boot time
+                    by pressing the ‘c’ key and typing ‘ls’.</para>
+          <screen language="bash">menuentry "Boot from openSUSE ISO" {
+     iso_path="(hd0,gpt2)/path/to/openSUSE.iso"
+     export iso_path
+     loopback loop "$iso_path"
+     root=(loop)
+     configfile /boot/grub2/loopback.cfg
+     loopback --delete loop
+}</screen>
+        </step>
+        <step>
+          <para>Restart your computer and select the added menu.</para>
+        </step>
+      </procedure>
+      <para>For USB sticks, the procedure is identical. You would then install
+            Grub2 on the USB drive and follow the steps above.
+            The use of scripts such as “MultiOS-USB” is strongly recommended.</para>
+    </section>
     <section xml:id="setup-for-ec2" xml:base="working_with_images/disk_setup_for_ec2">
       <title>Image Description for Amazon EC2</title>
       <formalpara role="sidebar">
