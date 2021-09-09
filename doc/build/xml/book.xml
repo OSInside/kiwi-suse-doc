@@ -827,6 +827,7 @@ kiwi-ng result list help</screen>
 kiwi-ng result bundle -h | --help
 kiwi-ng result bundle --target-dir=&lt;directory&gt; --id=&lt;bundle_id&gt; --bundle-dir=&lt;directory&gt;
     [--zsync_source=&lt;download_location&gt;]
+    [--package-as-rpm]
 kiwi-ng result bundle help</screen>
       </section>
       <section xml:id="db-kiwi-result-bundle-desc">
@@ -884,6 +885,14 @@ kiwi-ng result bundle help</screen>
                                     download location</para>
                 </listitem>
               </itemizedlist>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--package-as-rpm</option>
+            </term>
+            <listitem>
+              <para>Take all result files and create an rpm package out of it</para>
             </listitem>
           </varlistentry>
         </variablelist>
