@@ -2646,337 +2646,373 @@ popd</screen>
             bit is set (in that case a shebang is mandatory) otherwise they will be
             invoked via the BASH. If a script exits with a non-zero exit code
             then KIWI NG will report the failure and abort the image creation.</para>
-      <section xml:id="script-template-for-config-sh-images-sh">
-        <title>Script Template for config.sh / images.sh</title>
-        <para>KIWI NG provides a collection of methods and variables that supports users
-                with custom operations. For details see <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#image-customization-methods">Functions and Variables Provided by KIWI NG</link>.
-                The following template shows how to import this information in your
-                script:</para>
-        <screen language="bash">#======================================
+      <section xml:id="developing-debugging-scripts">
+        <title>Developing/Debugging Scripts</title>
+        <para>When creating a custom script it usually takes some iterations of
+                try and testing until a final stable state is reached. To support
+                developers with this task KIWI NG calls scripts associated with a
+                <literal>screen</literal> session. The connection to <literal>screen</literal> is only done if KIWI NG
+                is called with the <literal>--debug</literal> option.</para>
+        <para>In this mode a script can start like the following template:</para>
+        <screen language="bash"># The magic bits are still not set
+
+echo "break"
+/bin/bash</screen>
+        <para>At call time of the script a <literal>screen</literal> session executes and you get
+                access to the break in shell. From this environment the needed script
+                code can be implemented. Once the shell is closed the KIWI NG process
+                continues.</para>
+        <para>Apart from providing a full featured terminal throughout the
+                execution of the script code, there is also the advantage to
+                have control on the session during the process of the image
+                creation. Listing the active sessions for script execution
+                can be done as follows:</para>
+        <screen language="bash">$ sudo screen -list
+
+There is a screen on:
+     19699.pts-4.asterix     (Attached)
+1 Socket in /run/screens/S-root.</screen>
+        <note>
+          <para>As shown above the screen session(s) to execute script code
+                    provides extended control which could also be considered a
+                    security risk. Because of that KIWI NG only runs scripts through
+                    <literal>screen</literal> when explicitly enabled via the <literal>--debug</literal> switch.
+                    For production processes all scripts should run in their
+                    native way and should not require a terminal to operate
+                    correctly !</para>
+        </note>
+        <section xml:id="script-template-for-config-sh-images-sh">
+          <title>Script Template for config.sh / images.sh</title>
+          <para>KIWI NG provides a collection of methods and variables that supports users
+                    with custom operations. For details see <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#image-customization-methods">Functions and Variables Provided by KIWI NG</link>.
+                    The following template shows how to import this information in your
+                    script:</para>
+          <screen language="bash">#======================================
 # Include functions &amp; variables
 #--------------------------------------
 test -f /.kconfig &amp;&amp; . /.kconfig
 test -f /.profile &amp;&amp; . /.profile
 
 ...</screen>
-        <warning>
-          <para>Modifications of the unpacked root tree</para>
-          <para>Keep in mind that there is only one unpacked root tree the
-                    script operates in. This means that all changes are permanent
-                    and will not be automatically restored!</para>
-        </warning>
-      </section>
-      <section xml:id="image-customization-methods">
-        <title>Functions and Variables Provided by KIWI NG</title>
-        <para>KIWI NG creates the <literal>.kconfig</literal> and <literal>.profile</literal> files to be sourced
-                by the shell scripts <literal>config.sh</literal> and <literal>images.sh</literal>.
-                <literal>.kconfig</literal> contains various helper functions which can be used to
-                simplify the image configuration and <literal>.profile</literal> contains environment
-                variables which get populated from the settings provided in the image
-                description.</para>
-        <section xml:id="functions">
-          <title>Functions</title>
-          <para>The <literal>.kconfig</literal> file provides a common set of functions.  Functions
-                    specific to SUSE Linux Enterprise and openSUSE begin with the name
-                    <literal>suse</literal>, functions applicable to all Linux distributions start with the
-                    name <literal>base</literal>.</para>
-          <para>The following list describes all functions provided by <literal>.kconfig</literal>:</para>
-          <variablelist>
-            <varlistentry>
-              <term>baseSetRunlevel {value}</term>
-              <listitem>
-                <para>Set the default run level.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseStripAndKeep {list of info-files to keep}</term>
-              <listitem>
-                <para>Helper function for the <literal>baseStrip*</literal> functions, reads the list of files
-                                to check from stdin for removing
-                                params: files which should be kept</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseStripLocales {list of locales}</term>
-              <listitem>
-                <para>Remove all locales, except for the ones given as the parameter.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseStripTranslations {list of translations}</term>
-              <listitem>
-                <para>Remove all translations, except for the ones given as the parameter.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseStripUnusedLibs</term>
-              <listitem>
-                <para>Remove libraries which are not directly linked against applications
-                                in the bin directories.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseUpdateSysConfig {filename} {variable} {value}</term>
-              <listitem>
-                <para>Update the contents of a sysconfig variable</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseSystemdServiceInstalled {service}</term>
-              <listitem>
-                <para>Prints the path of the first found systemd unit or mount with name passed
-                                as the first parameter.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseSysVServiceInstalled {service}</term>
-              <listitem>
-                <para>Prints the name <literal>${service}</literal> if a SysV init service with that name is
-                                found, otherwise it prints nothing.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseSystemdCall {service_name} {args}</term>
-              <listitem>
-                <para>Calls <literal>systemctl ${args} ${service_name}</literal> if a systemd unit, a systemd
-                                mount or a SysV init service with the <literal>${service_name}</literal> exist.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseInsertService {servicename}</term>
-              <listitem>
-                <para>Activate the given service via <command>systemctl</command>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseRemoveService {servicename}</term>
-              <listitem>
-                <para>Deactivate the given service via <command>systemctl</command>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseService {servicename} {on|off}</term>
-              <listitem>
-                <para>Activate or deactivate a service via <command>systemctl</command>.
-                                The function requires the service name and the value <literal>on</literal> or <literal>off</literal> as
-                                parameters.</para>
-                <para>Example to enable the sshd service on boot:</para>
-                <screen language="bash">baseService sshd on</screen>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>suseInsertService {servicename}</term>
-              <listitem>
-                <para>Calls baseInsertService and exists only for
-                                compatibility reasons.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>suseRemoveService {servicename}</term>
-              <listitem>
-                <para>Calls baseRemoveService and exists only for
-                                compatibility reasons.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>suseService {servicename} {on|off}</term>
-              <listitem>
-                <para>Calls baseService and exists only for compatibility
-                                reasons.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>suseSetupProduct</term>
-              <listitem>
-                <para>Creates the <literal>/etc/products.d/baseproduct</literal> link
-                                pointing to the product referenced by either <literal>/etc/SuSE-brand</literal> or
-                                <literal>/etc/os-release</literal> or the latest <literal>prod</literal> file available in
-                                <literal>/etc/products.d</literal></para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>baseVagrantSetup</term>
-              <listitem>
-                <para>Configures the image to work as a vagrant box by performing the following
-                                changes:</para>
-                <itemizedlist>
-                  <listitem>
-                    <para>add the <literal>vagrant</literal> user to <literal>/etc/sudoers</literal>
-                                        or <literal>/etc/sudoers.d/vagrant</literal></para>
-                  </listitem>
-                  <listitem>
-                    <para>insert the insecure vagrant ssh key, apply recommended
-                                        ssh settings and start the ssh daemon</para>
-                  </listitem>
-                  <listitem>
-                    <para>create the default shared folder <literal>/vagrant</literal></para>
-                  </listitem>
-                </itemizedlist>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>Debug {message}</term>
-              <listitem>
-                <para>Helper function to print the supplied message if the variable DEBUG is
-                                set to 1 (it is off by default).</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>Echo {echo commandline}</term>
-              <listitem>
-                <para>Helper function to print a message to the controlling terminal.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>Rm {list of files}</term>
-              <listitem>
-                <para>Helper function to delete files and log the deletion.</para>
-              </listitem>
-            </varlistentry>
-          </variablelist>
+          <warning>
+            <para>Modifications of the unpacked root tree</para>
+            <para>Keep in mind that there is only one unpacked root tree the
+                        script operates in. This means that all changes are permanent
+                        and will not be automatically restored!</para>
+          </warning>
         </section>
-        <section xml:id="profile-environment-variables">
-          <title>Profile Environment Variables</title>
-          <para>The <literal>.profile</literal> environment file is created by KIWI NG and contains a
-                    specific set of variables which are listed below.</para>
-          <variablelist>
-            <varlistentry>
-              <term>$kiwi_compressed</term>
-              <listitem>
-                <para>The value of the <literal>compressed</literal> attribute set in the  element in
-                                <literal>config.xml</literal>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>$kiwi_delete</term>
-              <listitem>
-                <para>A list of all packages which are children of the <literal>packages</literal> element
-                                with <literal>type="delete"</literal> in <literal>config.xml</literal>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>$kiwi_drivers</term>
-              <listitem>
-                <para>A comma separated list of the driver entries as listed in the
-                                <literal>drivers</literal> section of the <literal>config.xml</literal>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>$kiwi_iname</term>
-              <listitem>
-                <para>The name of the image as listed in <literal>config.xml</literal>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>$kiwi_iversion</term>
-              <listitem>
-                <para>The image version as a string.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>$kiwi_keytable</term>
-              <listitem>
-                <para>The contents of the keytable setup as done in <literal>config.xml</literal>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>$kiwi_language</term>
-              <listitem>
-                <para>The contents of the locale setup as done in <literal>config.xml</literal>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>$kiwi_profiles</term>
-              <listitem>
-                <para>A comma separated list of profiles used to build this image.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>$kiwi_timezone</term>
-              <listitem>
-                <para>The contents of the timezone setup as done in <literal>config.xml</literal>.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>$kiwi_type</term>
-              <listitem>
-                <para>The image type as extracted from the  element in
-                                <literal>config.xml</literal>.</para>
-              </listitem>
-            </varlistentry>
-          </variablelist>
+        <section xml:id="image-customization-methods">
+          <title>Functions and Variables Provided by KIWI NG</title>
+          <para>KIWI NG creates the <literal>.kconfig</literal> and <literal>.profile</literal> files to be sourced
+                    by the shell scripts <literal>config.sh</literal> and <literal>images.sh</literal>.
+                    <literal>.kconfig</literal> contains various helper functions which can be used to
+                    simplify the image configuration and <literal>.profile</literal> contains environment
+                    variables which get populated from the settings provided in the image
+                    description.</para>
+          <section xml:id="functions">
+            <title>Functions</title>
+            <para>The <literal>.kconfig</literal> file provides a common set of functions.  Functions
+                        specific to SUSE Linux Enterprise and openSUSE begin with the name
+                        <literal>suse</literal>, functions applicable to all Linux distributions start with the
+                        name <literal>base</literal>.</para>
+            <para>The following list describes all functions provided by <literal>.kconfig</literal>:</para>
+            <variablelist>
+              <varlistentry>
+                <term>baseSetRunlevel {value}</term>
+                <listitem>
+                  <para>Set the default run level.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseStripAndKeep {list of info-files to keep}</term>
+                <listitem>
+                  <para>Helper function for the <literal>baseStrip*</literal> functions, reads the list of files
+                                    to check from stdin for removing
+                                    params: files which should be kept</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseStripLocales {list of locales}</term>
+                <listitem>
+                  <para>Remove all locales, except for the ones given as the parameter.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseStripTranslations {list of translations}</term>
+                <listitem>
+                  <para>Remove all translations, except for the ones given as the parameter.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseStripUnusedLibs</term>
+                <listitem>
+                  <para>Remove libraries which are not directly linked against applications
+                                    in the bin directories.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseUpdateSysConfig {filename} {variable} {value}</term>
+                <listitem>
+                  <para>Update the contents of a sysconfig variable</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseSystemdServiceInstalled {service}</term>
+                <listitem>
+                  <para>Prints the path of the first found systemd unit or mount with name passed
+                                    as the first parameter.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseSysVServiceInstalled {service}</term>
+                <listitem>
+                  <para>Prints the name <literal>${service}</literal> if a SysV init service with that name is
+                                    found, otherwise it prints nothing.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseSystemdCall {service_name} {args}</term>
+                <listitem>
+                  <para>Calls <literal>systemctl ${args} ${service_name}</literal> if a systemd unit, a systemd
+                                    mount or a SysV init service with the <literal>${service_name}</literal> exist.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseInsertService {servicename}</term>
+                <listitem>
+                  <para>Activate the given service via <command>systemctl</command>.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseRemoveService {servicename}</term>
+                <listitem>
+                  <para>Deactivate the given service via <command>systemctl</command>.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseService {servicename} {on|off}</term>
+                <listitem>
+                  <para>Activate or deactivate a service via <command>systemctl</command>.
+                                    The function requires the service name and the value <literal>on</literal> or <literal>off</literal> as
+                                    parameters.</para>
+                  <para>Example to enable the sshd service on boot:</para>
+                  <screen language="bash">baseService sshd on</screen>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>suseInsertService {servicename}</term>
+                <listitem>
+                  <para>Calls baseInsertService and exists only for
+                                    compatibility reasons.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>suseRemoveService {servicename}</term>
+                <listitem>
+                  <para>Calls baseRemoveService and exists only for
+                                    compatibility reasons.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>suseService {servicename} {on|off}</term>
+                <listitem>
+                  <para>Calls baseService and exists only for compatibility
+                                    reasons.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>suseSetupProduct</term>
+                <listitem>
+                  <para>Creates the <literal>/etc/products.d/baseproduct</literal> link
+                                    pointing to the product referenced by either <literal>/etc/SuSE-brand</literal> or
+                                    <literal>/etc/os-release</literal> or the latest <literal>prod</literal> file available in
+                                    <literal>/etc/products.d</literal></para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>baseVagrantSetup</term>
+                <listitem>
+                  <para>Configures the image to work as a vagrant box by performing the following
+                                    changes:</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>add the <literal>vagrant</literal> user to <literal>/etc/sudoers</literal>
+                                            or <literal>/etc/sudoers.d/vagrant</literal></para>
+                    </listitem>
+                    <listitem>
+                      <para>insert the insecure vagrant ssh key, apply recommended
+                                            ssh settings and start the ssh daemon</para>
+                    </listitem>
+                    <listitem>
+                      <para>create the default shared folder <literal>/vagrant</literal></para>
+                    </listitem>
+                  </itemizedlist>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>Debug {message}</term>
+                <listitem>
+                  <para>Helper function to print the supplied message if the variable DEBUG is
+                                    set to 1 (it is off by default).</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>Echo {echo commandline}</term>
+                <listitem>
+                  <para>Helper function to print a message to the controlling terminal.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>Rm {list of files}</term>
+                <listitem>
+                  <para>Helper function to delete files and log the deletion.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </section>
+          <section xml:id="profile-environment-variables">
+            <title>Profile Environment Variables</title>
+            <para>The <literal>.profile</literal> environment file is created by KIWI NG and contains a
+                        specific set of variables which are listed below.</para>
+            <variablelist>
+              <varlistentry>
+                <term>$kiwi_compressed</term>
+                <listitem>
+                  <para>The value of the <literal>compressed</literal> attribute set in the  element in
+                                    <literal>config.xml</literal>.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>$kiwi_delete</term>
+                <listitem>
+                  <para>A list of all packages which are children of the <literal>packages</literal> element
+                                    with <literal>type="delete"</literal> in <literal>config.xml</literal>.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>$kiwi_drivers</term>
+                <listitem>
+                  <para>A comma separated list of the driver entries as listed in the
+                                    <literal>drivers</literal> section of the <literal>config.xml</literal>.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>$kiwi_iname</term>
+                <listitem>
+                  <para>The name of the image as listed in <literal>config.xml</literal>.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>$kiwi_iversion</term>
+                <listitem>
+                  <para>The image version as a string.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>$kiwi_keytable</term>
+                <listitem>
+                  <para>The contents of the keytable setup as done in <literal>config.xml</literal>.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>$kiwi_language</term>
+                <listitem>
+                  <para>The contents of the locale setup as done in <literal>config.xml</literal>.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>$kiwi_profiles</term>
+                <listitem>
+                  <para>A comma separated list of profiles used to build this image.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>$kiwi_timezone</term>
+                <listitem>
+                  <para>The contents of the timezone setup as done in <literal>config.xml</literal>.</para>
+                </listitem>
+              </varlistentry>
+              <varlistentry>
+                <term>$kiwi_type</term>
+                <listitem>
+                  <para>The image type as extracted from the  element in
+                                    <literal>config.xml</literal>.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </section>
         </section>
-      </section>
-      <section xml:id="configuration-tips">
-        <title>Configuration Tips</title>
-        <procedure>
-          <step>
-            <para>
-              <emphasis role="bold">Locale configuration:</emphasis>
-            </para>
-          </step>
-        </procedure>
-        <para>KIWI in order to set the locale relies on <command>systemd-firstboot</command>,
-                    which in turn writes the locale configuration file <literal>/etc/locale.conf</literal>.
-                    The values for the locale settings are taken from the description XML
-                    file in the <literal>&lt;locale&gt;</literal> element under <literal>&lt;preferences&gt;</literal>.</para>
-        <para>KIWI assumes systemd adoption to handle these locale settings, in case the
-                    build distribution does not honor <literal>/etc/locale.conf</literal> this is likely to not
-                    produce any effect on the locale settings. As an example, in SLE12
-                    distribution the locale configuration is already possible by using the
-                    systemd toolchain, however this approach overlaps with SUSE specific
-                    managers such as YaST. In that case using <command>systemd-firstboot</command>
-                    is only effective if locales in <literal>/etc/sysconfig/language</literal> are
-                    not set or if the file does not exist at all. In SLE12
-                    <literal>/etc/sysconfig/language</literal> has precendence over
-                    <literal>/etc/locale.conf</literal> for compatibility reasons and management tools
-                    could still relay on  files for locale settings.</para>
-        <para>In any case the configuration is still possible in KIWI by using
-                    any distribution specific way to configure the locale setting inside the
-                    <literal>config.sh</literal> script or by adding any additional configuration file
-                    as part of the overlay root-tree.</para>
-        <procedure>
-          <step>
-            <para>
-              <emphasis role="bold">Stateless systemd UUIDs:</emphasis>
-            </para>
-          </step>
-        </procedure>
-        <para>Machine ID files are created and set (<literal>/etc/machine-id</literal>,
-                    <literal>/var/lib/dbus/machine-id</literal>) during the image package installation
-                    when <emphasis>systemd</emphasis> and/or <emphasis>dbus</emphasis> are installed. Those UUIDs are intended to
-                    be unique and set only once in each deployment. KIWI NG follows the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.freedesktop.org/software/systemd/man/machine-id.html">systemd
-                        recommendations</link> and
-                    wipes any <literal>/etc/machine-id</literal> content, leaving it as an empty file.
-                    Note, this only applies to images based on a dracut initrd, it does not
-                    apply for container images.</para>
-        <para>In case this setting is also required for a non dracut based image,
-                    the same result can achieved by removing <literal>/etc/machine-id</literal> in
-                    <literal>config.sh</literal>.</para>
-        <note>
-          <para>Avoid interactive boot</para>
-          <para>It is important to remark that the file <literal>/etc/machine-id</literal> is set
-                        to an empty file instead of deleting it. <command>systemd</command> may
-                        trigger <command>systemd-firstboot</command> service if this file is not
-                        present, which leads to an interactive firstboot where the user is
-                        asked to provide some data.</para>
-        </note>
-        <note>
-          <para>Avoid inconsistent <literal>/var/lib/dbus/machine-id</literal></para>
-          <para>Note that <literal>/etc/machine-id</literal> and <literal>/var/lib/dbus/machine-id</literal><emphasis role="bold">must</emphasis> contain the same unique ID. On modern systems
-                        <literal>/var/lib/dbus/machine-id</literal> is already a symlink to
-                        <literal>/etc/machine-id</literal>. However on older systems those might be two
-                        different files. This is the case for SLE-12 based images. If you are
-                        targeting these older operating systems, it is recommended to add the
-                        symlink creation into <literal>config.sh</literal>:</para>
-          <screen language="bash">#======================================
+        <section xml:id="configuration-tips">
+          <title>Configuration Tips</title>
+          <procedure>
+            <step>
+              <para>
+                <emphasis role="bold">Locale configuration:</emphasis>
+              </para>
+            </step>
+          </procedure>
+          <para>KIWI in order to set the locale relies on <command>systemd-firstboot</command>,
+                        which in turn writes the locale configuration file <literal>/etc/locale.conf</literal>.
+                        The values for the locale settings are taken from the description XML
+                        file in the <literal>&lt;locale&gt;</literal> element under <literal>&lt;preferences&gt;</literal>.</para>
+          <para>KIWI assumes systemd adoption to handle these locale settings, in case the
+                        build distribution does not honor <literal>/etc/locale.conf</literal> this is likely to not
+                        produce any effect on the locale settings. As an example, in SLE12
+                        distribution the locale configuration is already possible by using the
+                        systemd toolchain, however this approach overlaps with SUSE specific
+                        managers such as YaST. In that case using <command>systemd-firstboot</command>
+                        is only effective if locales in <literal>/etc/sysconfig/language</literal> are
+                        not set or if the file does not exist at all. In SLE12
+                        <literal>/etc/sysconfig/language</literal> has precendence over
+                        <literal>/etc/locale.conf</literal> for compatibility reasons and management tools
+                        could still relay on  files for locale settings.</para>
+          <para>In any case the configuration is still possible in KIWI by using
+                        any distribution specific way to configure the locale setting inside the
+                        <literal>config.sh</literal> script or by adding any additional configuration file
+                        as part of the overlay root-tree.</para>
+          <procedure>
+            <step>
+              <para>
+                <emphasis role="bold">Stateless systemd UUIDs:</emphasis>
+              </para>
+            </step>
+          </procedure>
+          <para>Machine ID files are created and set (<literal>/etc/machine-id</literal>,
+                        <literal>/var/lib/dbus/machine-id</literal>) during the image package installation
+                        when <emphasis>systemd</emphasis> and/or <emphasis>dbus</emphasis> are installed. Those UUIDs are intended to
+                        be unique and set only once in each deployment. KIWI NG follows the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.freedesktop.org/software/systemd/man/machine-id.html">systemd
+                            recommendations</link> and
+                        wipes any <literal>/etc/machine-id</literal> content, leaving it as an empty file.
+                        Note, this only applies to images based on a dracut initrd, it does not
+                        apply for container images.</para>
+          <para>In case this setting is also required for a non dracut based image,
+                        the same result can achieved by removing <literal>/etc/machine-id</literal> in
+                        <literal>config.sh</literal>.</para>
+          <note>
+            <para>Avoid interactive boot</para>
+            <para>It is important to remark that the file <literal>/etc/machine-id</literal> is set
+                            to an empty file instead of deleting it. <command>systemd</command> may
+                            trigger <command>systemd-firstboot</command> service if this file is not
+                            present, which leads to an interactive firstboot where the user is
+                            asked to provide some data.</para>
+          </note>
+          <note>
+            <para>Avoid inconsistent <literal>/var/lib/dbus/machine-id</literal></para>
+            <para>Note that <literal>/etc/machine-id</literal> and <literal>/var/lib/dbus/machine-id</literal><emphasis role="bold">must</emphasis> contain the same unique ID. On modern systems
+                            <literal>/var/lib/dbus/machine-id</literal> is already a symlink to
+                            <literal>/etc/machine-id</literal>. However on older systems those might be two
+                            different files. This is the case for SLE-12 based images. If you are
+                            targeting these older operating systems, it is recommended to add the
+                            symlink creation into <literal>config.sh</literal>:</para>
+            <screen language="bash">#======================================
 # Make machine-id consistent with dbus
 #--------------------------------------
 if [ -e /var/lib/dbus/machine-id ]; then
     rm /var/lib/dbus/machine-id
 fi
 ln -s /etc/machine-id /var/lib/dbus/machine-id</screen>
-        </note>
+          </note>
+        </section>
       </section>
     </section>
     <section xml:id="runtime-config" xml:base="concept_and_workflow/runtime_configuration">
