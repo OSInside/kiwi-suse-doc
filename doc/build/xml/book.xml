@@ -708,7 +708,8 @@ kiwi-ng help</screen>
             </term>
             <listitem>
               <para>Specify log file. the logfile contains detailed information about
-                            the process.</para>
+                            the process. The special call: <literal>--logfile stdout</literal> sends all
+                            information to standard out instead of writing to a file</para>
             </listitem>
           </varlistentry>
           <varlistentry>
