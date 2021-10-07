@@ -7761,7 +7761,7 @@ $ grub2-mkimage -O i386-pc-pxe \
         </step>
         <step>
           <para>Build the image with KIWI NG:</para>
-          <screen language="bash">$ sudo kiwi-ng --type pxe system build \
+          <screen language="bash">$ sudo kiwi-ng --profile Flat system build \
     --description kiwi/build-tests/x86/tumbleweed/test-image-pxe \
     --set-repo http://download.opensuse.org/tumbleweed/repo/oss \
     --target-dir /tmp/mypxe-result</screen>
