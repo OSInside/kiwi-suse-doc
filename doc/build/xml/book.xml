@@ -3629,6 +3629,42 @@ $ kiwi-ng system create $ARGS</screen>
           </varlistentry>
         </variablelist>
       </section>
+      <section xml:id="sec-include">
+        <title>&lt;include&gt;</title>
+        <para>Optional include of XML file content from file</para>
+        <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
+    &lt;include from="description.xml"/&gt;
+&lt;/image&gt;</screen>
+        <para>with file <literal>description.xml</literal> as follows:</para>
+        <screen language="xml">&lt;image&gt;
+    &lt;description type="system"&gt;
+        &lt;author&gt;name&lt;/author&gt;
+        &lt;contact&gt;contact&lt;/contact&gt;
+        &lt;specification&gt;text&lt;/specification&gt;
+    &lt;/description&gt;
+&lt;/image&gt;</screen>
+        <para>This will replace the <literal>include</literal> statement with the contents
+                of <literal>description.xml</literal>. The validation of the result happens
+                after the inclusion of all <literal>include</literal> references.</para>
+        <note>
+          <para>The include information must be embedded into an <literal>&lt;image&gt;</literal>
+                    root node. Only the inner elements of the root node will
+                    be included. The processing of XML data via XSLT always
+                    requires a root node which is the reason why this is
+                    required to be specified for include files as well.</para>
+        </note>
+        <note>
+          <para>Nesting of include statements in other include files is
+                    not supported. This will lead to unresolved include
+                    statements in the final document and will cause the
+                    runtime checker to complain about it.</para>
+        </note>
+        <note>
+          <para>The include is implemented via a XSLT stylesheet and therefore
+                    expects an XML document. Other markup formats are not supported
+                    as include reference.</para>
+        </note>
+      </section>
       <section xml:id="sec-description">
         <title>&lt;description&gt;</title>
         <para>Provide an image identity.</para>
@@ -4968,6 +5004,15 @@ $ kiwi-ng system create $ARGS</screen>
                 or more namespaces to an image description. The namespace can be
                 used with any of the above elements and therefore tie them into
                 a namespace which can be selected at call time of KIWI NG</para>
+    </section>
+    <section xml:id="image-includes">
+      <title>Image Includes</title>
+      <screen language="xml">&lt;include from="filename.xml"/&gt;</screen>
+      <para>The optional <xref linkend="sec-include"/> element allows to drop in the contents
+                of the specified <literal>filename.xml</literal> file at the place were the <literal>include</literal>
+                statement was specified in the document. The <literal>include</literal> statement is
+                only allowed as descendant of the root (top-level element) of the
+                image description.</para>
     </section>
   </chapter>
   <chapter xml:id="image-types" xml:base="image_types_and_results">
@@ -13447,6 +13492,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
         <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiIncludFileNotFoundError">
+            <term>
+              <literal>kiwi.exceptions.KiwiIncludFileNotFoundError</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Exception raised if the file reference in an &lt;include&gt;
+                        statement could not be found</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
           <varlistentry xml:id="kiwi.exceptions.KiwiInstallBootImageError">
             <term>
               <literal>kiwi.exceptions.KiwiInstallBootImageError</literal>
@@ -15782,6 +15839,20 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_include_references_unresolvable">
+                  <term>
+                    <property>kiwi.runtime_checker.RuntimeChecker.check_include_references_unresolvable</property>
+                  </term>
+                  <listitem>
+                    <para>Raise for still included &lt;include&gt; statements as not resolvable.
+                                The KIWI XSLT processing replaces the specified include
+                                directive(s) with the given file reference(s). If this action
+                                did not happen for example on nested includes, it can happen
+                                that they stay in the document as sort of waste.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_initrd_selection_required">
                   <term>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_initrd_selection_required</property>
@@ -17992,6 +18063,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Content of &lt;version&gt; section</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_include_section_reference_file_names">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_include_section_reference_file_names</property>
+                  </term>
+                  <listitem>
+                    <para>List of all &lt;include&gt; section file name references</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>List[str]</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
