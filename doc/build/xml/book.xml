@@ -30835,7 +30835,17 @@ end</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>filename</literal> () – file path name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>filename</literal> () – file path name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>portable</literal> () – If set to true also create a .json formatted variant
+                                                    of the dump file which contains the elements of this
+                                                    instance that could be expressed in a portable json
+                                                    document. Default is set to: True</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
