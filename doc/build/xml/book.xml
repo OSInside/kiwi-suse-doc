@@ -1856,52 +1856,58 @@ kiwi-ng image info help</screen>
       </informaltable>
     </section>
   </chapter>
-  <chapter xml:id="self-contained" xml:base="self_contained">
-    <title>Building in a Self-Contained Environment</title>
+  <chapter xml:id="kiwi-plugins" xml:base="plugins">
+    <title>KIWI Plugins</title>
     <note>
-      <para>
-        <emphasis role="bold">Abstract</emphasis>
-      </para>
-      <para>Users building images with KIWI NG face problems if they want
+      <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) plugins
+                which provides extended functionality for version 9.24.0.</para>
+    </note>
+    <section xml:id="self-contained" xml:base="plugins/self_contained">
+      <title>Building in a Self-Contained Environment</title>
+      <note>
+        <para>
+          <emphasis role="bold">Abstract</emphasis>
+        </para>
+        <para>Users building images with KIWI NG face problems if they want
                 to build an image matching one of the following criteria:</para>
-      <itemizedlist>
-        <listitem>
-          <para>build should happen as non root user.</para>
-        </listitem>
-        <listitem>
-          <para>build should happen on a host system distribution for which
+        <itemizedlist>
+          <listitem>
+            <para>build should happen as non root user.</para>
+          </listitem>
+          <listitem>
+            <para>build should happen on a host system distribution for which
                         no KIWI NG packages exists.</para>
-        </listitem>
-        <listitem>
-          <para>build happens on an incompatible host system distribution
+          </listitem>
+          <listitem>
+            <para>build happens on an incompatible host system distribution
                         compared to the target image distribution. For example
                         building an apt/dpkg  based system on an rpm based system.</para>
-        </listitem>
-        <listitem>
-          <para>run more than one build process at the same time on the
+          </listitem>
+          <listitem>
+            <para>run more than one build process at the same time on the
                         same host.</para>
-        </listitem>
-        <listitem>
-          <para>run a build process for a different target architecture
+          </listitem>
+          <listitem>
+            <para>run a build process for a different target architecture
                         compared to the host architecture (Cross Arch Image Build)</para>
-        </listitem>
-      </itemizedlist>
-      <para>This document describes how to perform the build process in
+          </listitem>
+        </itemizedlist>
+        <para>This document describes how to perform the build process in
                 a self contained environment using fast booting virtual
                 machines to address the issues listed above.</para>
-      <para>The changes on the machine to become a build host will
+        <para>The changes on the machine to become a build host will
                 be reduced to the requirements of the KIWI NG <literal>boxed plugin</literal></para>
-    </note>
-    <section xml:id="requirements">
-      <title>Requirements</title>
-      <para>Add the KIWI NG repo from the Open Build Service. For details see
+      </note>
+      <section xml:id="requirements">
+        <title>Requirements</title>
+        <para>Add the KIWI NG repo from the Open Build Service. For details see
                 <xref linkend="installation-from-obs"/>. The following KIWI NG plugin needs to be
                 installed on the build system:</para>
-      <screen language="bash">$ sudo zypper in python3-kiwi_boxed_plugin</screen>
-    </section>
-    <section xml:id="building-with-the-boxbuild-command">
-      <title>Building with the boxbuild command</title>
-      <para>The installation of the KIWI NG boxed plugin has registered a new kiwi
+        <screen language="bash">$ sudo zypper in python3-kiwi_boxed_plugin</screen>
+      </section>
+      <section xml:id="building-with-the-boxbuild-command">
+        <title>Building with the boxbuild command</title>
+        <para>The installation of the KIWI NG boxed plugin has registered a new kiwi
                 command named <literal>boxbuild</literal>. The command implementation uses KVM as
                 virtualization technology and runs the KIWI NG <literal>build</literal> command inside of
                 a KVM controlled virtual machine. For running the build process in a
@@ -1911,25 +1917,218 @@ kiwi-ng image info help</screen>
                 Those boxes are hosted in the Open Build Service and are publicly
                 available at the <literal>Subprojects</literal> tab in the: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:SelfContained">Virtualization:Appliances:SelfContained</link>
                 project.</para>
-      <para>As a user you don’t need to work with the boxes because this is all done
+        <para>As a user you don’t need to work with the boxes because this is all done
                 by the plugin and provided as a service by the KIWI NG team. The <literal>boxbuild</literal>
                 command knows where to fetch the box and also cares for an update of the
                 box when it has changed.</para>
-      <para>Building an image with the <literal>boxbuild</literal> command is similar to building with
+        <para>Building an image with the <literal>boxbuild</literal> command is similar to building with
                 the <literal>build</literal> command. The plugin validates the given command call with the
                 capabilities of the <literal>build</literal> command. Thus one part of the <literal>boxbuild</literal> command
                 is exactly the same as with the <literal>build</literal> command. The separation between
                 <literal>boxbuild</literal> and <literal>build</literal> options is done using the <literal>--</literal> separator like
                 shown in the following example:</para>
-      <screen language="bash">$ kiwi-ng --type iso system boxbuild --box leap -- \
+        <screen language="bash">$ kiwi-ng --type iso system boxbuild --box leap -- \
       --description kiwi/build-tests/x86/leap/test-image-disk \
       --set-repo obs://openSUSE:Leap:15.3/standard \
       --target-dir /tmp/myimage</screen>
-      <note>
-        <para>The provided <literal>--description</literal> and <literal>--target-dir</literal> options are
+        <note>
+          <para>The provided <literal>--description</literal> and <literal>--target-dir</literal> options are
                     setup as shared folders between the host and the guest. No other
                     data will be shared with the host.</para>
+        </note>
+      </section>
+    </section>
+    <section xml:id="stackbuild" xml:base="plugins/stackbuild">
+      <title>Building based on Containers</title>
+      <note>
+        <para>
+          <emphasis role="bold">Abstract</emphasis>
+        </para>
+        <para>When building images exposes one of the following
+                requirements the stackbuild plugin provides an opportunity
+                to address it:</para>
+        <itemizedlist>
+          <listitem>
+            <para>Preserve the image rootfs for a later rebuild without
+                        requiring the original software repositories.</para>
+          </listitem>
+          <listitem>
+            <para>Build an image based on an existing container.</para>
+          </listitem>
+          <listitem>
+            <para>Build an image based on a container stack.</para>
+          </listitem>
+          <listitem>
+            <para>Transform a container into a KIWI NG image type</para>
+          </listitem>
+        </itemizedlist>
       </note>
+      <section xml:id="installation">
+        <title>Installation</title>
+        <para>Add the KIWI NG repo from the Open Build Service. For details see
+                <xref linkend="installation-from-obs"/>. The following KIWI NG plugin needs to be
+                installed on the build system:</para>
+        <screen language="bash">$ sudo zypper in python3-kiwi_stackbuild_plugin</screen>
+      </section>
+      <section xml:id="concept">
+        <title>Concept</title>
+        <para>The design of the stackbuild plugin is two fold:</para>
+        <para>First the plugin comes with a command called <literal>stash</literal> which allows
+                to store a kiwi built root tree as an OCI container. OCI stands for
+                <emphasis>Open Container Interface</emphasis> and is a defacto standard format in the
+                container world. Once the container got created it can be managed
+                using the preferred container toolchain. The plugin code itself
+                uses <literal>podman</literal> to work with containers.</para>
+        <para>As a next step and with the root tree as a container the plugin offers
+                the opportunity to build images based on one ore more containers.
+                That’s also the reason why the plugin is called <emphasis>stackbuild</emphasis> as it
+                allows you to stack different root containers together.
+                Consequently the other command provided is named <literal>stackbuild</literal>.</para>
+        <para>The <literal>stash</literal> and <literal>stackbuild</literal> commands can be used independently
+                from each other. If there is already a registry with containers
+                that should be used to build images from, <literal>stackbuild</literal> can
+                directly consume them.</para>
+        <para>This concept leads to a number of use cases and a few of them were
+                picked and put into the abstract of this article. For the purpose
+                of documenting the functionality of the plugin only a part of the
+                possibilities are taken into account as follows:</para>
+      </section>
+      <section xml:id="stash">
+        <title>Create a stash</title>
+        <para>The <literal>stash</literal> command creates an OCI compliant container from a given
+                KIWI Next Generation (KIWI NG) image root tree and registers it in the local
+                container registry. From there a user can push it to any registry
+                of choice.</para>
+        <para>The following example creates a stash of a Tumbleweed build
+                and illustrates how to register it in a foreign container
+                registry:</para>
+        <screen language="bash"># Build some image...
+$ git clone https://github.com/OSInside/kiwi.git
+$ sudo kiwi-ng system build \
+    --description kiwi/build-tests/x86/tumbleweed/test-image-MicroOS/ \
+    --set-repo http://download.opensuse.org/tumbleweed/repo/oss \
+    --target-dir /tmp/myTWToday
+
+# Stash the image root into a container
+$ sudo kiwi-ng system stash \
+    --root /tmp/myTWToday/build/image-root \
+    --container-name twmos-snapshot
+
+# Register the stash in a registry
+$ podman login
+$ podman push twmos-20211008 \
+    docker://docker.io/.../twmos-snapshot:2021-10-08</screen>
+        <para>If the <literal>stash</literal> command is called multiple times with the same
+                container-name this leads to a new layer in the container for
+                each call. To inspect the number of layers added to the
+                container the following command can be used:</para>
+        <screen language="bash">$ podman inspect twmos-snapshot</screen>
+        <para>To list all stashes created by the <literal>stash</literal> command the following
+                command can be used</para>
+        <screen language="bash">$ kiwi-ng system stash --list</screen>
+      </section>
+      <section xml:id="rebuild-from-a-stash">
+        <title>Rebuild from a stash</title>
+        <para>The <literal>stackbuild</literal> command takes the given container(s) from the local or
+                remote registry and uses it/them to either rebuild an image from that
+                data or build a new image on top of that data. If multiple containers
+                are given the <literal>stackbuild</literal> command stacks them together in the order
+                as they were provided.</para>
+        <note>
+          <para>When using multiple containers the result stack root tree is
+                    created from a sequence of rsync commands into the same target
+                    directory. The stackbuild plugin does this with any container
+                    content given and does not check, validate or guarantee that
+                    the selection of containers are actually stackable or leads to
+                    an usable root tree. This means it’s in the responsibility of
+                    the caller to make sure the provided containers can actually
+                    be stacked together in the given order.</para>
+        </note>
+        <para>To simply rebuild the image from the stash created in <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#stash">Create a stash</link>
+                call <literal>stackbuild</literal> as follows:</para>
+        <screen language="bash"># Delete the image
+$ sudo rm -rf /tmp/myTWToday
+
+# Rebuild image from stash
+$ sudo kiwi-ng system stackbuild \
+    --stash twmos-snapshot:2021-10-08 \
+    --target-dir /tmp/myTWToday</screen>
+        <para>This rebuilds the image from the stash and the KIWI NG configuration
+                inside of the stash. As all rootfs data is already in the stash, the
+                command will not need external resources to rebuild the image.</para>
+      </section>
+      <section xml:id="turn-a-container-into-a-vm-image">
+        <title>Turn a container into a VM image</title>
+        <para>Another use case for the <literal>stackbuild</literal> plugin is the transformation
+                of container images into another image type that is supported by KIWI NG.
+                The following example demonstrates how an existing container image
+                from the openSUSE registry can be turned into a virtual machine image.</para>
+        <para>When moving a container into a virtual machine image the following
+                aspects has to be taken into account:</para>
+        <procedure>
+          <step>
+            <para>A container image usually has no kernel installed.</para>
+          </step>
+          <step>
+            <para>A container image usually has no bootloader installed.</para>
+          </step>
+          <step>
+            <para>A container image usually has no user configured.</para>
+          </step>
+        </procedure>
+        <para>For a VM image the mentioned aspects are mandatory. Therefore
+                the following KIWI NG image description contains this additional
+                information which the container cannot provide: Create the
+                KIWI NG description as follows:</para>
+        <screen language="bash">$ mkdir container_to_VM_layer
+$ vi container_to_VM_layer/config.kiwi</screen>
+        <para>And place the following content:</para>
+        <screen language="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;image schemaversion="6.8" name="Leap-VM"&gt;
+    &lt;description type="system"&gt;
+        &lt;author&gt;The Author&lt;/author&gt;
+        &lt;contact&gt;user@example.org&lt;/contact&gt;
+        &lt;specification&gt;
+            Leap Container as VM
+        &lt;/specification&gt;
+    &lt;/description&gt;
+    &lt;preferences&gt;
+        &lt;type image="oem" filesystem="xfs" firmware="uefi"&gt;
+            &lt;oemconfig&gt;
+                &lt;oem-resize&gt;false&lt;/oem-resize&gt;
+            &lt;/oemconfig&gt;
+        &lt;/type&gt;
+        &lt;version&gt;1.99.1&lt;/version&gt;
+        &lt;packagemanager&gt;zypper&lt;/packagemanager&gt;
+        &lt;locale&gt;en_US&lt;/locale&gt;
+        &lt;keytable&gt;us&lt;/keytable&gt;
+        &lt;timezone&gt;UTC&lt;/timezone&gt;
+    &lt;/preferences&gt;
+    &lt;repository type="rpm-md" alias="Leap_15_3"&gt;
+        &lt;source path="obs://openSUSE:Leap:15.3/standard"/&gt;
+    &lt;/repository&gt;
+    &lt;packages type="image"&gt;
+        &lt;package name="grub2"/&gt;
+        &lt;package name="grub2-x86_64-efi" arch="x86_64"/&gt;
+        &lt;package name="grub2-i386-pc"/&gt;
+        &lt;package name="shim"/&gt;
+        &lt;package name="kernel-default"/&gt;
+    &lt;/packages&gt;
+    &lt;users&gt;
+        &lt;user password="$1$wYJUgpM5$RXMMeASDc035eX.NbYWFl0" home="/root" name="root" groups="root"/&gt;
+    &lt;/users&gt;
+&lt;/image&gt;</screen>
+        <para>To build the virtual machine image from the current hosted Leap 15.3
+                container at SUSE, call the following <literal>stackbuild</literal> command:</para>
+        <screen language="bash">$ sudo kiwi-ng system stackbuild \
+    --stash leap:15.3 \
+    --from-registry registry.opensuse.org/opensuse \
+    --target-dir /tmp/myLeap \
+    --description container_to_VM_layer</screen>
+        <para>The resulting virtual machine image can be booted as follows:</para>
+        <screen language="bash">$ qemu-kvm Leap-VM.x86_64-1.99.1.raw</screen>
+      </section>
     </section>
   </chapter>
   <chapter xml:id="concept-and-workflow" xml:base="concept_and_workflow">
