@@ -5248,7 +5248,8 @@ $ kiwi-ng system create $ARGS</screen>
                         deployment the system can resize itself to the new disk geometry.
                         The resize operation is configurable as part of the image description
                         and an installation image for CD/DVD, USB stick and Network deployment
-                        can be created in addition. For further details refer to: <xref linkend="expandable-disk"/></para>
+                        can be created in addition. For further details refer to:
+                        <xref linkend="expandable-disk"/></para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -5283,9 +5284,9 @@ $ kiwi-ng system create $ARGS</screen>
       <title>Image Results</title>
       <para>KIWI NG execution results in an appliance image after a successful run of
                 <xref linkend="kiwi-system-build"/> or <xref linkend="kiwi-system-create"/> command.
-                The result is the image binary in addition a couple of metadata files that can
-                be handy to describe or identify the resulting image. The output files follow
-                this naming convention:</para>
+                The result is the image binary plus some additional metadata files
+                which are needed for image deployment and/or exists for informative
+                reasons. By default the output files follow this naming convention:</para>
       <para>
         <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.&lt;extension&gt;</literal>
       </para>
@@ -5300,7 +5301,7 @@ $ kiwi-ng system create $ARGS</screen>
           <para>The image binary, <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.&lt;image-extension&gt;</literal>:</para>
           <para>This is the file containig the actual image binary, depending
                         on the image type and its definition it can be a virtual disk image
-                        file, and ISO image, a tarball, etc.</para>
+                        file, an ISO image, a tarball, etc.</para>
         </step>
         <step>
           <para>The <literal>&lt;image-name&gt;.&lt;arch&gt;-&lt;version&gt;.packages</literal> file:</para>
@@ -5329,19 +5330,7 @@ $ kiwi-ng system create $ARGS</screen>
                         the image.</para>
         </step>
       </procedure>
-      <para>More specific  the result files for a given image name and version such
-                as <literal>{exc_image_base_name}</literal> and <literal>1.15.3</literal> will be:</para>
-      <itemizedlist>
-        <listitem>
-          <para><emphasis role="bold">image packages</emphasis>:
-                        <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.packages</literal></para>
-        </listitem>
-        <listitem>
-          <para><emphasis role="bold">image verified</emphasis>:
-                        <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.verified</literal></para>
-        </listitem>
-      </itemizedlist>
-      <para>In addition to the image binaries itself that depend on the image type:</para>
+      <para>Depending on the image type, the following output files exists:</para>
       <variablelist>
         <varlistentry>
           <term>image=”tbz”</term>
@@ -5469,6 +5458,92 @@ $ kiwi-ng system create $ARGS</screen>
                                     <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.tar.xz</literal></para>
               </listitem>
             </itemizedlist>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+    <section xml:id="image-bundle-format">
+      <title>Image Bundle Format</title>
+      <para>The result files as mentioned above are used in the KIWI NG result bundler.
+                The <literal>kiwi-ng result bundle</literal> command can be used to copy or package the
+                mandatory image files to create a customer release. In this process it’s
+                possible to apply a specific name pattern suitable for the requirements
+                of the release. A typical result bundle call can look like the following:</para>
+      <screen language="bash">$ kiwi-ng result bundle --target-dir /path/to/image/build_result \
+      --bundle-dir=/path/to/image/release_result \
+      --id=release_identifier</screen>
+      <para>In this call and depending on the image type the required files as they
+                exist in <literal>/path/to/image/build_result</literal> are copied to
+                <literal>/path/to/image/release_result/</literal>. The only modification on the file
+                names is the <literal>--id</literal> information which is appended with a <literal>-</literal> to at the
+                end of the version substring. If we take
+                <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3.iso</literal> as example.
+                This file would be bundled as
+                <literal><emphasis>exc_image_base_name</emphasis>.x86_64-1.15.3-release_identifier.iso</literal></para>
+      <para>Depending on the use case and the customer requirements this naming
+                schema and the default way how the kiwi bundler processes the result files
+                is not appropriate. To allow for a more flexible naming schema when
+                bundling results, KIWI NG allows to specify a bundle_format per type like
+                in the following example:</para>
+      <screen language="xml">&lt;type image="..." bundle_format="name_pattern"&gt;
+    &lt;!-- type definition --&gt;
+&lt;/type&gt;</screen>
+      <para>The specified <literal>name_pattern</literal> is used as the base name for the image
+                files the bundler uses. As part of the <literal>name_pattern</literal> the following
+                placeholders which gets replaced by their real value can be used:</para>
+      <variablelist>
+        <varlistentry>
+          <term>%N</term>
+          <listitem>
+            <para>Turns into the contents of the <literal>name</literal> attribute of the <literal>&lt;image&gt;</literal> section</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>%P</term>
+          <listitem>
+            <para>Turns into the profile name used at build time of the image.
+                            If multiple profiles were used to build the image the result
+                            name consists out of the individual profile names concatenated
+                            by a <literal>_</literal> in the order of their specification in the image
+                            description and/or the commandline.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>%A</term>
+          <listitem>
+            <para>Turns into the architecture name at build time of the image.
+                            Arch names are taken from Python’s  information.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>%I</term>
+          <listitem>
+            <para>Turns into the identifier name given via the <literal>--id</literal> option at
+                            call time of the bundler</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>%T</term>
+          <listitem>
+            <para>Turns into the contents of the <literal>image</literal> attribute of the <literal>&lt;type&gt;</literal> section</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>%M</term>
+          <listitem>
+            <para>Turns into the major number of the <literal>&lt;version&gt;</literal> section</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>%m</term>
+          <listitem>
+            <para>Turns into the minor number of the <literal>&lt;version&gt;</literal> section</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>%p</term>
+          <listitem>
+            <para>Turns into the patch number of the <literal>&lt;version&gt;</literal> section</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -17599,6 +17674,32 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>timeout_style string</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bundle_format">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bundle_format</property>
+                  </term>
+                  <listitem>
+                    <para>Return bundle_format for build type</para>
+                    <para>The bundle_format string is validated against the available
+                                name tags from kiwi.system.result::result_name_tags.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>bundle format string</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -31039,6 +31140,16 @@ end</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.system.result.Result.add_bundle_format">
+                  <term>
+                    <property>kiwi.system.result.Result.add_bundle_format</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.system.result.Result.dump">
                   <term>
                     <property>kiwi.system.result.Result.dump</property>
@@ -31198,6 +31309,96 @@ end</screen>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.system.result.result_name_tags">
+            <term>
+              <literal>kiwi.system.result.result_name_tags</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.result.result_name_tags.A">
+                  <term>
+                    <property>kiwi.system.result.result_name_tags.A</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 2</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.result.result_name_tags.I">
+                  <term>
+                    <property>kiwi.system.result.result_name_tags.I</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 3</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.result.result_name_tags.M">
+                  <term>
+                    <property>kiwi.system.result.result_name_tags.M</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 5</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.result.result_name_tags.N">
+                  <term>
+                    <property>kiwi.system.result.result_name_tags.N</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.result.result_name_tags.P">
+                  <term>
+                    <property>kiwi.system.result.result_name_tags.P</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.result.result_name_tags.T">
+                  <term>
+                    <property>kiwi.system.result.result_name_tags.T</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 4</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.result.result_name_tags.m">
+                  <term>
+                    <property>kiwi.system.result.result_name_tags.m</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 6</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.result.result_name_tags.p">
+                  <term>
+                    <property>kiwi.system.result.result_name_tags.p</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 7</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
