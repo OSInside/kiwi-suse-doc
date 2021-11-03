@@ -8,7 +8,7 @@
   <preface>
     <title>Preface</title>
     <note>
-      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.2- the command line
+      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.3- the command line
                 utility to build Linux system appliances. KIWI NG is stable and all
                 new features, bugfixes, and improvements will be developed here.
                 Versions older or equal to v7.x.x are out of maintenance and do
@@ -205,7 +205,7 @@
       <para>This document provides a conceptual overview about the steps
                 of creating an image with KIWI NG. It also explains the terminology
                 regarding the concept and process when building system images
-                with KIWI NG 9.24.2.</para>
+                with KIWI NG 9.24.3.</para>
     </note>
     <section xml:id="basic-workflow" xml:base="overview/workflow">
       <title>Basic Workflow</title>
@@ -225,7 +225,7 @@
                 complete the system usually reboots and enters a configuration procedure
                 upon start-up. The configuration may be fully automatic or it may include
                 user interaction.</para>
-        <para>This description applies for version 9.24.2.</para>
+        <para>This description applies for version 9.24.3.</para>
       </note>
       <para>A system image (usually called “image”), is a <emphasis>complete installation</emphasis> of a Linux
             system within a file. The image represents an operational system and,
@@ -535,7 +535,7 @@ $ tree -L 3 kiwi/build-tests</screen>
       </para>
       <para>This document describes how to start working with KIWI NG, an OS appliance
                 builder.
-                This description applies for version 9.24.2.</para>
+                This description applies for version 9.24.3.</para>
     </note>
     <section xml:id="before-you-start">
       <title>Before you start</title>
@@ -595,7 +595,7 @@ $ tree -L 3 kiwi/build-tests</screen>
     <title>Working from the Command Line</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) commands
-                for version 9.24.2.</para>
+                for version 9.24.3.</para>
     </note>
     <section xml:id="kiwi-ng" xml:base="commands/kiwi">
       <title>kiwi-ng</title>
@@ -1860,7 +1860,7 @@ kiwi-ng image info help</screen>
     <title>KIWI Plugins</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) plugins
-                which provides extended functionality for version 9.24.2.</para>
+                which provides extended functionality for version 9.24.3.</para>
     </note>
     <section xml:id="self-contained" xml:base="plugins/self_contained">
       <title>Building in a Self-Contained Environment</title>
@@ -2138,7 +2138,7 @@ $ vi container_to_VM_layer/config.kiwi</screen>
         <emphasis role="bold">Abstract</emphasis>
       </para>
       <para>The following sections describe the concept and general workflow
-                of building appliances with KIWI NG 9.24.2.</para>
+                of building appliances with KIWI NG 9.24.3.</para>
     </note>
     <section xml:id="systemdeps" xml:base="concept_and_workflow/systemdeps">
       <title>Host Requirements To Build Images</title>
@@ -3787,13 +3787,13 @@ $ kiwi-ng system create $ARGS</screen>
     <title>Image Description</title>
     <note>
       <para>This document explains the toplevel structure of the
-                KIWI NG image description document for version 9.24.2</para>
+                KIWI NG image description document for version 9.24.3</para>
     </note>
     <section xml:id="image-description-elements" xml:base="image_description/elements">
       <title>Image Description Elements</title>
       <note>
         <para>This document provides a reference for the elements
-                and attributes of the KIWI NG XML document in version 9.24.2</para>
+                and attributes of the KIWI NG XML document in version 9.24.3</para>
       </note>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
@@ -4656,8 +4656,23 @@ $ kiwi-ng system create $ARGS</screen>
         </section>
         <section xml:id="preferences-type-systemdisk">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;systemdisk&gt;</title>
-          <para>Used to describe the geometry, partitions and volumes, in a
-                    disk image. For details see: <xref linkend="custom-volumes"/></para>
+          <para>Used to describe the volumes of the disk area which
+                    contains the root filesystem. Volumes are either a feature
+                    of the used filesystem or LVM is used for this purpose.
+                    For details see: <xref linkend="custom-volumes"/></para>
+          <note>
+            <para>When both <literal>&lt;partitions&gt;</literal> and <literal>&lt;systemdisk&gt;</literal> are used, <literal>&lt;partitions&gt;</literal>
+                        are evaluated first and mount points defined in <literal>&lt;partitions&gt;</literal> cannot
+                        be redefined as <literal>&lt;systemdisk&gt;</literal> volumes. The two types define a
+                        complete disk setup, so there cannot be any overlapping volumes
+                        or mount points. As a result, whatever is written in <literal>&lt;partitions&gt;</literal>
+                        cannot be expressed in the same way in <literal>&lt;volumes&gt;</literal>.</para>
+          </note>
+        </section>
+        <section xml:id="preferences-type-partitions">
+          <title>&lt;preferences&gt;&lt;type&gt;&lt;partitions&gt;</title>
+          <para>Used to describe the geometry of the disk on the level of the
+                    partition table. For details see: <xref linkend="custom-partitions"/></para>
         </section>
         <section xml:id="preferences-type-oemconfig">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;oemconfig&gt;</title>
@@ -7714,128 +7729,131 @@ vagrant ssh</screen>
       <title>Custom Disk Partitions</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
-        <para>This page provides some details about what KIWI NG supports and does
-                not support regarding customization over the partition scheme. It also
-                provides some guidance in case the user requires some custom layout
-                beyond KIWI NG supported features.</para>
+        <para>This page provides details about the opportunities and limitations
+                to customize the partition table in addition to the volume management
+                settings from <xref linkend="custom-volumes"/>.</para>
       </formalpara>
-      <para>By design, KIWI NG does not support a customized partition table. Alternatively,
-            KIWI NG supports the definition of user-defined volumes which covers most of
-            common use cases. See <xref linkend="custom-volumes"/> for
-            further details about that.</para>
       <para>KIWI NG has its own partitioning schema which is defined according to several
             different user configurations: boot firmware, boot partition,
             expandable layouts, etc. Those supported features have an impact on the
-            partitioning schema. MBR or GUID partition tables are not flexible,
-            carry limitations and are tied to some specific disk geometry. Because
-            of that the preferred alternative to disk layouts based on traditional
-            partition tables is using flexible approaches like logic volumes.</para>
-      <para>As an example, expandable OEM images is a relevant KIWI NG feature that
-            is incompatible with the idea of adding user defined partitions on the
-            system area.</para>
-      <para>Despite no full customization is supported, some aspects of the partition
-            schema can be customized. KIWI NG supports:</para>
+            partitioning schema.</para>
+      <para>MBR or GUID partition tables are not flexible, carry limitations and are
+            tied to some specific disk geometry. Because of that the preferred alternative
+            to disk layouts based on traditional partition tables is using flexible
+            approaches like logic volumes.</para>
+      <para>However, on certain conditions additional entries to the low level
+            partition table are needed. For this purpose the <literal>&lt;partitions&gt;</literal> section
+            exists and allows to add custom entries like shown in the following
+            example:</para>
+      <screen language="xml">&lt;partitions&gt;
+    &lt;partition name="var" size="100" mountpoint="/var" filesystem="ext3"/&gt;
+&lt;/partitions&gt;</screen>
+      <para>Each <literal>&lt;partition&gt;</literal> entry puts a partition of the configured size in the
+            low level partition table, creates a filesystem on it and includes
+            it to the system’s fstab file. If parts of the root filesystem are
+            moved into its own partition like it’s the case in the above example,
+            this partition will also contain the data that gets installed during
+            the image creation process to that area.</para>
+      <para>The following attributes must/can be set to configured a partition entry:</para>
+      <variablelist>
+        <varlistentry>
+          <term>name=”identifier”</term>
+          <listitem>
+            <para>Mandatory name of the partition as handled by KIWI NG.</para>
+            <note>
+              <para>There are the following reserved names which cannot be used
+                            because they are already represented by existing attributes:
+                            <literal>root</literal>, <literal>readonly</literal>, <literal>boot</literal>, <literal>prep</literal>, <literal>spare</literal>, <literal>swap</literal>, <literal>efi_csm</literal>
+                            and <literal>efi</literal>.</para>
+            </note>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>partition_name=”name”</term>
+          <listitem>
+            <para>Optional name of the partition as it appears when listing the
+                        table contents with tools like <literal>gdisk</literal>. If no name is set
+                        KIWI NG constructs a name of the form <literal>p.lx(identifier_from_name_attr)</literal></para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>partition_type=”type_identifier”</term>
+          <listitem>
+            <para>Optional partition type identifier as handled by KIWI NG.
+                        Allowed values are <literal>t.linux</literal> and <literal>t.raid</literal>. If not specified
+                        <literal>t.linux</literal> is the default.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>size=”size_string”</term>
+          <listitem>
+            <para>Mandatory size of the partition. A size string can end with <literal>M</literal> or
+                        <literal>G</literal> to indicate a mega-Byte or giga-Byte value. Without a unit
+                        specification mega-Byte is used.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>mountpoint=”path”</term>
+          <listitem>
+            <para>Mandatory mountpoint to mount the partition in the system.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>filesystem=”btrfs|ext2|ext3|ext4|squashfs|xfs</term>
+          <listitem>
+            <para>Mandatory filesystem configuration to create one of the supported
+                        filesystems on the partition.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <para>Despite the customization options of the partition table shown above
+            there are the following limitations:</para>
       <procedure>
         <step>
-          <para>Adding a spare partition <emphasis>before</emphasis> the root (<literal>/</literal>) partition.</para>
-          <para>It can be achieved by using the <literal>spare_part</literal> type attribute.</para>
+          <para>The root partition is always the last one</para>
+          <para>Disk imags build with KIWI NG are designed to be expandable.
+                    For this feature to work the partition containing the system
+                    rootfs must always be the last one. If this is unwanted for
+                    some reason KIWI NG offers an opportunity for one extra/spare
+                    partition with the option to be also placed at the end of the
+                    table. For details lookup <literal>spare_part</literal> in <xref linkend="image-description-elements"/></para>
         </step>
         <step>
-          <para>Leaving some unpartitioned area at the <emphasis>end</emphasis> of the disk.</para>
-          <para>Setting some unpartitioned free space on the disk can be done using
-                        the <literal>unpartitioned</literal> attribute of <literal>size</literal> element in type’s section. [LINK]</para>
-        </step>
-        <step>
-          <para>Expand built disks to a new size adding unpartitioned free space at
-                    the <emphasis>end</emphasis> of the disk.</para>
-          <para>A built image can be resized by using the <literal>kiwi-ng image resize</literal> command
-                        and set a new extended size for the disk. See KIWI NG commands docs
-                        <xref linkend="db-kiwi-image-resize"/>.</para>
+          <para>There can be no gaps in the partition table</para>
+          <para>The way partitions are configured does not allow for gaps in the
+                    table. As of today there was no use case were it made sense to
+                    leave a gap between table entries. However, leaving some space
+                    free at the <emphasis role="bold">end</emphasis> of the partition geometry is possible in the
+                    following ways:</para>
+          <itemizedlist>
+            <listitem>
+              <para>
+                <emphasis role="bold">Deploy with unpartitioned free space.</emphasis>
+              </para>
+              <para>To leave space unpartitioned on first boot of a disk image
+                            it is possible to configured an <literal>&lt;oem-systemsize&gt;</literal> which is
+                            smaller than the disk the image gets deployed to. Details
+                            about this setting can be found in <xref linkend="image-description-elements"/></para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis role="bold">Build with unpartitioned free space.</emphasis>
+              </para>
+              <para>Setting some unpartitioned free space on the disk can be done using
+                            the <literal>unpartitioned</literal> attribute of <literal>size</literal> element in type’s section.
+                            For details see <xref linkend="disk-the-size-element"/></para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis role="bold">Resize built image adding unpartitioned free space.</emphasis>
+              </para>
+              <para>A built image can be resized by using the <literal>kiwi-ng image resize</literal> command
+                            and set a new extended size for the disk. See KIWI NG commands docs
+                            <xref linkend="db-kiwi-image-resize"/>.</para>
+            </listitem>
+          </itemizedlist>
         </step>
       </procedure>
-      <section xml:id="custom-partitioning-at-boot-time">
-        <title>Custom Partitioning at Boot Time</title>
-        <para>Adding additional partitions at boot time of KIWI NG images is also possible,
-                however, setting the tools and scripts for doing so needs to be handled by
-                the user. A possible strategy to add partitions on system area are described
-                below.</para>
-        <para>The main idea consists on running a first boot service that creates the
-                partitions that are needed. Adding custom services is simple, use the
-                following steps:</para>
-        <procedure>
-          <step>
-            <para>Create a unit file for a systemd service:</para>
-            <screen language="shell">[Unit]
-Description=Add a data partition
-After=basic.target
-Wants=basic.target
-
-[Service]
-Type=oneshot
-ExecStart=/bin/bash /usr/local/bin/create_part</screen>
-            <para>This systemd unit file will run at boot time once systemd reaches the basic
-                            target. At this stage all basic services are up an running (devices mounted,
-                            network interfaces up, etc.). In case the service is required to run on
-                            earlier stages for some reason, default dependencies need to be disabled,
-                            see <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.freedesktop.org/software/systemd/man/systemd.service.html">systemd man pages</link>.</para>
-          </step>
-          <step>
-            <para>Create partitioner shell script matching your specific needs</para>
-            <para>Consider the following steps for a partitioner shell script that
-                            creates a new partition. Following the above unit file example
-                            the <literal>/usr/local/bin/create_part</literal> script should cover the following
-                            steps:</para>
-            <procedure>
-              <step>
-                <para>Verify partition exists</para>
-                <para>Verify the required partition is not mounted neither exists. Exit
-                                    zero (0) if is already there.</para>
-                <para>Use tools such <literal>findmnt</literal> to find the root device and <literal>blkid</literal>
-                                    or <literal>lsblk</literal> to find a partition with certain label or similar
-                                    criteria.</para>
-              </step>
-              <step>
-                <para>Create a new partition</para>
-                <para>Create a new partition. On error, exit with non zero.</para>
-                <para>Use partitioner tools such as <literal>sgdisk</literal> that can be easily used
-                                    in non interactive scripts. Using <literal>partprobe</literal> to reload partition
-                                    table to make OS aware of the changes is handy.</para>
-              </step>
-              <step>
-                <para>Make filesystem</para>
-                <para>Add the desired filesystem to the new partitions. On error, exit
-                                    with non zero.</para>
-                <para>Regular filesystem formatting tools (<literal>mkfs.ext4</literal> just to mention one)
-                                    can be used to apply the desired filesystem to the just created
-                                    new partition. At this stage it is handy to add a label to the
-                                    filesystem for easy recognition on later stages or script reruns.</para>
-              </step>
-              <step>
-                <para>Update fstab file</para>
-                <para>Just echo and append the desired entry in /etc/fstab.</para>
-              </step>
-              <step>
-                <para>Mount partition</para>
-                <para><literal>mount --all</literal> will try to mount all fstab volumes, it just omits
-                                    any already mounted device.</para>
-              </step>
-            </procedure>
-          </step>
-          <step>
-            <para>Add additional files into the root overlay tree.</para>
-            <para>The above described unit files and partition creation shell script
-                            need to be included into the overlay tree of the image, thus they should
-                            be placed into the expected paths in root folder (or in
-                            <literal>root.tar.gz</literal> tarball).</para>
-          </step>
-          <step>
-            <para>Activate the service in <literal>config.sh</literal></para>
-            <para>The service needs to be enabled during image built time to be
-                            run during the very first boot. In can be done by adding the following
-                            snipped inside the <literal>config.sh</literal>.</para>
-          </step>
-        </procedure>
-      </section>
     </section>
     <section xml:id="custom-volumes" xml:base="working_with_images/custom_volumes">
       <title>Custom Disk Volumes</title>
@@ -8752,7 +8770,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.24.2 inside of the Open Build Service.
+                KIWI NG in version 9.24.3 inside of the Open Build Service.
                 A tutorial on the Open Buildservice itself can be found here:
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
       </note>
@@ -9061,7 +9079,7 @@ name="images"&gt;</literal>:</para>
       </para>
       <para>This document describes the development process of KIWI NG
                 and how you can be part of it. This description applies
-                to version 9.24.2.</para>
+                to version 9.24.3.</para>
     </note>
     <section xml:id="using-kiwi-ng-in-a-python-project" xml:base="contributing/kiwi_from_python">
       <title>Using KIWI NG in a Python Project</title>
@@ -9071,7 +9089,7 @@ name="images"&gt;</literal>:</para>
         </para>
         <para>KIWI NG is provided as python module under the <emphasis role="bold">kiwi</emphasis> namespace.
                 It is available for the python 3 version. The following
-                description applies for KIWI NG version 9.24.2.</para>
+                description applies for KIWI NG version 9.24.3.</para>
       </note>
       <para>KIWI NG can also function as a module for other Python projects.
             The following example demonstrates how to read an existing image
@@ -9328,7 +9346,7 @@ def test_something(shared_container):
         <para>Depending on the demand for custom plugins, the interface
                 to hook in code into other parts of the KIWI NG processing
                 needs to be extended.</para>
-        <para>This description applies for version 9.24.2.</para>
+        <para>This description applies for version 9.24.3.</para>
       </note>
       <section xml:id="the-extension-section">
         <title>The &lt;extension&gt; Section</title>
@@ -9750,7 +9768,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
   <chapter xml:id="api" xml:base="api">
     <title>Python API</title>
     <note>
-      <para>This API documentation covers KIWI NG 9.24.2</para>
+      <para>This API documentation covers KIWI NG 9.24.3</para>
     </note>
     <section xml:id="kiwi-package" xml:base="api/kiwi">
       <title>kiwi Package</title>
@@ -13525,6 +13543,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
         <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiCustomPartitionConflictError">
+            <term>
+              <literal>kiwi.exceptions.KiwiCustomPartitionConflictError</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Exception raised if the entry in a custom partition setup
+                        conflicts with an existing partition table layout setting</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
           <varlistentry xml:id="kiwi.exceptions.KiwiDataStructureError">
             <term>
               <literal>kiwi.exceptions.KiwiDataStructureError</literal>
@@ -14020,6 +14050,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
               <para>Exception raised if the packages deletion phase in system prepare
                         fails.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiPartitionTooSmallError">
+            <term>
+              <literal>kiwi.exceptions.KiwiPartitionTooSmallError</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Exception raised if the specified partition size is smaller
+                        than the required bytes to store the data</para>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -14541,6 +14583,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
               <para>Exception raised if the root volume can not be found. This
                         concept currently exists only for the btrfs subvolume system.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiVolumeTooSmallError">
+            <term>
+              <literal>kiwi.exceptions.KiwiVolumeTooSmallError</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Exception raised if the specified volume size is smaller
+                        than the required bytes to store the data</para>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -17833,6 +17887,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_partitions_section">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_partitions_section</property>
+                  </term>
+                  <listitem>
+                    <para>First partitions section from the build type section</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>&lt;partitions&gt; section reference</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>xml_parse::partitions</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_size">
                   <term>
                     <property>kiwi.xml_state.XMLState.get_build_type_size</property>
@@ -18675,6 +18753,42 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>list of &lt;packages&gt; section reference(s)</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para/>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_partitions">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_partitions</property>
+                  </term>
+                  <listitem>
+                    <para>Dictionary of configured partitions.</para>
+                    <para>Each entry in the dict references a ptable_entry_type
+                                Each key in the dict references the name of the
+                                partition entry as handled by KIWI</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>Contains dict of ptable_entry_type tuples</para>
+                          <screen language="python">{
+    'NAME': ptable_entry_type(
+        mbsize=int,
+        partition_name=str,
+        partition_type=str,
+        mountpoint=str,
+        filesystem=str
+    )
+}</screen>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -28107,6 +28221,27 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.storage.disk.Disk.create_custom_partitions">
+                  <term>
+                    <property>kiwi.storage.disk.Disk.create_custom_partitions</property>
+                  </term>
+                  <listitem>
+                    <para>Create partitions from custom data set</para>
+                    <screen language="python">table_entries = {
+    map_name: ptable_entry_type
+}</screen>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>table</literal> () – partition table spec</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.Disk.create_efi_csm_partition">
                   <term>
                     <property>kiwi.storage.disk.Disk.create_efi_csm_partition</property>
@@ -28386,6 +28521,66 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   <listitem>
                     <para>Zap (destroy) any GPT and MBR data structures if present
                                 For DASD disks create a new VTOC table</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type">
+            <term>
+              <literal>kiwi.storage.disk.ptable_entry_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.filesystem">
+                  <term>
+                    <property>kiwi.storage.disk.ptable_entry_type.filesystem</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 4</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.mbsize">
+                  <term>
+                    <property>kiwi.storage.disk.ptable_entry_type.mbsize</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.mountpoint">
+                  <term>
+                    <property>kiwi.storage.disk.ptable_entry_type.mountpoint</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 3</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.partition_name">
+                  <term>
+                    <property>kiwi.storage.disk.ptable_entry_type.partition_name</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.partition_type">
+                  <term>
+                    <property>kiwi.storage.disk.ptable_entry_type.partition_type</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 2</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
