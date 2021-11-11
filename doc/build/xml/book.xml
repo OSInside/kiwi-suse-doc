@@ -16532,7 +16532,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para>tool_category: cdrtools|xorriso</para>
+                              <para>tool_category: xorriso</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -24499,27 +24499,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>
                 <emphasis role="bold">Base Class for Parameter API for iso creation tools</emphasis>
               </para>
-              <variablelist role="field_list">
-                <varlistentry>
-                  <term>Parameters</term>
-                  <listitem>
-                    <itemizedlist>
-                      <listitem>
-                        <para><literal>source_dir</literal> () – data source dir, usually root_dir</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>boot_path</literal> () – architecture specific boot path on the ISO</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>iso_parameters</literal> () – list of ISO creation parameters</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>iso_loaders</literal> () – list of ISO loaders to embed</para>
-                      </listitem>
-                    </itemizedlist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.iso_tools.base.IsoToolsBase.add_efi_loader_parameters">
                   <term>
@@ -24646,25 +24625,24 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
       </section>
-      <section xml:id="module-kiwi.iso_tools.cdrtools_kiwi-iso-tools-cdrtools-module">
-        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.iso_tools.cdrtools"><literal>kiwi.iso_tools.cdrtools</literal></link> Module</title>
+      <section xml:id="module-kiwi.iso_tools.xorriso_kiwi-iso-tools-xorriso-module">
+        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.iso_tools.xorriso"><literal>kiwi.iso_tools.xorriso</literal></link> Module</title>
         <variablelist>
-          <varlistentry xml:id="kiwi.iso_tools.cdrtools.IsoToolsCdrTools">
+          <varlistentry xml:id="kiwi.iso_tools.xorriso.IsoToolsXorrIso">
             <term>
-              <literal>kiwi.iso_tools.cdrtools.IsoToolsCdrTools</literal>
+              <literal>kiwi.iso_tools.xorriso.IsoToolsXorrIso</literal>
             </term>
             <listitem>
               <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.iso_tools.base.IsoToolsBase"><literal>kiwi.iso_tools.base.IsoToolsBase</literal></link></para>
               <para>
-                <emphasis role="bold">cdrkit/cdrtools wrapper class</emphasis>
+                <emphasis role="bold">xorriso wrapper class</emphasis>
               </para>
               <para>Implementation of Parameter API for iso creation tools using
-                        the cdrkit/cdrtools projects. Addressed here are the option
-                        compatible tools mkisofs and genisoimage</para>
+                        the libburnia project. Addressed here is the tool xorriso</para>
               <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.cdrtools.IsoToolsCdrTools.add_efi_loader_parameters">
+                <varlistentry xml:id="kiwi.iso_tools.xorriso.IsoToolsXorrIso.add_efi_loader_parameters">
                   <term>
-                    <property>kiwi.iso_tools.cdrtools.IsoToolsCdrTools.add_efi_loader_parameters</property>
+                    <property>kiwi.iso_tools.xorriso.IsoToolsXorrIso.add_efi_loader_parameters</property>
                   </term>
                   <listitem>
                     <para>Add ISO creation parameters to embed the EFI loader</para>
@@ -24678,12 +24656,12 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.cdrtools.IsoToolsCdrTools.create_iso">
+                <varlistentry xml:id="kiwi.iso_tools.xorriso.IsoToolsXorrIso.create_iso">
                   <term>
-                    <property>kiwi.iso_tools.cdrtools.IsoToolsCdrTools.create_iso</property>
+                    <property>kiwi.iso_tools.xorriso.IsoToolsXorrIso.create_iso</property>
                   </term>
                   <listitem>
-                    <para>Creates the iso file with the given filename using cdrtools</para>
+                    <para>Creates the iso file with the given filename using xorriso</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Parameters</term>
@@ -24703,25 +24681,23 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.cdrtools.IsoToolsCdrTools.get_tool_name">
+                <varlistentry xml:id="kiwi.iso_tools.xorriso.IsoToolsXorrIso.get_tool_name">
                   <term>
-                    <property>kiwi.iso_tools.cdrtools.IsoToolsCdrTools.get_tool_name</property>
+                    <property>kiwi.iso_tools.xorriso.IsoToolsXorrIso.get_tool_name</property>
                   </term>
                   <listitem>
-                    <para>There are tools by J.Schilling and tools from the community
-                                Depending on what is installed a decision needs to be made.
-                                mkisofs is preferred over genisoimage</para>
+                    <para>Lookup xorriso in search path</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Raises</term>
                         <listitem>
-                          <para><xref linkend="kiwi.exceptions.KiwiIsoToolError"/> – if no iso creation tool is found</para>
+                          <para><xref linkend="kiwi.exceptions.KiwiIsoToolError"/> – if xorriso tool is not found</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>tool name</para>
+                          <para>xorriso tool path</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -24735,9 +24711,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.cdrtools.IsoToolsCdrTools.has_iso_hybrid_capability">
+                <varlistentry xml:id="kiwi.iso_tools.xorriso.IsoToolsXorrIso.has_iso_hybrid_capability">
                   <term>
-                    <property>kiwi.iso_tools.cdrtools.IsoToolsCdrTools.has_iso_hybrid_capability</property>
+                    <property>kiwi.iso_tools.xorriso.IsoToolsXorrIso.has_iso_hybrid_capability</property>
                   </term>
                   <listitem>
                     <para>Indicate if the iso tool has the capability to embed a
@@ -24761,9 +24737,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.cdrtools.IsoToolsCdrTools.init_iso_creation_parameters">
+                <varlistentry xml:id="kiwi.iso_tools.xorriso.IsoToolsXorrIso.init_iso_creation_parameters">
                   <term>
-                    <property>kiwi.iso_tools.cdrtools.IsoToolsCdrTools.init_iso_creation_parameters</property>
+                    <property>kiwi.iso_tools.xorriso.IsoToolsXorrIso.init_iso_creation_parameters</property>
                   </term>
                   <listitem>
                     <para>Create a set of standard parameters</para>
@@ -24771,37 +24747,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>custom_args</literal> () – custom ISO creation args</para>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.cdrtools.IsoToolsCdrTools.list_iso">
-                  <term>
-                    <property>kiwi.iso_tools.cdrtools.IsoToolsCdrTools.list_iso</property>
-                  </term>
-                  <listitem>
-                    <para>List contents of an ISO image</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>isofile</literal> () – path to the ISO file</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Returns</term>
-                        <listitem>
-                          <para>formatted isoinfo result</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para/>
+                          <para><literal>custom_args</literal> () – custom ISO meta data</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24824,154 +24770,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>
                 <emphasis role="bold">Implements helper methods around the creation of ISO filesystems</emphasis>
               </para>
-              <variablelist role="field_list">
-                <varlistentry>
-                  <term>Parameters</term>
-                  <listitem>
-                    <itemizedlist>
-                      <listitem>
-                        <para><literal>header_id</literal> () – static identifier string for self written headers</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>header_end_name</literal> () – file name to store the header_id to</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>header_end_file</literal> () – full file path for the header_end_name file</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>boot_path</literal> () – architecture specific boot path on the ISO</para>
-                      </listitem>
-                    </itemizedlist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.iso.Iso.create_header_end_block">
-                  <term>
-                    <property>kiwi.iso_tools.iso.Iso.create_header_end_block</property>
-                  </term>
-                  <listitem>
-                    <para>Find offset address of file containing the header_id and
-                                replace it by a list of 2k blocks in range 0 - offset + 1
-                                This is the required preparation to support hybrid ISO
-                                images, meaning to let isohybrid work correctly</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>isofile</literal> () – path to the ISO file</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Raises</term>
-                        <listitem>
-                          <para><xref linkend="kiwi.exceptions.KiwiIsoLoaderError"/> – if the header_id file is not found</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Returns</term>
-                        <listitem>
-                          <para>512 byte blocks offset address</para>
-                        </listitem>
-                      </varlistentry>
-                      <varlistentry>
-                        <term>Return type</term>
-                        <listitem>
-                          <para/>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.iso.Iso.create_header_end_marker">
-                  <term>
-                    <property>kiwi.iso_tools.iso.Iso.create_header_end_marker</property>
-                  </term>
-                  <listitem>
-                    <para>Prepare iso file to become a hybrid iso image.</para>
-                    <para>To do this the offest address of the end of the first iso
-                                block is required. To lookup this address a reference(marker)
-                                file named ‘header_end’ is created and will show up as last
-                                file in the block.</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.iso.Iso.create_hybrid">
-                  <term>
-                    <property>kiwi.iso_tools.iso.Iso.create_hybrid</property>
-                  </term>
-                  <listitem>
-                    <para>Create hybrid ISO</para>
-                    <para>A hybrid ISO embeds both, an isolinux signature as well as a
-                                disk signature. kiwi always adds an msdos and a GPT table for
-                                the disk signatures</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <itemizedlist>
-                            <listitem>
-                              <para><literal>offset</literal> () – hex offset</para>
-                            </listitem>
-                            <listitem>
-                              <para><literal>mbrid</literal> () – boot record id</para>
-                            </listitem>
-                            <listitem>
-                              <para><literal>isofile</literal> () – path to the ISO file</para>
-                            </listitem>
-                            <listitem>
-                              <para><literal>efi_mode</literal> () – sets the iso to support efi firmware or not</para>
-                            </listitem>
-                          </itemizedlist>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.iso.Iso.fix_boot_catalog">
-                  <term>
-                    <property>kiwi.iso_tools.iso.Iso.fix_boot_catalog</property>
-                  </term>
-                  <listitem>
-                    <para>Fixup inconsistencies in boot catalog</para>
-                    <para>Make sure all catalog entries are in correct order and provide
-                                complete metadata information e.g catalog name</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>isofile</literal> () – path to the ISO file</para>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.iso_tools.iso.Iso.relocate_boot_catalog">
-                  <term>
-                    <property>kiwi.iso_tools.iso.Iso.relocate_boot_catalog</property>
-                  </term>
-                  <listitem>
-                    <para>Move ISO boot catalog to the standardized place</para>
-                    <para>Check location of the boot catalog and move it to the place where
-                                all BIOS and firwmare implementations expects it</para>
-                    <variablelist role="field_list">
-                      <varlistentry>
-                        <term>Parameters</term>
-                        <listitem>
-                          <para><literal>isofile</literal> () – path to the ISO file</para>
-                        </listitem>
-                      </varlistentry>
-                    </variablelist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.iso_tools.iso.Iso.set_media_tag">
                   <term>
