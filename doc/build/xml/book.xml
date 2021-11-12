@@ -3832,7 +3832,7 @@ $ kiwi-ng system create $ARGS</screen>
         <title>&lt;include&gt;</title>
         <para>Optional include of XML file content from file</para>
         <screen language="xml">&lt;image schemaversion="7.4" name="{exc_image_base_name}"&gt;
-    &lt;include from="description.xml"/&gt;
+    &lt;include from="file://description.xml"/&gt;
 &lt;/image&gt;</screen>
         <para>with file <literal>description.xml</literal> as follows:</para>
         <screen language="xml">&lt;image&gt;
@@ -3844,7 +3844,9 @@ $ kiwi-ng system create $ARGS</screen>
 &lt;/image&gt;</screen>
         <para>This will replace the <literal>include</literal> statement with the contents
                 of <literal>description.xml</literal>. The validation of the result happens
-                after the inclusion of all <literal>include</literal> references.</para>
+                after the inclusion of all <literal>include</literal> references. The value for
+                the <literal>from</literal> attribute is interpreted as an URI, as of now only
+                local URI types are supported.</para>
         <note>
           <para>The include information must be embedded into an <literal>&lt;image&gt;</literal>
                     root node. Only the inner elements of the root node will
@@ -5221,7 +5223,7 @@ $ kiwi-ng system create $ARGS</screen>
     </section>
     <section xml:id="image-includes">
       <title>Image Includes</title>
-      <screen language="xml">&lt;include from="filename.xml"/&gt;</screen>
+      <screen language="xml">&lt;include from="file://filename.xml"/&gt;</screen>
       <para>The optional <xref linkend="sec-include"/> element allows to drop in the contents
                 of the specified <literal>filename.xml</literal> file at the place were the <literal>include</literal>
                 statement was specified in the document. The <literal>include</literal> statement is
