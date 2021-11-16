@@ -4749,7 +4749,9 @@ $ kiwi-ng system create $ARGS</screen>
                             to run repository signature validation. If not set, no value is
                             appended into the repository configuration file. If set the
                             relevant key information needs to be provided on the KIWI NG
-                            commandline using the <literal>--signing-key</literal> option</para>
+                            commandline using the <literal>--signing-key</literal> option or via the <literal>&lt;signing&gt;</literal>
+                            element as part of the <literal>&lt;repository&gt;</literal> setting in the
+                            image description.</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -4902,6 +4904,18 @@ $ kiwi-ng system create $ARGS</screen>
                             repositories are taken from the project configuration in OBS.</para>
             </listitem>
           </itemizedlist>
+          <para>A repository <literal>&lt;source&gt;</literal> element can optionally contain one ore more
+                    signing keys for the packages from this repository like shown in the
+                    following example:</para>
+          <screen language="xml">&lt;repository alias="kiwi"&gt;
+  &lt;source path="obs://Virtualization:Appliances:Builder/openSUSE_Leap_15.3"&gt;
+    &lt;signing key="/path/to/sign_key_a"/&gt;
+    &lt;signing key="/path/to/sign_key_b"/&gt;
+  &lt;/source&gt;
+&lt;/repository&gt;</screen>
+          <para>All signing keys from all repositories will be collected and
+                    incorporated into the keyring as used by the selected package
+                    manager.</para>
         </section>
       </section>
       <section xml:id="sec-packages">
@@ -18856,6 +18870,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_repositories_signing_keys">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_repositories_signing_keys</property>
+                  </term>
+                  <listitem>
+                    <para>Get list of signing keys specified on the repositories</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
