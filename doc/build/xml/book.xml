@@ -32444,28 +32444,8 @@ end</screen>
             <listitem>
               <para>Bases: </para>
               <para>
-                <emphasis role="bold">Normalize url types</emphasis>
+                <emphasis role="bold">Normalize and manage URI types</emphasis>
               </para>
-              <para>Allow to translate the available KIWI repo source types
-                        into standard mime types</para>
-              <variablelist role="field_list">
-                <varlistentry>
-                  <term>Parameters</term>
-                  <listitem>
-                    <itemizedlist>
-                      <listitem>
-                        <para><literal>uri</literal> () – URI, remote or local repository location</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>repo_type</literal> () – repository type name, defaults to ‘rpm-md’ and is only
-                                            effectively used when building inside of the open
-                                            build service which maps local repositories to a
-                                            specific environment</para>
-                      </listitem>
-                    </itemizedlist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.uri.Uri.alias">
                   <term>
