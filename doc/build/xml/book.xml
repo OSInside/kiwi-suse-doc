@@ -12709,12 +12709,13 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.defaults.Defaults.get_snapper_config_template_file</property>
                   </term>
                   <listitem>
-                    <para>Provides the default configuration template file for snapper</para>
+                    <para>Provides the default configuration template file for snapper.
+                                The location in etc/ are preferred over files in usr/</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>file</para>
+                          <para>file path</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
