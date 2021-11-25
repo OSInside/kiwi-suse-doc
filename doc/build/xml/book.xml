@@ -3906,7 +3906,9 @@ $ kiwi-ng system create $ARGS</screen>
                 of <literal>description.xml</literal>. The validation of the result happens
                 after the inclusion of all <literal>include</literal> references. The value for
                 the <literal>from</literal> attribute is interpreted as an URI, as of now only
-                local URI types are supported.</para>
+                local URI types are supported as well as the <literal>this://</literal> resource
+                locator which translates into the path to the KIWI image
+                description.</para>
         <note>
           <para>The include information must be embedded into an <literal>&lt;image&gt;</literal>
                     root node. Only the inner elements of the root node will
@@ -19805,6 +19807,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.resolve_this_path">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.resolve_this_path</property>
+                  </term>
+                  <listitem>
+                    <para>Resolve any this:// repo source path into the path
+                                representing the target inside of the image description
+                                directory</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
