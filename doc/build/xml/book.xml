@@ -611,6 +611,7 @@ kiwi-ng [--profile=&lt;name&gt;...]
         [--debug]
         [--color-output]
         [--config=&lt;configfile&gt;]
+        [--kiwi-file=&lt;kiwifile&gt;]
     image &lt;command&gt; [&lt;args&gt;...]
 kiwi-ng [--debug]
         [--color-output]
@@ -625,6 +626,7 @@ kiwi-ng [--profile=&lt;name&gt;...]
         [--debug]
         [--color-output]
         [--config=&lt;configfile&gt;]
+        [--kiwi-file=&lt;kiwifile&gt;]
     system &lt;command&gt; [&lt;args&gt;...]
 kiwi-ng compat &lt;legacy_args&gt;...
 kiwi-ng -v | --version
@@ -765,6 +767,16 @@ kiwi-ng help</screen>
             <listitem>
               <para>Select image build type. The specified build type must be configured
                             as part of the XML description.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--kiwi-file</option>
+            </term>
+            <listitem>
+              <para>Basename of kiwi file which contains the main image
+                            configuration elements. If not specified kiwi searches for
+                            a file named <literal>config.xml</literal> or a file matching <literal>*.kiwi</literal></para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -32925,45 +32937,24 @@ end</screen>
                   </term>
                   <listitem>
                     <para>Load, upgrade, validate XML description</para>
-                    <para>Attributes</para>
-                    <itemizedlist>
-                      <listitem>
-                        <variablelist>
-                          <varlistentry>
-                            <term>
-                              <literal>xml_data</literal>
-                            </term>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <itemizedlist>
                             <listitem>
-                              <para>instance of XML data toplevel domain (image), stateless data</para>
+                              <para><literal>description_directory</literal> () – Path to the image description</para>
                             </listitem>
-                          </varlistentry>
-                        </variablelist>
-                      </listitem>
-                      <listitem>
-                        <variablelist>
-                          <varlistentry>
-                            <term>
-                              <literal>config_file</literal>
-                            </term>
                             <listitem>
-                              <para>used config file path</para>
+                              <para><literal>kiwi_file</literal> () – Basename of kiwi file which contains the main
+                                                    image configuration elements. If not specified
+                                                    kiwi searches for a file named config.xml or
+                                                    a file matching .kiwi</para>
                             </listitem>
-                          </varlistentry>
-                        </variablelist>
-                      </listitem>
-                      <listitem>
-                        <variablelist>
-                          <varlistentry>
-                            <term>
-                              <literal>xml_state</literal>
-                            </term>
-                            <listitem>
-                              <para>Instance of XMLState, stateful data</para>
-                            </listitem>
-                          </varlistentry>
-                        </variablelist>
-                      </listitem>
-                    </itemizedlist>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
