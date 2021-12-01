@@ -10749,12 +10749,12 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.defaults.Defaults.get_container_compression</property>
                   </term>
                   <listitem>
-                    <para>Provides default container compression algorithm</para>
+                    <para>Provides default container compression</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>name</para>
+                          <para>True</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -16554,26 +16554,26 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.runtime_config.RuntimeConfig.get_container_compression</property>
                   </term>
                   <listitem>
-                    <para>Return compression algorithm to use for compression of container images</para>
+                    <para>Return compression for container images</para>
                     <variablelist>
                       <varlistentry>
                         <term>container:</term>
                         <listitem>
                           <itemizedlist>
                             <listitem>
-                              <para>compress: xz|none</para>
+                              <para>compress: xz|none|true|false</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
                     <para>if no or invalid configuration data is provided, the default
-                                compression algorithm from the Defaults class is returned</para>
+                                compression from the Defaults class is returned</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>A name</para>
+                          <para>True or False</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
