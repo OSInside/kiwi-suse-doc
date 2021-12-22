@@ -2,8 +2,8 @@
       href="file:/usr/share/xml/docbook/schema/rng/5.1/docbookxi.rnc"
       type="application/relax-ng-compact-syntax"
      ?>
-<book xmlns="http://docbook.org/ns/docbook" xml:lang="en" version="5.1" xml:id="kiwi-ng-documentation">
-  <title>KIWI NG Documentation</title>
+<book xmlns="http://docbook.org/ns/docbook" xml:lang="en" version="5.1" xml:id="building-linux-system-appliances-with-kiwi-next-generation-kiwi-ng-version">
+  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.15</title>
   <info/>
   <preface>
     <title>Preface</title>
