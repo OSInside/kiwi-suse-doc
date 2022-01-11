@@ -614,11 +614,13 @@ kiwi-ng [--profile=&lt;name&gt;...]
         [--type=&lt;build_type&gt;]
         [--logfile=&lt;filename&gt;]
         [--debug]
+        [--debug-run-scripts-in-screen]
         [--color-output]
         [--config=&lt;configfile&gt;]
         [--kiwi-file=&lt;kiwifile&gt;]
     image &lt;command&gt; [&lt;args&gt;...]
 kiwi-ng [--debug]
+        [--debug-run-scripts-in-screen]
         [--color-output]
         [--config=&lt;configfile&gt;]
     result &lt;command&gt; [&lt;args&gt;...]
@@ -629,6 +631,7 @@ kiwi-ng [--profile=&lt;name&gt;...]
         [--type=&lt;build_type&gt;]
         [--logfile=&lt;filename&gt;]
         [--debug]
+        [--debug-run-scripts-in-screen]
         [--color-output]
         [--config=&lt;configfile&gt;]
         [--kiwi-file=&lt;kiwifile&gt;]
@@ -707,6 +710,14 @@ kiwi-ng help</screen>
             </term>
             <listitem>
               <para>Print debug information on the commandline.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--debug-run-scripts-in-screen</option>
+            </term>
+            <listitem>
+              <para>Run scripts called by kiwi in a screen session.</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -15216,6 +15227,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.logger.Logger.getLogFlags">
+                  <term>
+                    <property>kiwi.logger.Logger.getLogFlags</property>
+                  </term>
+                  <listitem>
+                    <para>Return logging flags</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>Dictionary with flags and their activation status</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>dict</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.logger.Logger.getLogLevel">
                   <term>
                     <property>kiwi.logger.Logger.getLogLevel</property>
@@ -15291,6 +15326,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>bar_length</literal> () – length of progress bar</para>
                             </listitem>
                           </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.logger.Logger.setLogFlag">
+                  <term>
+                    <property>kiwi.logger.Logger.setLogFlag</property>
+                  </term>
+                  <listitem>
+                    <para>Set logging flag for further properties of the logging facility
+                                Available flags are:</para>
+                    <itemizedlist>
+                      <listitem>
+                        <para>run-scripts-in-screen</para>
+                      </listitem>
+                    </itemizedlist>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>flag</literal> () – name</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
