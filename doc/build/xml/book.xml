@@ -4809,8 +4809,230 @@ $ kiwi-ng system create $ARGS</screen>
         </section>
         <section xml:id="preferences-type-bootloader">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</title>
-          <para>Used to describe the bootloader setup in the oem disk image type.
-                    For details see: <xref linkend="disk-bootloader"/></para>
+          <para>The <literal>bootloader</literal> element is used to select the bootloader. At the moment,
+                    <literal>grub2</literal>, <literal>isolinux</literal>, <literal>zipl</literal> and <literal>grub2_s390x_emu</literal> (a combination of zipl
+                    and a userspace GRUB2) are supported. The special <literal>custom</literal> entry allows
+                    to skip the bootloader configuration and installation and leaves this up
+                    to the user, which can be done by using the <literal>editbootinstall</literal> and
+                    <literal>editbootconfig</literal> custom scripts.</para>
+          <para>In addition to the mandatory name attribute, the following optional
+                    attributes are supported:</para>
+          <variablelist>
+            <varlistentry>
+              <term>console=”console|gfxterm|serial”:</term>
+              <listitem>
+                <para>Specifies the bootloader console. The attribute is available for the
+                                grub and isolinux bootloader types. By default, a graphics console
+                                setup is used.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>grub_template=”filename”:</term>
+              <listitem>
+                <para>Specifies a custom grub bootloader template file which will be used
+                                instead of the one provided with Kiwi. A static bootloader template to
+                                create the grub config file is only used in Kiwi if the native method
+                                via the grub mkconfig toolchain does not work properly. As of today,
+                                this is only the case for live and install ISO images. Thus, this
+                                setting only affects the oem and iso image types.</para>
+                <para>The template file should contain a <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://docs.python.org/3.4/library/string.html#template-strings">Template string</link>
+                                and can use the following variables:</para>
+                <informaltable>
+                  <tgroup cols="2">
+                    <colspec colname="c0" colwidth="23"/>
+                    <colspec colname="c1" colwidth="46"/>
+                    <thead>
+                      <row>
+                        <entry>
+                          <para>Variable</para>
+                        </entry>
+                        <entry>
+                          <para>Description</para>
+                        </entry>
+                      </row>
+                    </thead>
+                    <tbody>
+                      <row>
+                        <entry>
+                          <para>search_params</para>
+                        </entry>
+                        <entry>
+                          <para>parameters needed for grub’s <literal>search</literal>
+                                                    command to locate the root volume</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>default_boot</para>
+                        </entry>
+                        <entry>
+                          <para>number of the default menu item to boot</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>kernel_file</para>
+                        </entry>
+                        <entry>
+                          <para>the name of the kernel file</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>initrd_file</para>
+                        </entry>
+                        <entry>
+                          <para>the name of the initial ramdisk file</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>boot_options</para>
+                        </entry>
+                        <entry>
+                          <para>kernel command line options for booting
+                                                    normally</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>failsafe_boot_options</para>
+                        </entry>
+                        <entry>
+                          <para>kernel command line options for booting in
+                                                    failsafe mode</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>gfxmode</para>
+                        </entry>
+                        <entry>
+                          <para>the resolution to use for the bootloader;
+                                                    passed to grub’s <literal>gfxmode</literal> command</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>theme</para>
+                        </entry>
+                        <entry>
+                          <para>the name of a graphical theme to use</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>boot_timeout</para>
+                        </entry>
+                        <entry>
+                          <para>the boot menu timeout, set by the <literal>timeout</literal>
+                                                    attribute</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>boot_timeout_style</para>
+                        </entry>
+                        <entry>
+                          <para>the boot timeout style, set by the
+                                                    <literal>timeout_style</literal> attribute</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>serial_line_setup</para>
+                        </entry>
+                        <entry>
+                          <para>directives used to initialize the serial
+                                                    port, set by the <literal>serial_line</literal> attribute</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>title</para>
+                        </entry>
+                        <entry>
+                          <para>a title for the image: this will be the
+                                                    <literal>&lt;image&gt;</literal> tag’s <literal>displayname</literal> attribute or
+                                                    its <literal>name</literal> attribute if <literal>displayname</literal> is not
+                                                    set; see: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#sec-image">&lt;image&gt;</link></para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>bootpath</para>
+                        </entry>
+                        <entry>
+                          <para>the bootloader lookup path</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>boot_directory_name</para>
+                        </entry>
+                        <entry>
+                          <para>the name of the grub directory</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>efi_image_name</para>
+                        </entry>
+                        <entry>
+                          <para>architecture-specific EFI boot binary name</para>
+                        </entry>
+                      </row>
+                      <row>
+                        <entry>
+                          <para>terminal_setup</para>
+                        </entry>
+                        <entry>
+                          <para>the bootloader console mode, set by the
+                                                    <literal>console</literal> attribute</para>
+                        </entry>
+                      </row>
+                    </tbody>
+                  </tgroup>
+                </informaltable>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>serial_line=”string”:</term>
+              <listitem>
+                <para>Specifies the bootloader serial line setup. The setup is effective if
+                                the bootloader console is set to use the serial line. The attribute is
+                                available for the grub bootloader only.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>timeout=”number”:</term>
+              <listitem>
+                <para>Specifies the boot timeout in seconds prior to launching the default
+                                boot option. By default, the timeout is set to 10 seconds. It makes
+                                sense to set this value to <literal>0</literal> for images intended to be started
+                                non-interactively (e.g. virtual machines).</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>timeout_style=”countdown|hidden”:</term>
+              <listitem>
+                <para>Specifies the boot timeout style to control the way in which the timeout
+                                interacts with displaying the menu. If set, the display of the
+                                bootloader menu is delayed after the timeout expired. In countdown mode,
+                                an indication of the remaining time is displayed. The attribute is
+                                available for the grub loader only.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>targettype=”CDL|LDL|FBA|SCSI”:</term>
+              <listitem>
+                <para>Specifies the device type of the disk zipl should boot.
+                                On zFCP devices, use <literal>SCSI</literal>; on DASD devices, use <literal>CDL</literal> or <literal>LDL</literal>; on
+                                emulated DASD devices, use <literal>FBA</literal>. The attribute is available for the
+                                zipl loader only.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
         </section>
         <section xml:id="preferences-type-containerconfig">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</title>
@@ -6041,63 +6263,13 @@ $ kiwi-ng system create $ARGS</screen>
       <section xml:id="disk-bootloader">
         <title>Setting up the Bootloader of the Image</title>
         <screen language="xml">&lt;preferences&gt;
-  &lt;bootloader name="grub2"/&gt;
+  &lt;type&gt;
+     &lt;bootloader name="grub2"/&gt;
+  &lt;/type&gt;
 &lt;/preferences&gt;</screen>
-        <para>The <literal>bootloader</literal> element is used to select the bootloader. At the moment
-                <literal>grub2</literal>, <literal>isolinux</literal>, <literal>zipl</literal> and <literal>grub2_s390x_emu</literal> (a combination of zipl
-                and a userspace GRUB2) are supported. The special <literal>custom</literal> entry allows
-                to skip the bootloader configuration and installation and leaves this up
-                to the user which can be done by using the <literal>editbootinstall</literal> and
-                <literal>editbootconfig</literal> custom scripts.</para>
-        <para>In addition to the mandatory name attribute the following optional
-                attributes are supported:</para>
-        <variablelist>
-          <varlistentry>
-            <term>console=”console|gfxterm|serial”:</term>
-            <listitem>
-              <para>Specifies the bootloader console. The attribute is available for the
-                            grub and isolinux bootloader types. By default a graphics console
-                            setup is used</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>serial_line=”string”:</term>
-            <listitem>
-              <para>Specifies the bootloader serial line setup. The setup
-                            is effective if the bootloader console is set to use
-                            the serial line. The attribute is available for the grub
-                            bootloader only</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>timeout=”number”:</term>
-            <listitem>
-              <para>Specifies the boot timeout in seconds prior to launching
-                            the default boot option. By default the timeout is set to 10 seconds. It
-                            makes sense to set this value to <literal>0</literal> for images intended to be started
-                            non-interactively (e.g. virtual machines).</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>timeout_style=”countdown|hidden”:</term>
-            <listitem>
-              <para>Specifies the boot timeout style to control the way in which
-                            the timeout interacts with displaying the menu. If set the
-                            display of the bootloader menu is delayed after the timeout
-                            expired. In countdown mode an indication of the remaining time
-                            is displayed. The attribute is available for the grub loader only</para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>targettype=”CDL|LDL|FBA|SCSI”:</term>
-            <listitem>
-              <para>Specifies the device type of the disk zipl should boot.
-                            On zFCP devices use <literal>SCSI</literal>, on DASD devices use <literal>CDL</literal> or <literal>LDL</literal> on
-                            emulated DASD devices use <literal>FBA</literal>. The attribute is available for the
-                            zipl loader only</para>
-            </listitem>
-          </varlistentry>
-        </variablelist>
+        <para>The <literal>bootloader</literal> element defines which bootloader will be used in the
+                image and offers several options for customizing its configuration.</para>
+        <para>For details, see: <xref linkend="preferences-type-bootloader"/></para>
       </section>
       <section xml:id="disk-the-size-element">
         <title>Modifying the Size of the Image</title>
