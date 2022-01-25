@@ -25549,6 +25549,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.package_manager.base.PackageManagerBase.post_process_delete_requests">
+                  <term>
+                    <property>kiwi.package_manager.base.PackageManagerBase.post_process_delete_requests</property>
+                  </term>
+                  <listitem>
+                    <para>Process extra code required after deleting packages</para>
+                    <para>Implementation in specialized package manager class</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.package_manager.base.PackageManagerBase.post_process_install_requests_bootstrap">
                   <term>
                     <property>kiwi.package_manager.base.PackageManagerBase.post_process_install_requests_bootstrap</property>
