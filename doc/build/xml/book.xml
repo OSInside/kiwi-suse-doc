@@ -3299,69 +3299,76 @@ test -f /.profile &amp;&amp; . /.profile
               <para>
                 <emphasis role="bold">Locale configuration:</emphasis>
               </para>
+              <para>KIWI in order to set the locale relies on <command>systemd-firstboot</command>,
+                            which in turn writes the locale configuration file <literal>/etc/locale.conf</literal>.
+                            The values for the locale settings are taken from the description XML
+                            file in the <literal>&lt;locale&gt;</literal> element under <literal>&lt;preferences&gt;</literal>.</para>
+              <para>KIWI assumes systemd adoption to handle these locale settings, in case the
+                            build distribution does not honor <literal>/etc/locale.conf</literal> this is likely to not
+                            produce any effect on the locale settings. As an example, in SLE12
+                            distribution the locale configuration is already possible by using the
+                            systemd toolchain, however this approach overlaps with SUSE specific
+                            managers such as YaST. In that case using <command>systemd-firstboot</command>
+                            is only effective if locales in <literal>/etc/sysconfig/language</literal> are
+                            not set or if the file does not exist at all. In SLE12
+                            <literal>/etc/sysconfig/language</literal> has precendence over
+                            <literal>/etc/locale.conf</literal> for compatibility reasons and management tools
+                            could still relay on <literal>sysconfig</literal> files for locale settings.</para>
+              <para>In any case the configuration is still possible in KIWI by using
+                            any distribution specific way to configure the locale setting inside the
+                            <literal>config.sh</literal> script or by adding any additional configuration file
+                            as part of the overlay root-tree.</para>
             </step>
-          </procedure>
-          <para>KIWI in order to set the locale relies on <command>systemd-firstboot</command>,
-                        which in turn writes the locale configuration file <literal>/etc/locale.conf</literal>.
-                        The values for the locale settings are taken from the description XML
-                        file in the <literal>&lt;locale&gt;</literal> element under <literal>&lt;preferences&gt;</literal>.</para>
-          <para>KIWI assumes systemd adoption to handle these locale settings, in case the
-                        build distribution does not honor <literal>/etc/locale.conf</literal> this is likely to not
-                        produce any effect on the locale settings. As an example, in SLE12
-                        distribution the locale configuration is already possible by using the
-                        systemd toolchain, however this approach overlaps with SUSE specific
-                        managers such as YaST. In that case using <command>systemd-firstboot</command>
-                        is only effective if locales in <literal>/etc/sysconfig/language</literal> are
-                        not set or if the file does not exist at all. In SLE12
-                        <literal>/etc/sysconfig/language</literal> has precendence over
-                        <literal>/etc/locale.conf</literal> for compatibility reasons and management tools
-                        could still relay on <literal>sysconfig</literal> files for locale settings.</para>
-          <para>In any case the configuration is still possible in KIWI by using
-                        any distribution specific way to configure the locale setting inside the
-                        <literal>config.sh</literal> script or by adding any additional configuration file
-                        as part of the overlay root-tree.</para>
-          <procedure>
             <step>
               <para>
                 <emphasis role="bold">Stateless systemd UUIDs:</emphasis>
               </para>
-            </step>
-          </procedure>
-          <para>Machine ID files are created and set (<literal>/etc/machine-id</literal>,
-                        <literal>/var/lib/dbus/machine-id</literal>) during the image package installation
-                        when <emphasis>systemd</emphasis> and/or <emphasis>dbus</emphasis> are installed. Those UUIDs are intended to
-                        be unique and set only once in each deployment. KIWI NG follows the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.freedesktop.org/software/systemd/man/machine-id.html">systemd
-                            recommendations</link> and
-                        wipes any <literal>/etc/machine-id</literal> content, leaving it as an empty file.
-                        Note, this only applies to images based on a dracut initrd, it does not
-                        apply for container images.</para>
-          <para>In case this setting is also required for a non dracut based image,
-                        the same result can achieved by removing <literal>/etc/machine-id</literal> in
-                        <literal>config.sh</literal>.</para>
-          <note>
-            <para>Avoid interactive boot</para>
-            <para>It is important to remark that the file <literal>/etc/machine-id</literal> is set
-                            to an empty file instead of deleting it. <command>systemd</command> may
-                            trigger <command>systemd-firstboot</command> service if this file is not
-                            present, which leads to an interactive firstboot where the user is
-                            asked to provide some data.</para>
-          </note>
-          <note>
-            <para>Avoid inconsistent <literal>/var/lib/dbus/machine-id</literal></para>
-            <para>Note that <literal>/etc/machine-id</literal> and <literal>/var/lib/dbus/machine-id</literal><emphasis role="bold">must</emphasis> contain the same unique ID. On modern systems
-                            <literal>/var/lib/dbus/machine-id</literal> is already a symlink to
-                            <literal>/etc/machine-id</literal>. However on older systems those might be two
-                            different files. This is the case for SLE-12 based images. If you are
-                            targeting these older operating systems, it is recommended to add the
-                            symlink creation into <literal>config.sh</literal>:</para>
-            <screen language="bash">#======================================
+              <para>Machine ID files (<literal>/etc/machine-id</literal>, <literal>/var/lib/dbus/machine-id</literal>)
+                            may be created and set during the image package installation depending on
+                            the distribution. Those UUIDs are intended to be unique and set only once
+                            in each deployment.</para>
+              <para>If <literal>/etc/machine-id</literal> does not exist or contains the string
+                            <literal>uninitialized</literal> (systemd v249 and later), this triggers firstboot behaviour
+                            in systemd and services using <literal>ConditionFirstBoot=yes</literal> will run. Unless the
+                            file already contains a valid machine ID, systemd will generate one and
+                            write it into the file, creating it if necessary. See the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.freedesktop.org/software/systemd/man/machine-id.html">machine-id man
+                                page</link>
+                            for more details.</para>
+              <para>Depending on whether firstboot behaviour should be triggered or not,
+                            <literal>/etc/machine-id</literal> can be created, removed or filled with
+                            <literal>uninitialized</literal> by <literal>config.sh</literal>.</para>
+              <para>To prevent that images include a generated machine ID, KIWI will clear
+                            <literal>/etc/machine-id</literal> if it exists and does not contain the string
+                            <literal>uninitialized</literal>. This only applies to images based on a dracut initrd, it
+                            does not apply for container images.</para>
+              <note>
+                <para><literal>rw</literal> might be necessary if <literal>/etc/machine-id</literal> does not exist</para>
+                <para>For systemd to be able to write <literal>/etc/machine-id</literal> on boot,
+                                it must either exist already (so that a bind mount can be created) or
+                                <literal>/etc</literal> must be writable.</para>
+                <para>By default, the root filesystem is mounted read-only by dracut/systemd,
+                                thus a missing <literal>/etc/machine-id</literal> will result in an error on boot.
+                                The <literal>rw</literal> option can be added to the kernel commandline to force the
+                                initial mount to be read-write.</para>
+              </note>
+              <note>
+                <para>Avoid inconsistent <literal>/var/lib/dbus/machine-id</literal></para>
+                <para>Note that <literal>/etc/machine-id</literal> and <literal>/var/lib/dbus/machine-id</literal><emphasis role="bold">must</emphasis> contain the same unique ID. On modern systems
+                                <literal>/var/lib/dbus/machine-id</literal> is already a symlink to
+                                <literal>/etc/machine-id</literal>. However on older systems those might be two
+                                different files. This is the case for SLE-12 based images. If you are
+                                targeting these older operating systems, it is recommended to add the
+                                symlink creation into <literal>config.sh</literal>:</para>
+                <screen language="bash">#======================================
 # Make machine-id consistent with dbus
 #--------------------------------------
 if [ -e /var/lib/dbus/machine-id ]; then
     rm /var/lib/dbus/machine-id
 fi
 ln -s /etc/machine-id /var/lib/dbus/machine-id</screen>
-          </note>
+              </note>
+            </step>
+          </procedure>
         </section>
       </section>
     </section>
@@ -32647,16 +32654,28 @@ end</screen>
                   </term>
                   <listitem>
                     <para>Setup systemd machine id</para>
-                    <para>Empty out the machine id which was provided by the package
-                                installation process. This will instruct the dracut initrd
-                                code to create a new machine id. This way a golden image
-                                produces unique machine id’s on first deployment and boot
-                                of the image.</para>
-                    <para>Note: Requires dracut connected image type</para>
-                    <para>This method must only be called if the image is of
-                                a type which gets booted via a dracut created initrd.
-                                Deleting the machine-id without the dracut initrd
-                                creating a new one produces an inconsistent system</para>
+                    <para>There are various states of /etc/machine-id:</para>
+                    <procedure>
+                      <step>
+                        <para>Does not exist: Triggers ConditionFirstBoot, but does not work
+                                        if the filesystem is initially read-only (booted without “rw”).</para>
+                      </step>
+                      <step>
+                        <para>Exists, is empty: Does not trigger ConditionFirstBoot, but works
+                                        with read-only mounts.</para>
+                      </step>
+                      <step>
+                        <para>Exists, contains the string “uninitialized”: Same as b), but
+                                        triggers ConditionFirstBoot. Supported by systemd v247+ only.</para>
+                      </step>
+                      <step>
+                        <para>Exists, contains a valid ID.</para>
+                      </step>
+                    </procedure>
+                    <para>See the machine-id(5) man page for details.</para>
+                    <para>In images, d) is not desirable, so truncate the file. This is the
+                                previous behaviour and what existing images expect. If the image
+                                has one of the other states, keep it as-is.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
