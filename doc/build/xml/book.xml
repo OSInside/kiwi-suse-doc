@@ -2938,9 +2938,10 @@ popd</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This chapter describes the purpose of the user defined scripts
-                <literal>config.sh</literal>, <literal>image.sh</literal> and <literal>disk.sh</literal>, which can
-                be used to further customize an image in ways that are not possible
-                via the image description alone.</para>
+                <literal>config.sh</literal>, <literal>image.sh</literal>, <literal>pre_disk_sync.sh</literal>
+                and <literal>disk.sh</literal>, which can be used to further customize an
+                image in ways that are not possible via the image description
+                alone.</para>
       </note>
       <para>KIWI NG supports the following optional scripts that it runs in a
             root environment (chroot) containing your new appliance:</para>
@@ -2978,17 +2979,27 @@ popd</screen>
           </listitem>
         </varlistentry>
         <varlistentry>
+          <term>pre_disk_sync.sh</term>
+          <listitem>
+            <para>is executed for the disk image type <literal>oem</literal> only and runs
+                        right before the synchronization of the root tree into the disk image
+                        loop file. The <literal>pre_disk_sync.sh</literal> can be used to change
+                        content of the root tree as a last action before the sync to
+                        the disk image is performed. This is useful for example to delete
+                        components from the system which were needed before or cannot
+                        be modified afterwards when syncing into a read-only filesystem.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
           <term>disk.sh</term>
           <listitem>
             <para>is executed for the disk image type <literal>oem</literal> only and runs after the
-                        synchronisation of the root tree into the disk image loop file.
-                        At call time of the script the device name of the currently mapped
-                        root device is passed as a parameter. The chroot environment for
-                        this script call is the virtual disk itself and not the root tree
-                        as with <literal>config.sh</literal> and <literal>images.sh</literal>. The script <literal>disk.sh</literal>
-                        is usually used to apply changes at parts of the system that are not an
-                        element of the file based root tree such as the partition table, the
-                        bootloader or filesystem attributes.</para>
+                        synchronization of the root tree into the disk image loop file.
+                        The chroot environment for this script call is the virtual disk itself
+                        and not the root tree as with <literal>config.sh</literal> and <literal>images.sh</literal>.
+                        The script <literal>disk.sh</literal> is usually used to apply changes at parts of
+                        the system that are not an element of the file based root tree such as
+                        the partition table, the bootloader or filesystem attributes.</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -32330,6 +32341,16 @@ end</screen>
                   </term>
                   <listitem>
                     <para>Call post_bootstrap.sh script chrooted</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.setup.SystemSetup.call_pre_disk_script">
+                  <term>
+                    <property>kiwi.system.setup.SystemSetup.call_pre_disk_script</property>
+                  </term>
+                  <listitem>
+                    <para>Call pre_disk_sync.sh script chrooted</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
