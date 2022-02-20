@@ -4612,6 +4612,18 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>overlayroot_write_partition=”true|false”</term>
+              <listitem>
+                <para>For the <literal>oem</literal> type only, allows to specify if the extra read-write
+                                partition in an <literal>overlayroot</literal> setup should be created or not.
+                                By default the partition is created and the kiwi-overlay dracut
+                                module also expect it to be present. However, the overlayroot
+                                feature can also be used without dracut (<literal>initrd_system="none"</literal>)
+                                and under certain circumstances it is handy to configure if the
+                                partition table should contain the read-write partition or not.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>bootfilesystem=”ext2|ext3|ext4|fat32|fat16”:</term>
               <listitem>
                 <para>If an extra boot partition is required this attribute
