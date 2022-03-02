@@ -2999,7 +2999,8 @@ popd</screen>
                         and not the root tree as with <literal>config.sh</literal> and <literal>images.sh</literal>.
                         The script <literal>disk.sh</literal> is usually used to apply changes at parts of
                         the system that are not an element of the file based root tree such as
-                        the partition table, the bootloader or filesystem attributes.</para>
+                        the partition table, the contents of the final initrd, the bootloader,
+                        filesystem attributes and more.</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -16053,6 +16054,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.mount_manager.MountManager.tmpfs_mount">
+                  <term>
+                    <property>kiwi.mount_manager.MountManager.tmpfs_mount</property>
+                  </term>
+                  <listitem>
+                    <para>tmpfs mount the device to the mountpoint</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
