@@ -4613,6 +4613,46 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>overlayroot_verity_blocks=”number|all”</term>
+              <listitem>
+                <para>For the <literal>oem</literal> type only, specifies to create a dm verity hash
+                                from the number of given blocks (or all) placed at the end of the squashfs
+                                compressed read-only root filesystem. For later verification of the device,
+                                the credentials information produced by <literal>veritysetup</literal> from the
+                                cryptsetup tools, is created as a file in <literal>/boot/overlayroot.verity</literal>
+                                and is stored as such into the image by default. The verification
+                                file contents looks like the following example:</para>
+                <screen language="bash">Hash type:         1
+Data blocks:       10
+Data block size:   4096
+Hash block size:   4096
+Hash algorithm:    sha256
+Salt:              -SECRET-
+Root hash:         -SECRET-
+PARTUUID:          56d4ec24-393b-4ef5-af6b-6a8e1130b2c6
+Root hashoffset:   226885632
+Superblock:        --no-superblock</screen>
+                <para>For verification of the device using the above information the
+                                following <literal>veritysetup</literal> call is required</para>
+                <screen language="bash">veritysetup verify \
+    /dev/matching[PARTUUID] /dev/matching[PARTUUID] \
+    "Value of Root hash:" \
+    --debug \
+    --no-superblock \
+    --salt="Value of Salt:" \
+    --data-blocks="Value of Data Blocks:" \
+    --hash-offset="Value of Root hashoffset:"</screen>
+                <note>
+                  <para>It is a responsibility of the author of the image description
+                                    how to handle the credentials file in the desired way. The
+                                    standard way of KIWI NG to place it in <literal>/boot</literal> is most probably
+                                    not appropriate. One option to handle the credentials data is
+                                    as part of a <literal>disk.sh</literal> script which would allow to access and
+                                    manage the information in a custom way.</para>
+                </note>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>overlayroot_write_partition=”true|false”</term>
               <listitem>
                 <para>For the <literal>oem</literal> type only, allows to specify if the extra read-write
