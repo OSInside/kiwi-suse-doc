@@ -5125,7 +5125,7 @@ Superblock:        --no-superblock</screen>
         <section xml:id="preferences-type-containerconfig">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</title>
           <para>Used to describe the container configuration metadata in docker or wsl
-                    image types. For details see: <xref linkend="building-docker-build"/> and:
+                    image types. For details see: <xref linkend="building-container-build"/> and:
                     <xref linkend="building-wsl-build"/></para>
         </section>
         <section xml:id="preferences-type-vagrantconfig">
@@ -5798,7 +5798,7 @@ Superblock:        --no-superblock</screen>
           <para>An archive image suitable for the docker container engine.
                         The image can be loaded via the <literal>docker load</literal> command and
                         works within the scope of the container engine.
-                        For further details refer to: <xref linkend="building-docker-build"/></para>
+                        For further details refer to: <xref linkend="building-container-build"/></para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -6997,88 +6997,90 @@ scp kiwi-test-image-disk.x86_64-1.15.3.config.bootoptions PXE_SERVER_IP:/srv/tft
                 <literal>action="add"</literal> or <literal>action="set"</literal> values.</para>
       </section>
     </section>
-    <section xml:id="building-docker-build" xml:base="building_images/build_docker_container">
-      <title>Build a Docker Container Image</title>
+    <section xml:id="building-container-build" xml:base="building_images/build_container_image">
+      <title>Build a Container Image</title>
       <formalpara role="sidebar">
         <title>Abstract</title>
-        <para>This page explains how to build a Docker base image. It contains</para>
+        <para>This page explains how to build a Container Image. It contains</para>
       </formalpara>
       <itemizedlist>
         <listitem>
           <para>basic configuration explanation</para>
         </listitem>
         <listitem>
-          <para>how to build a Docker image</para>
+          <para>how to build a Container Image</para>
         </listitem>
         <listitem>
-          <para>how to run it with the Docker daemon</para>
+          <para>how to run it with a Container Runtime</para>
         </listitem>
       </itemizedlist>
-      <para>KIWI NG is capable of building native Docker images, from scratch and derived
-            ones. KIWI NG Docker images are considered to be native since the KIWI NG
-            tarball image is ready to be loaded to a Docker daemon, including common
-            container configurations.</para>
-      <para>The Docker configuration metadata is provided to KIWI NG as part of the
+      <para>KIWI NG is capable of building native Container Images from scratch and
+            derived ones. KIWI NG Container images are considered to be native since the
+            KIWI NG tarball image is ready to be loaded into a Container Runtime like
+            Podman, Docker or Containerd, including common container configurations.</para>
+      <para>The Container configuration metadata is provided to KIWI NG as part of the
             <xref linkend="description-components"/> using the
             <literal>&lt;containerconfig&gt;</literal> tag. The following configuration metadata can be
             specified:</para>
       <para><literal>containerconfig</literal> attributes:</para>
       <itemizedlist>
         <listitem>
-          <para><literal>name</literal>: Specifies the repository name of the Docker
-                    image.</para>
+          <para><literal>name</literal>: Specifies the repository name of the Container Image.</para>
         </listitem>
         <listitem>
-          <para><literal>tag</literal>: Sets the tag of the Docker image.</para>
+          <para><literal>tag</literal>: Sets the tag of the Container Image.</para>
         </listitem>
         <listitem>
-          <para><literal>maintainer</literal>: Specifies the author field of
-                    the container.</para>
+          <para><literal>maintainer</literal>: Specifies the author field of the container, this is
+                    equivalent to the <literal>MAINTAINER</literal> directive in a <literal>Dockerfile</literal>.</para>
         </listitem>
         <listitem>
           <para><literal>user</literal>: Sets the user name or user id (UID) to be used when
-                    running <literal>entrypoint</literal> and
-                    <literal>subcommand</literal>. Equivalent of the <literal>USER</literal> directive of a Docker file.</para>
+                    running <literal>entrypoint</literal> and <literal>subcommand</literal>. Equivalent of the <literal>USER</literal>
+                    directive of a <literal>Dockerfile</literal>.</para>
         </listitem>
         <listitem>
-          <para><literal>workingdir</literal>: Sets the working directory to be used when running <literal>cmd</literal> and
-                    <literal>entrypoint</literal>. Equivalent of the <literal>WORKDIR</literal> directive of a Docker file.</para>
+          <para><literal>workingdir</literal>: Sets the working directory to be used when running
+                    <literal>cmd</literal> and <literal>entrypoint</literal>. Equivalent of the <literal>WORKDIR</literal> directive in a
+                    <literal>Dockerfile</literal>.</para>
         </listitem>
       </itemizedlist>
       <para><literal>containerconfig</literal> child tags:</para>
       <itemizedlist>
         <listitem>
           <para><literal>subcommand</literal>: Provides the default execution parameters of the
-                    container. Equivalent of the <literal>CMD</literal> directive of a Docker file.</para>
+                    container. Equivalent of the <literal>CMD</literal> directive in a <literal>Dockerfile</literal>.</para>
         </listitem>
         <listitem>
           <para><literal>labels</literal>: Adds custom metadata to an image using key-value pairs.
-                    Equivalent to one or more <literal>LABEL</literal> directives of a Docker file.</para>
+                    Equivalent to one or more <literal>LABEL</literal> directives in a <literal>Dockerfile</literal>.</para>
         </listitem>
         <listitem>
-          <para><literal>expose</literal>: Informs at which ports is the container listening at runtime.
-                    Equivalent to one or more <literal>EXPOSE</literal> directives of a Docker file.</para>
+          <para><literal>expose</literal>: Define which ports can be exposed to the outside when
+                    running this container image.  Equivalent to one or more <literal>EXPOSE</literal>
+                    directives in a <literal>Dockerfile</literal>.</para>
         </listitem>
         <listitem>
-          <para><literal>environment</literal>: Sets an environment values using key-value pairs.
-                    Equivalent to one or more the <literal>env</literal> directives of a Docker file.</para>
+          <para><literal>environment</literal>: Sets environment variables using key-value pairs.
+                    Equivalent to one or multiple <literal>ENV</literal> directives in a <literal>Dockerfile</literal>.</para>
         </listitem>
         <listitem>
-          <para><literal>entrypoint</literal>: Sets the command that the container will run, it can
-                    include parameters. Equivalent of the <literal>ENTRYPOINT</literal> directive of a Docker
-                    file.</para>
+          <para><literal>entrypoint</literal>: Sets the binary via which all commands inside the
+                    container will be executed. Equivalent of the <literal>ENTRYPOINT</literal> directive
+                    in a <literal>Dockerfile</literal>.</para>
         </listitem>
         <listitem>
-          <para><literal>volumes</literal>: Create mountpoints with the given name and mark it to hold
+          <para><literal>volumes</literal>: Create mountpoints with the given name and mark them to hold
                     external volumes from the host or from other containers. Equivalent to
-                    one or more <literal>VOLUME</literal> directives of a Docker file.</para>
+                    one or more <literal>VOLUME</literal> directives in a <literal>Dockerfile</literal>.</para>
         </listitem>
       </itemizedlist>
-      <para>Other Docker file directives such as <literal>RUN</literal>, <literal>COPY</literal> or <literal>ADD</literal>, can be
-            mapped to KIWI NG by using the <xref linkend="description-components"/>
-            script file to run bash commands or the
-            <xref linkend="description-components"/> to include extra files.</para>
-      <para>The following example shows how to build a Docker base image based on
+      <para>Other <literal>Dockerfile</literal> directives such as <literal>RUN</literal>, <literal>COPY</literal> or <literal>ADD</literal>,
+            can be mapped to KIWI NG using the
+            <xref linkend="description-components"/> script file to run bash commands
+            or the <xref linkend="description-components"/> to include
+            additional files.</para>
+      <para>The following example illustrates how to build a Container Image based on
             openSUSE Leap:</para>
       <procedure>
         <step>
@@ -7102,11 +7104,11 @@ scp kiwi-test-image-disk.x86_64-1.15.3.config.bootoptions PXE_SERVER_IP:/srv/tft
     --target-dir /tmp/myimage</screen>
         </step>
         <step>
-          <para>Test the Docker image.</para>
-          <para>First load the new image</para>
-          <screen language="bash">$ docker load -i kiwi-test-image-docker.x86_64-1.15.3.docker.tar.xz</screen>
-          <para>then run the loaded image:</para>
-          <screen language="bash">$ docker run -it buildsystem /bin/bash</screen>
+          <para>Test the Container image.</para>
+          <para>First load the new image into your Container Runtime:</para>
+          <screen language="bash">$ podman load -i kiwi-test-image-docker.x86_64-1.15.3.docker.tar.xz</screen>
+          <para>and then run the image:</para>
+          <screen language="bash">$ podman run --rm -it buildsystem /bin/bash</screen>
         </step>
       </procedure>
     </section>
