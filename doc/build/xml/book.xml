@@ -4372,6 +4372,18 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>dosparttable_extended_layout=”true|false”:</term>
+              <listitem>
+                <para>For oem disk images, specifies to make use of logical partitions
+                                inside of an extended one. If set to true and if the msdos table type
+                                is active, this will cause the fourth partition to be an
+                                extended partition and all following partitions will be
+                                placed as logical partitions inside of that extended
+                                partition. This setting is useful if more than 4 primary
+                                partitions needs to be created in an msdos table</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>btrfs_quota_groups=”true|false”:</term>
               <listitem>
                 <para>Boolean parameter to activate filesystem quotas if
@@ -26775,21 +26787,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>
                 <emphasis role="bold">Base class for partitioners</emphasis>
               </para>
-              <variablelist role="field_list">
-                <varlistentry>
-                  <term>Parameters</term>
-                  <listitem>
-                    <itemizedlist>
-                      <listitem>
-                        <para><literal>disk_provider</literal> () – Instance of DeviceProvider</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>start_sector</literal> () – sector number</para>
-                      </listitem>
-                    </itemizedlist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.partitioner.base.PartitionerBase.create">
                   <term>
@@ -27253,6 +27250,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       </listitem>
                       <listitem>
                         <para><literal>start_sector</literal> () – sector number</para>
+                      </listitem>
+                      <listitem>
+                        <para><literal>extended_layout</literal> () – support extended layout for msdos table</para>
                       </listitem>
                     </itemizedlist>
                   </listitem>
@@ -28673,24 +28673,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <para>
                 <emphasis role="bold">Implements storage disk and partition table setup</emphasis>
               </para>
-              <variablelist role="field_list">
-                <varlistentry>
-                  <term>Parameters</term>
-                  <listitem>
-                    <itemizedlist>
-                      <listitem>
-                        <para><literal>table_type</literal> () – Partition table type name</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>storage_provider</literal> () – Instance of class based on DeviceProvider</para>
-                      </listitem>
-                      <listitem>
-                        <para><literal>start_sector</literal> () – sector number</para>
-                      </listitem>
-                    </itemizedlist>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.Disk.activate_boot_partition">
                   <term>
