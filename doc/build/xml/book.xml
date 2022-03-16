@@ -13639,6 +13639,56 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
             </listitem>
           </varlistentry>
         </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.defaults.unit_type">
+            <term>
+              <literal>kiwi.defaults.unit_type</literal>
+            </term>
+            <listitem>
+              <para>Bases: <literal>tuple</literal></para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.unit_type.byte">
+                  <term>
+                    <property>kiwi.defaults.unit_type.byte</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.unit_type.gb">
+                  <term>
+                    <property>kiwi.defaults.unit_type.gb</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 3</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.unit_type.kb">
+                  <term>
+                    <property>kiwi.defaults.unit_type.kb</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.unit_type.mb">
+                  <term>
+                    <property>kiwi.defaults.unit_type.mb</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 2</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
       </section>
       <section xml:id="module-kiwi.exceptions_kiwi-exceptions-module">
         <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.exceptions"><literal>kiwi.exceptions</literal></link> Module</title>
@@ -24432,7 +24482,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>label</literal> () – label name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>label</literal> () – label name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>size</literal> () – size value, can also be counted from the end via -X
+                                                    The value is interpreted in units of: unit</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24587,7 +24648,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>label</literal> () – label name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>label</literal> () – label name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>size</literal> () – size value, can also be counted from the end via -X
+                                                    The value is interpreted in units of: unit</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24689,7 +24761,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>label</literal> () – label name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>label</literal> () – label name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>size</literal> () – size value, can also be counted from the end via -X
+                                                    The value is interpreted in units of: unit</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24723,7 +24806,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>label</literal> () – label name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>label</literal> () – label name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>size</literal> () – size value, can also be counted from the end via -X
+                                                    The value is interpreted in units of: unit</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24757,7 +24851,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>label</literal> () – label name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>label</literal> () – label name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>size</literal> () – size value, can also be counted from the end via -X
+                                                    The value is interpreted in units of: unit</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24791,7 +24896,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>label</literal> () – label name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>label</literal> () – label name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>size</literal> () – size value, can also be counted from the end via -X
+                                                    The value is interpreted in units of: unit</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24812,7 +24928,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
             <listitem>
               <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
               <para>
-                <emphasis role="bold">Implements creation of fat16 filesystem</emphasis>
+                <emphasis role="bold">Implements creation of fat32 filesystem</emphasis>
               </para>
               <variablelist>
                 <varlistentry xml:id="kiwi.filesystem.fat32.FileSystemFat32.create_on_device">
@@ -24825,7 +24941,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>label</literal> () – label name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>label</literal> () – label name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>size</literal> () – size value, can also be counted from the end via -X
+                                                    The value is interpreted in units of: unit</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -25018,7 +25145,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>label</literal> () – label name</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>label</literal> () – label name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>size</literal> () – size value, can also be counted from the end via -X
+                                                    The value is interpreted in units of: unit</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
