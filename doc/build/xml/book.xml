@@ -4667,7 +4667,7 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>bootfilesystem=”ext2|ext3|ext4|fat32|fat16”:</term>
+              <term>bootfilesystem=”btrfs|ext2|ext3|ext4|xfs|fat32|fat16”:</term>
               <listitem>
                 <para>If an extra boot partition is required this attribute
                                 specify which filesystem should be used for it. The
