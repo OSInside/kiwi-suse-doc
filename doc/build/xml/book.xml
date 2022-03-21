@@ -4595,6 +4595,19 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>verity_blocks=”number|all”</term>
+              <listitem>
+                <para>For the <literal>oem</literal> type only, specifies to create a dm verity hash
+                                from the number of given blocks (or all) placed at the end of the
+                                root filesystem For later verification of the device,
+                                the credentials information produced by <literal>veritysetup</literal> from the
+                                cryptsetup tools are needed. This data as of now is only printed
+                                as debugging information to the build log file. A concept to
+                                persistently store the verification metadata as part of the
+                                partition(s) will be a next step.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>overlayroot=”true|false”</term>
               <listitem>
                 <para>For the <literal>oem</literal> type only, specifies to use an <literal>overlayfs</literal> based root
@@ -4622,19 +4635,6 @@ $ kiwi-ng system create $ARGS</screen>
                                 element is set to <literal>true</literal> an eventually given <literal>&lt;size&gt;</literal> element
                                 will not have any effect because the write partition will be
                                 resized on first boot to the available disk space.</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>overlayroot_verity_blocks=”number|all”</term>
-              <listitem>
-                <para>For the <literal>oem</literal> type only, specifies to create a dm verity hash
-                                from the number of given blocks (or all) placed at the end of the squashfs
-                                compressed read-only root filesystem. For later verification of the device,
-                                the credentials information produced by <literal>veritysetup</literal> from the
-                                cryptsetup tools are needed. This data as of now is only printed
-                                as debugging information to the build log file. A concept to
-                                persistently store the verification metadata as part of the
-                                partition(s) will be a next step.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -24493,6 +24493,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             <listitem>
                               <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
                             </listitem>
+                            <listitem>
+                              <para><literal>uuid</literal> () – UUID name</para>
+                            </listitem>
                           </itemizedlist>
                         </listitem>
                       </varlistentry>
@@ -24659,6 +24662,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             <listitem>
                               <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
                             </listitem>
+                            <listitem>
+                              <para><literal>uuid</literal> () – UUID name</para>
+                            </listitem>
                           </itemizedlist>
                         </listitem>
                       </varlistentry>
@@ -24772,6 +24778,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             <listitem>
                               <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
                             </listitem>
+                            <listitem>
+                              <para><literal>uuid</literal> () – UUID name</para>
+                            </listitem>
                           </itemizedlist>
                         </listitem>
                       </varlistentry>
@@ -24816,6 +24825,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             </listitem>
                             <listitem>
                               <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>uuid</literal> () – UUID name</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -24862,6 +24874,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             <listitem>
                               <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
                             </listitem>
+                            <listitem>
+                              <para><literal>uuid</literal> () – UUID name</para>
+                            </listitem>
                           </itemizedlist>
                         </listitem>
                       </varlistentry>
@@ -24907,6 +24922,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             <listitem>
                               <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
                             </listitem>
+                            <listitem>
+                              <para><literal>uuid</literal> () – Volume Label, there is no real UUID on fat</para>
+                            </listitem>
                           </itemizedlist>
                         </listitem>
                       </varlistentry>
@@ -24951,6 +24969,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             </listitem>
                             <listitem>
                               <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>uuid</literal> () – Volume Label, there is no real UUID on fat</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -25155,6 +25176,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             </listitem>
                             <listitem>
                               <para><literal>unit</literal> () – unit name. Default unit is set to: defaults.UNIT.kb</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>uuid</literal> () – UUID name</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -34592,7 +34616,7 @@ target
                     <property>kiwi.volume_manager.base.VolumeManagerBase.create_verity_layer</property>
                   </term>
                   <listitem>
-                    <para/>
+                    <para>veritysetup on LVM devices is not supported</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
