@@ -4499,12 +4499,16 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>luks=”passphrase”:</term>
+              <term>luks=”passphrase|file:///path/to/keyfile”:</term>
               <listitem>
-                <para>Supplying a value will trigger the encryption of the partitions
-                                using the LUKS extension and using the provided string as the
-                                password. Note that the password must be entered when booting the
-                                appliance!</para>
+                <para>Supplying a value will trigger the encryption of the partition
+                                serving the root filesystem using the LUKS extension. The supplied
+                                value represents either the passphrase string or the location of
+                                a key file if specified as <literal>file://...</literal> resource. When using
+                                a key file it is in the responsibility of the user how
+                                this key file is actually being used. By default any
+                                distribution will just open an interactive dialog asking
+                                for the credentials at boot time !</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -4879,6 +4883,24 @@ $ kiwi-ng system create $ARGS</screen>
           </variablelist>
           <para>The following sections shows the supported child elements of the <literal>type</literal>
                     element including references to their usage in a detailed type setup:</para>
+        </section>
+        <section xml:id="preferences-type-luksformat">
+          <title>&lt;preferences&gt;&lt;type&gt;&lt;luksformat&gt;</title>
+          <para>The <literal>luksformat</literal> element is used to specify additional luks options
+                    passed on to the <literal>cryptsetup luksFormat</literal> call. The element requires
+                    the attribute <literal>luks</literal> to be set in the <literal>&lt;type&gt;</literal> section referring to
+                    <literal>luksformat</literal>. Several custom settings related to the LUKS and LUKS2
+                    format features can be setup. For example, making the switch to <literal>LUKS2</literal>:</para>
+          <screen language="xml">&lt;luksformat&gt;
+  &lt;option name="--type" value="luks2"/&gt;
+&lt;/luksformat&gt;</screen>
+          <para>Or to enable additional device mapper layers and features,
+                    for example <literal>dm_integrity</literal>:</para>
+          <screen language="xml">&lt;luksformat&gt;
+  &lt;option name="--type" value="luks2"/&gt;
+  &lt;option name="--cipher" value="aes-gcm-random"/&gt;
+  &lt;option name="--integrity" value="aead"/&gt;
+&lt;/luksformat&gt;</screen>
         </section>
         <section xml:id="preferences-type-bootloader">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</title>
@@ -8099,7 +8121,9 @@ vagrant ssh</screen>
             <para>The value for the <literal>luks</literal> attribute sets the master passphrase
                         for the LUKS keyring. Therefore the XML description becomes
                         security critical and should only be readable by trustworthy
-                        people</para>
+                        people. Alternatively the credentials information can be
+                        stored in a key file and referenced as:</para>
+            <screen language="xml">&lt;type luks="file:///path/to/keyfile"/&gt;</screen>
           </note>
         </step>
       </procedure>
@@ -19152,6 +19176,54 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Return type</term>
                         <listitem>
                           <para>list|None</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_luks_credentials">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_luks_credentials</property>
+                  </term>
+                  <listitem>
+                    <para>Return key or passphrase credentials to open the luks pool</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>data</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>str</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_luks_format_options">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_luks_format_options</property>
+                  </term>
+                  <listitem>
+                    <para>Return list of luks format options</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>list of options</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>list</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
