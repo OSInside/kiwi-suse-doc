@@ -14072,6 +14072,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
         <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiCredentialsError">
+            <term>
+              <literal>kiwi.exceptions.KiwiCredentialsError</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Exception raised if required credentials information is missing</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
           <varlistentry xml:id="kiwi.exceptions.KiwiCustomPartitionConflictError">
             <term>
               <literal>kiwi.exceptions.KiwiCustomPartitionConflictError</literal>
@@ -14555,6 +14566,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
             <listitem>
               <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
               <para>Exception raised if the requested OCI archive tool is not supported</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiOffsetError">
+            <term>
+              <literal>kiwi.exceptions.KiwiOffsetError</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Exception raised if the offset for a seek operation does not
+                        match the expected data to write</para>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -17090,6 +17113,44 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Return type</term>
                         <listitem>
                           <para>bool</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.runtime_config.RuntimeConfig.get_credentials_verification_metadata_signing_key_file">
+                  <term>
+                    <property>kiwi.runtime_config.RuntimeConfig.get_credentials_verification_metadata_signing_key_file</property>
+                  </term>
+                  <listitem>
+                    <para>Return verification metadata signing key file, used for
+                                signature creation of rootfs verification metadata:</para>
+                    <variablelist>
+                      <varlistentry>
+                        <term>credentials:</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para>verification_metadata_signing_key_file: …</para>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                    <para>There is no default value for this setting available</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>file path name or ‘’</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>str</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -24625,12 +24686,49 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.base.FileSystemBase.create_verification_metadata">
+                  <term>
+                    <property>kiwi.filesystem.base.FileSystemBase.create_verification_metadata</property>
+                  </term>
+                  <listitem>
+                    <para>Write verification block at the end of the device</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>device_node</literal> () – Target device node, if not specified the root device
+                                            from this instance is used</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.filesystem.base.FileSystemBase.create_verity_layer">
                   <term>
                     <property>kiwi.filesystem.base.FileSystemBase.create_verity_layer</property>
                   </term>
                   <listitem>
-                    <para/>
+                    <para>Create veritysetup on device</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>block</literal> () – Number of blocks to use for veritysetup.
+                                                    If not specified the entire root device is used</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>filename</literal> () – Target filename to use for VeritySetup.
+                                                    If not specified the filename or block special
+                                                    provided at object construction time is used</para>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -34698,6 +34796,16 @@ target
                   </term>
                   <listitem>
                     <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.volume_manager.base.VolumeManagerBase.create_verification_metadata">
+                  <term>
+                    <property>kiwi.volume_manager.base.VolumeManagerBase.create_verification_metadata</property>
+                  </term>
+                  <listitem>
+                    <para>Write verification block on LVM devices is not supported</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
