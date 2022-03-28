@@ -16846,6 +16846,23 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_partuuid_persistency_type_used_with_mbr">
+                  <term>
+                    <property>kiwi.runtime_checker.RuntimeChecker.check_partuuid_persistency_type_used_with_mbr</property>
+                  </term>
+                  <listitem>
+                    <para>The devicepersistency setting by-partuuid can only be
+                                used in combination with a partition table type that
+                                supports UUIDs. In any other case Linux creates artificial
+                                values for PTUUID and PARTUUID from the disk signature
+                                which can change without touching the actual partition
+                                table. We consider this unsafe and only allow the use
+                                of by-partuuid in combination with partition tables that
+                                actually supports it properly.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.RuntimeChecker.check_repositories_configured">
                   <term>
                     <property>kiwi.runtime_checker.RuntimeChecker.check_repositories_configured</property>
