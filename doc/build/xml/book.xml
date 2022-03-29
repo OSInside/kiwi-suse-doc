@@ -4622,6 +4622,71 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>embed_verity_metadata=”true|false”</term>
+              <listitem>
+                <para>For the <literal>oem</literal> type only, and in combination with the <literal>verity_blocks</literal>
+                                attribute, specifies to write a binary block at the end of the
+                                partition serving the root filesystem, containing information
+                                for <literal>dm_verity</literal> verification in the following format:</para>
+                <screen language="bash">|header|0xFF|dm_verity_credentials|0xFF|0x0|</screen>
+                <variablelist>
+                  <varlistentry>
+                    <term>header:</term>
+                    <listitem>
+                      <para>Is a string of the following information separated by spaces</para>
+                      <itemizedlist>
+                        <listitem>
+                          <para><emphasis role="bold">version</emphasis>: currently set to <literal>1</literal></para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">fstype</emphasis>: name of <literal>filesystem</literal> attribute</para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">access</emphasis>: either <literal>ro</literal> or <literal>rw</literal> depending on the filesystem capabilities</para>
+                        </listitem>
+                        <listitem>
+                          <para><literal>verity</literal>: fixed identifier value</para>
+                        </listitem>
+                      </itemizedlist>
+                    </listitem>
+                  </varlistentry>
+                  <varlistentry>
+                    <term>dm_verity_credentials:</term>
+                    <listitem>
+                      <para>Is a string of the following information separated by spaces</para>
+                      <itemizedlist>
+                        <listitem>
+                          <para><emphasis role="bold">hash_type</emphasis>: hash type name as returned by <literal>veritysetup</literal></para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">data_blksize</emphasis>: data blocksize as returned by <literal>veritysetup</literal></para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">hash_blksize</emphasis>: hash blocksize as returned by <literal>veritysetup</literal></para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">data_blocks</emphasis>: number of data blocks as returned by <literal>veritysetup</literal></para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">hash_start_block</emphasis>:
+                                                    hash start block as required by the kernel to construct the device map</para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">algorithm</emphasis>: hash algorithm as returned by <literal>veritysetup</literal></para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">root_hash</emphasis>: root hash as returned by <literal>veritysetup</literal></para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">salt</emphasis>: salt hash as returned by <literal>veritysetup</literal></para>
+                        </listitem>
+                      </itemizedlist>
+                    </listitem>
+                  </varlistentry>
+                </variablelist>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>overlayroot=”true|false”</term>
               <listitem>
                 <para>For the <literal>oem</literal> type only, specifies to use an <literal>overlayfs</literal> based root
