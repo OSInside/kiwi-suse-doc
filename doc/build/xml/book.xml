@@ -4950,6 +4950,14 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>ensure_empty_tmpdirs=”true|false”:</term>
+              <listitem>
+                <para>For OCI container images, specifies whether to ensure /run and /tmp
+                                directories are empty in the container image created by Kiwi.
+                                Default is true.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>publisher=”string”:</term>
               <listitem>
                 <para>For ISO images, specifies the publisher name of the ISO.</para>
