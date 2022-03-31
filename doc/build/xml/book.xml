@@ -24876,6 +24876,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.base.FileSystemBase.set_uuid">
+                  <term>
+                    <property>kiwi.filesystem.base.FileSystemBase.set_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Create new random filesystem UUID</para>
+                    <para>Implement in specialized filesystem class for filesystems which
+                                supports the concept of an UUID and allows to change it</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.filesystem.base.FileSystemBase.sync_data">
                   <term>
                     <property>kiwi.filesystem.base.FileSystemBase.sync_data</property>
@@ -24948,6 +24960,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.btrfs.FileSystemBtrfs.set_uuid">
+                  <term>
+                    <property>kiwi.filesystem.btrfs.FileSystemBtrfs.set_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Create new random filesystem UUID</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -25067,6 +25089,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.ext2.FileSystemExt2.set_uuid">
+                  <term>
+                    <property>kiwi.filesystem.ext2.FileSystemExt2.set_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Create new random filesystem UUID</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -25112,6 +25144,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.ext3.FileSystemExt3.set_uuid">
+                  <term>
+                    <property>kiwi.filesystem.ext3.FileSystemExt3.set_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Create new random filesystem UUID</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -25163,6 +25205,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.ext4.FileSystemExt4.set_uuid">
+                  <term>
+                    <property>kiwi.filesystem.ext4.FileSystemExt4.set_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Create new random filesystem UUID</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -25211,6 +25263,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.fat16.FileSystemFat16.set_uuid">
+                  <term>
+                    <property>kiwi.filesystem.fat16.FileSystemFat16.set_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Create new random filesystem UUID</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
@@ -25256,6 +25318,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.fat32.FileSystemFat32.set_uuid">
+                  <term>
+                    <property>kiwi.filesystem.fat32.FileSystemFat32.set_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Create new random filesystem UUID</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -25463,6 +25535,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.filesystem.xfs.FileSystemXfs.set_uuid">
+                  <term>
+                    <property>kiwi.filesystem.xfs.FileSystemXfs.set_uuid</property>
+                  </term>
+                  <listitem>
+                    <para>Create new random filesystem UUID</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
