@@ -30018,6 +30018,40 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
       </section>
+      <section xml:id="module-kiwi.storage.clone_device_kiwi-storage-clone-device-module">
+        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.storage.clone_device"><literal>kiwi.storage.clone_device</literal></link> Module</title>
+        <variablelist>
+          <varlistentry xml:id="kiwi.storage.clone_device.CloneDevice">
+            <term>
+              <literal>kiwi.storage.clone_device.CloneDevice</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>kiwi.storage.device_provider.DeviceProvider</literal></link></para>
+              <para>
+                <emphasis role="bold">Implements device cloning</emphasis>
+              </para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.storage.clone_device.CloneDevice.clone">
+                  <term>
+                    <property>kiwi.storage.clone_device.CloneDevice.clone</property>
+                  </term>
+                  <listitem>
+                    <para>Clone source device to target device(s)</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>target_devices</literal> () – List of target DeviceProvider instances</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
       <section xml:id="module-kiwi.storage.setup_kiwi-storage-setup-module">
         <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.storage.setup"><literal>kiwi.storage.setup</literal></link> Module</title>
         <variablelist>
