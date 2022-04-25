@@ -3,12 +3,12 @@
       type="application/relax-ng-compact-syntax"
      ?>
 <book xmlns="http://docbook.org/ns/docbook" xml:lang="en" version="5.1" xml:id="building-linux-system-appliances-with-kiwi-next-generation-kiwi-ng-version">
-  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.31</title>
+  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.32</title>
   <info/>
   <preface>
     <title>Preface</title>
     <note>
-      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.31- the command line
+      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.32- the command line
                 utility to build Linux system appliances. KIWI NG is stable and all
                 new features, bugfixes, and improvements will be developed here.
                 Versions older or equal to v7.x.x are out of maintenance and do
@@ -205,7 +205,7 @@
       <para>This document provides a conceptual overview about the steps
                 of creating an image with KIWI NG. It also explains the terminology
                 regarding the concept and process when building system images
-                with KIWI NG 9.24.31.</para>
+                with KIWI NG 9.24.32.</para>
     </note>
     <section xml:id="basic-workflow" xml:base="overview/workflow">
       <title>Basic Workflow</title>
@@ -225,7 +225,7 @@
                 complete the system usually reboots and enters a configuration procedure
                 upon start-up. The configuration may be fully automatic or it may include
                 user interaction.</para>
-        <para>This description applies for version 9.24.31.</para>
+        <para>This description applies for version 9.24.32.</para>
       </note>
       <para>A system image (usually called “image”), is a <emphasis>complete installation</emphasis> of a Linux
             system within a file. The image represents an operational system and,
@@ -535,7 +535,7 @@ $ tree -L 3 kiwi/build-tests</screen>
       </para>
       <para>This document describes how to start working with KIWI NG,
                 an OS appliance builder. This description applies for
-                version 9.24.31.</para>
+                version 9.24.32.</para>
     </note>
     <section xml:id="before-you-start">
       <title>Before you start</title>
@@ -600,7 +600,7 @@ $ tree -L 3 kiwi/build-tests</screen>
     <title>Working from the Command Line</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) commands
-                for version 9.24.31.</para>
+                for version 9.24.32.</para>
     </note>
     <section xml:id="kiwi-ng" xml:base="commands/kiwi">
       <title>kiwi-ng</title>
@@ -1950,7 +1950,7 @@ kiwi-ng image info help</screen>
     <title>KIWI Plugins</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) plugins
-                which provides extended functionality for version 9.24.31.</para>
+                which provides extended functionality for version 9.24.32.</para>
     </note>
     <section xml:id="self-contained" xml:base="plugins/self_contained">
       <title>Building in a Self-Contained Environment</title>
@@ -2288,7 +2288,7 @@ $ vi container_to_VM_layer/config.kiwi</screen>
         <emphasis role="bold">Abstract</emphasis>
       </para>
       <para>The following sections describe the concept and general workflow
-                of building appliances with KIWI NG 9.24.31.</para>
+                of building appliances with KIWI NG 9.24.32.</para>
     </note>
     <section xml:id="systemdeps" xml:base="concept_and_workflow/systemdeps">
       <title>Host Requirements To Build Images</title>
@@ -3956,13 +3956,13 @@ $ kiwi-ng system create $ARGS</screen>
     <title>Image Description</title>
     <note>
       <para>This document explains the toplevel structure of the
-                KIWI NG image description document for version 9.24.31</para>
+                KIWI NG image description document for version 9.24.32</para>
     </note>
     <section xml:id="image-description-elements" xml:base="image_description/elements">
       <title>Image Description Elements</title>
       <note>
         <para>This document provides a reference for the elements
-                and attributes of the KIWI NG XML document in version 9.24.31</para>
+                and attributes of the KIWI NG XML document in version 9.24.32</para>
       </note>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
@@ -4606,6 +4606,82 @@ $ kiwi-ng system create $ARGS</screen>
               <term>squashfscompression=”uncompressed|gzip|lzo|lz4|xz|zstd”:</term>
               <listitem>
                 <para>Specifies the compression type for mksquashfs</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>standalone_integrity=”true|false”</term>
+              <listitem>
+                <para>For the <literal>oem</literal> type only, specifies to create a standalone
+                                <literal>dm_integrity</literal> layer on top of the root filesystem</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>embed_integrity_metadata=”true|false”</term>
+              <listitem>
+                <para>For the <literal>oem</literal> type only, and in combination with the
+                                <literal>standalone_integrity</literal> attribute, specifies to write a binary
+                                block at the end of the partition serving the root filesystem,
+                                containing information to create the <literal>dm_integrity</literal> device map
+                                in the following format:</para>
+                <screen language="bash">|header|0xFF|dm_integrity_meta|0xFF|0x0|</screen>
+                <variablelist>
+                  <varlistentry>
+                    <term>header:</term>
+                    <listitem>
+                      <para>Is a string of the following information separated by spaces</para>
+                      <itemizedlist>
+                        <listitem>
+                          <para><emphasis role="bold">version</emphasis>: currently set to <literal>1</literal></para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">fstype</emphasis>: name of <literal>filesystem</literal> attribute</para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">access</emphasis>: either <literal>ro</literal> or <literal>rw</literal> depending on the filesystem capabilities</para>
+                        </listitem>
+                        <listitem>
+                          <para><literal>integrity</literal>: fixed identifier value</para>
+                        </listitem>
+                      </itemizedlist>
+                    </listitem>
+                  </varlistentry>
+                  <varlistentry>
+                    <term>dm_integrity_meta:</term>
+                    <listitem>
+                      <para>Is a string of the following information separated by spaces</para>
+                      <itemizedlist>
+                        <listitem>
+                          <para><emphasis role="bold">provided_data_sectors</emphasis>: number of data sectors</para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">sector_size</emphasis>: sector size in byte, defaults to 512</para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">parameter_count</emphasis>:
+                                                    number of parameters needed to construct the integrity device map.
+                                                    After the <literal>parameter_count</literal> a list of space separated parameters
+                                                    follows and the <literal>parameter_count</literal> specifies the quantity of these
+                                                    parameters</para>
+                        </listitem>
+                        <listitem>
+                          <para><emphasis role="bold">parameters</emphasis>:
+                                                    The first element of the parameter list contains information about
+                                                    the used hash algorithm which is not part of the superblock and
+                                                    provided according to the parameters passed along when KIWI NG
+                                                    calls <literal>integritysetup</literal>. As of now this defaults to:</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para>internal_hash:sha256</para>
+                            </listitem>
+                          </itemizedlist>
+                          <para>All subsequent parameters are taken from the <literal>flags</literal> field of the
+                                                    dm-integrity superblock. see the dm-integrity documentation on the
+                                                    web for possible flag values.</para>
+                        </listitem>
+                      </itemizedlist>
+                    </listitem>
+                  </varlistentry>
+                </variablelist>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -9334,7 +9410,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.24.31 inside of the Open Build Service.
+                KIWI NG in version 9.24.32 inside of the Open Build Service.
                 A tutorial on the Open Buildservice itself can be found here:
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
       </note>
@@ -9643,7 +9719,7 @@ name="images"&gt;</literal>:</para>
       </para>
       <para>This document describes the development process of KIWI NG
                 and how you can be part of it. This description applies
-                to version 9.24.31.</para>
+                to version 9.24.32.</para>
     </note>
     <section xml:id="using-kiwi-ng-in-a-python-project" xml:base="contributing/kiwi_from_python">
       <title>Using KIWI NG in a Python Project</title>
@@ -9653,7 +9729,7 @@ name="images"&gt;</literal>:</para>
         </para>
         <para>KIWI NG is provided as python module under the <emphasis role="bold">kiwi</emphasis> namespace.
                 It is available for the python 3 version. The following
-                description applies for KIWI NG version 9.24.31.</para>
+                description applies for KIWI NG version 9.24.32.</para>
       </note>
       <para>KIWI NG can also function as a module for other Python projects.
             The following example demonstrates how to read an existing image
@@ -9897,7 +9973,7 @@ def test_RmWorks(container_per_test):
         <para>Depending on the demand for custom plugins, the interface
                 to hook in code into other parts of the KIWI NG processing
                 needs to be extended.</para>
-        <para>This description applies for version 9.24.31.</para>
+        <para>This description applies for version 9.24.32.</para>
       </note>
       <section xml:id="the-extension-section">
         <title>The &lt;extension&gt; Section</title>
@@ -10319,7 +10395,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
   <chapter xml:id="api" xml:base="api">
     <title>Python API</title>
     <note>
-      <para>This API documentation covers KIWI NG 9.24.31</para>
+      <para>This API documentation covers KIWI NG 9.24.32</para>
     </note>
     <section xml:id="kiwi-package" xml:base="api/kiwi">
       <title>kiwi Package</title>
