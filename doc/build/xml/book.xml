@@ -3567,7 +3567,7 @@ install() {
                 systemd calls the scripts as part of the <literal>dracut-pre-mount.service</literal>.</para>
         <para>The dracut system offers a lot more possibilities to customize the
                 initrd than shown in the example above. For more information, visit
-                the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="http://people.redhat.com/harald/dracut.html">dracut project page</link>.</para>
+                the <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://dracut.wiki.kernel.org/index.php/Main_Page">dracut project page</link>.</para>
       </section>
       <section xml:id="boot-image-parameters">
         <title>Boot Image Parameters</title>
