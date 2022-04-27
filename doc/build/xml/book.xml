@@ -19690,6 +19690,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                           <screen language="python">{
     'NAME': ptable_entry_type(
         mbsize=int,
+        clone=int,
         partition_name=str,
         partition_type=str,
         mountpoint=str,
@@ -29273,12 +29274,19 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Create boot partition</para>
-                    <para>Populates kiwi_BootPart(id)</para>
+                    <para>Populates kiwi_BootPart(id) and optional kiwi_BootPartClone(id)</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>mbsize</literal> () – partition size string</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>clone</literal> () – create [clone] cop(y/ies) of the boot partition</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29318,7 +29326,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <para><literal>mbsize</literal> () – partition size string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29337,7 +29345,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <para><literal>mbsize</literal> () – partition size string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29378,7 +29386,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <para><literal>mbsize</literal> () – partition size string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29397,7 +29405,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>mbsize</literal> () – partition size string</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>clone</literal> () – create [clone] cop(y/ies) of the lvm roo partition</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29417,7 +29432,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>mbsize</literal> () – partition size string</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>clone</literal> () – create [clone] cop(y/ies) of the root partition</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29438,7 +29460,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>mbsize</literal> () – partition size string</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>clone</literal> () – create [clone] cop(y/ies) of the raid root partition</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29460,7 +29489,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>mbsize</literal> () – partition size string</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>clone</literal> () – create [clone] cop(y/ies) of the ro root partition</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29479,7 +29515,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <para><literal>mbsize</literal> () – partition size string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29498,7 +29534,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>mbsize</literal> () – partition size NumberString or ‘all_free’</para>
+                          <para><literal>mbsize</literal> () – partition size string</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -29600,12 +29636,22 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
             <listitem>
               <para>Bases: <literal>tuple</literal></para>
               <variablelist>
+                <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.clone">
+                  <term>
+                    <property>kiwi.storage.disk.ptable_entry_type.clone</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.filesystem">
                   <term>
                     <property>kiwi.storage.disk.ptable_entry_type.filesystem</property>
                   </term>
                   <listitem>
-                    <para>Alias for field number 4</para>
+                    <para>Alias for field number 5</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -29625,7 +29671,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.storage.disk.ptable_entry_type.mountpoint</property>
                   </term>
                   <listitem>
-                    <para>Alias for field number 3</para>
+                    <para>Alias for field number 4</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -29635,7 +29681,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.storage.disk.ptable_entry_type.partition_name</property>
                   </term>
                   <listitem>
-                    <para>Alias for field number 1</para>
+                    <para>Alias for field number 2</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -29645,7 +29691,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <property>kiwi.storage.disk.ptable_entry_type.partition_type</property>
                   </term>
                   <listitem>
-                    <para>Alias for field number 2</para>
+                    <para>Alias for field number 3</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
