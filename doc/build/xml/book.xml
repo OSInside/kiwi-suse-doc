@@ -30260,6 +30260,19 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <para>Precalculate disk size requirements in mbytes</para>
                     <variablelist role="field_list">
                       <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>root_clone</literal> () – root partition gets cloned, N+1 times the size is needed</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>boot_clone</literal> () – boot partition gets cloned, N+1 times the size is needed</para>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
                         <term>Returns</term>
                         <listitem>
                           <para>disk size mbytes</para>
