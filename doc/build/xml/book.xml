@@ -4512,13 +4512,14 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>luks_version=”luks|luks2”:</term>
+              <term>luks_version=”luks|luks1|luks2”:</term>
               <listitem>
                 <para>Specify which <literal>LUKS</literal> version should be used. If not set and by
-                                default <literal>luks</literal> is used. The specification of the <literal>LUKS</literal> version
-                                allows using a different set of <literal>luksformat</literal> options. To
-                                investigate the differences between the two please consult the
-                                <literal>cryptsetup</literal> manual page.</para>
+                                default <literal>luks</literal> is used. The interpretation of the default depends
+                                on the distribution and could result in either ‘luks1’ or ‘luks2’.
+                                The specification of the <literal>LUKS</literal> version allows using a different
+                                set of <literal>luksformat</literal> options. To investigate the differences between
+                                the two please consult the <literal>cryptsetup</literal> manual page.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
