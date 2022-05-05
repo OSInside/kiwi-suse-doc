@@ -4610,14 +4610,34 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>standalone_integrity=”true|false”</term>
+              <term>standalone_integrity=”true|false”:</term>
               <listitem>
                 <para>For the <literal>oem</literal> type only, specifies to create a standalone
                                 <literal>dm_integrity</literal> layer on top of the root filesystem</para>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>embed_integrity_metadata=”true|false”</term>
+              <term>integrity_keyfile=”filepath”:</term>
+              <listitem>
+                <para>For the <literal>oem</literal> type only and in combination with the <literal>standalone_integrity</literal>
+                                attribute, protects access to the integrity map using the given keyfile.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>integrity_metadata_key_description=”string”:</term>
+              <listitem>
+                <para>For the <literal>oem</literal> type only and in combination with
+                                the <literal>embed_integrity_metadata</literal> attribute, specifies a custom
+                                description of an integrity key as it is expected to be present
+                                in the kernel keyring. The information is placed in the integrity
+                                metadata block. If not specified kiwi creates a key argument
+                                string instead which is based on the given <literal>integrity_keyfile</literal>
+                                filename. The format of this key argument is:</para>
+                <screen language="bash">:BASENAME_OF_integrity_keyfile_WITHOUT_FILE_EXTENSION</screen>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>embed_integrity_metadata=”true|false”:</term>
               <listitem>
                 <para>For the <literal>oem</literal> type only, and in combination with the
                                 <literal>standalone_integrity</literal> attribute, specifies to write a binary
@@ -4686,7 +4706,7 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>verity_blocks=”number|all”</term>
+              <term>verity_blocks=”number|all”:</term>
               <listitem>
                 <para>For the <literal>oem</literal> type only, specifies to create a dm verity hash
                                 from the number of given blocks (or all) placed at the end of the
@@ -4699,7 +4719,7 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>embed_verity_metadata=”true|false”</term>
+              <term>embed_verity_metadata=”true|false”:</term>
               <listitem>
                 <para>For the <literal>oem</literal> type only, and in combination with the <literal>verity_blocks</literal>
                                 attribute, specifies to write a binary block at the end of the
@@ -4764,7 +4784,7 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>overlayroot=”true|false”</term>
+              <term>overlayroot=”true|false”:</term>
               <listitem>
                 <para>For the <literal>oem</literal> type only, specifies to use an <literal>overlayfs</literal> based root
                                 filesystem consisting out of a squashfs compressed read-only root
@@ -4794,7 +4814,7 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>overlayroot_write_partition=”true|false”</term>
+              <term>overlayroot_write_partition=”true|false”:</term>
               <listitem>
                 <para>For the <literal>oem</literal> type only, allows to specify if the extra read-write
                                 partition in an <literal>overlayroot</literal> setup should be created or not.
@@ -4806,7 +4826,7 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>overlayroot_readonly_partsize=”mbsize”</term>
+              <term>overlayroot_readonly_partsize=”mbsize”:</term>
               <listitem>
                 <para>Specifies the size in MB of the partition which stores the
                                 squashfs compressed read-only root filesystem in an
@@ -4832,7 +4852,7 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
-              <term>flags=”overlay|dmsquash”</term>
+              <term>flags=”overlay|dmsquash”:</term>
               <listitem>
                 <para>For the iso image type specifies the live iso technology and
                                 dracut module to use. If set to overlay the kiwi-live dracut
