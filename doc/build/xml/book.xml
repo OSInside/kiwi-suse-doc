@@ -3,12 +3,12 @@
       type="application/relax-ng-compact-syntax"
      ?>
 <book xmlns="http://docbook.org/ns/docbook" xml:lang="en" version="5.1" xml:id="building-linux-system-appliances-with-kiwi-next-generation-kiwi-ng-version">
-  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.34</title>
+  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.35</title>
   <info/>
   <preface>
     <title>Preface</title>
     <note>
-      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.34- the command line
+      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.35- the command line
                 utility to build Linux system appliances. KIWI NG is stable and all
                 new features, bugfixes, and improvements will be developed here.
                 Versions older or equal to v7.x.x are out of maintenance and do
@@ -205,7 +205,7 @@
       <para>This document provides a conceptual overview about the steps
                 of creating an image with KIWI NG. It also explains the terminology
                 regarding the concept and process when building system images
-                with KIWI NG 9.24.34.</para>
+                with KIWI NG 9.24.35.</para>
     </note>
     <section xml:id="basic-workflow" xml:base="overview/workflow">
       <title>Basic Workflow</title>
@@ -225,7 +225,7 @@
                 complete the system usually reboots and enters a configuration procedure
                 upon start-up. The configuration may be fully automatic or it may include
                 user interaction.</para>
-        <para>This description applies for version 9.24.34.</para>
+        <para>This description applies for version 9.24.35.</para>
       </note>
       <para>A system image (usually called “image”), is a <emphasis>complete installation</emphasis> of a Linux
             system within a file. The image represents an operational system and,
@@ -535,7 +535,7 @@ $ tree -L 3 kiwi/build-tests</screen>
       </para>
       <para>This document describes how to start working with KIWI NG,
                 an OS appliance builder. This description applies for
-                version 9.24.34.</para>
+                version 9.24.35.</para>
     </note>
     <section xml:id="before-you-start">
       <title>Before you start</title>
@@ -600,7 +600,7 @@ $ tree -L 3 kiwi/build-tests</screen>
     <title>Working from the Command Line</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) commands
-                for version 9.24.34.</para>
+                for version 9.24.35.</para>
     </note>
     <section xml:id="kiwi-ng" xml:base="commands/kiwi">
       <title>kiwi-ng</title>
@@ -939,8 +939,8 @@ kiwi-ng system prepare --description=&lt;directory&gt; --root=&lt;directory&gt;
     [--clear-cache]
     [--ignore-repos]
     [--ignore-repos-used-for-build]
-    [--set-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck&gt;]
-    [--add-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck&gt;...]
+    [--set-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck,{signing_keys},components,distribution,repo_gpgcheck&gt;]
+    [--add-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck,{signing_keys},components,distribution,repo_gpgcheck&gt;...]
     [--add-package=&lt;name&gt;...]
     [--add-bootstrap-package=&lt;name&gt;...]
     [--delete-package=&lt;name&gt;...]
@@ -1123,6 +1123,33 @@ kiwi-ng system prepare help</screen>
                   </para>
                   <para>Set to either <emphasis role="bold">true</emphasis> or <emphasis role="bold">false</emphasis> to specify if this repository
                                     should validate the package signatures.</para>
+                  <itemizedlist>
+                    <listitem>
+                      <para>
+                        <emphasis role="bold">{signing_keys}</emphasis>
+                      </para>
+                    </listitem>
+                  </itemizedlist>
+                  <para>List of signing_keys enclosed in curly brackets and delimited by a colon</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">components</emphasis>
+                  </para>
+                  <para>Component list for debian based repos as string delimited by a space</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">distribution</emphasis>
+                  </para>
+                  <para>Main distribution name for debian based repos</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">repo_gpgcheck</emphasis>
+                  </para>
+                  <para>Set to either <emphasis role="bold">true</emphasis> or <emphasis role="bold">false</emphasis> to specify if this repository
+                                    should validate the repository signature.</para>
                 </listitem>
               </itemizedlist>
             </listitem>
@@ -1226,8 +1253,8 @@ kiwi-ng system build --description=&lt;directory&gt; --target-dir=&lt;directory&
     [--clear-cache]
     [--ignore-repos]
     [--ignore-repos-used-for-build]
-    [--set-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck&gt;]
-    [--add-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck&gt;...]
+    [--set-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck,{signing_keys},components,distribution,repo_gpgcheck&gt;]
+    [--add-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck,{signing_keys},components,distribution,repo_gpgcheck&gt;...]
     [--add-package=&lt;name&gt;...]
     [--add-bootstrap-package=&lt;name&gt;...]
     [--delete-package=&lt;name&gt;...]
@@ -1406,6 +1433,31 @@ kiwi-ng system build help</screen>
                   </para>
                   <para>Set to either <emphasis role="bold">true</emphasis> or <emphasis role="bold">false</emphasis> to specify if this repository
                                     should validate the package signatures.</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">{signing_keys}</emphasis>
+                  </para>
+                  <para>List of signing_keys enclosed in curly brackets and delimited by a colon</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">components</emphasis>
+                  </para>
+                  <para>Component list for debian based repos as string delimited by a space</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">distribution</emphasis>
+                  </para>
+                  <para>Main distribution name for debian based repos</para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="bold">repo_gpgcheck</emphasis>
+                  </para>
+                  <para>Set to either <emphasis role="bold">true</emphasis> or <emphasis role="bold">false</emphasis> to specify if this repository
+                                    should validate the repository signature.</para>
                 </listitem>
               </itemizedlist>
             </listitem>
@@ -1950,7 +2002,7 @@ kiwi-ng image info help</screen>
     <title>KIWI Plugins</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) plugins
-                which provides extended functionality for version 9.24.34.</para>
+                which provides extended functionality for version 9.24.35.</para>
     </note>
     <section xml:id="self-contained" xml:base="plugins/self_contained">
       <title>Building in a Self-Contained Environment</title>
@@ -2288,7 +2340,7 @@ $ vi container_to_VM_layer/config.kiwi</screen>
         <emphasis role="bold">Abstract</emphasis>
       </para>
       <para>The following sections describe the concept and general workflow
-                of building appliances with KIWI NG 9.24.34.</para>
+                of building appliances with KIWI NG 9.24.35.</para>
     </note>
     <section xml:id="systemdeps" xml:base="concept_and_workflow/systemdeps">
       <title>Host Requirements To Build Images</title>
@@ -3956,13 +4008,13 @@ $ kiwi-ng system create $ARGS</screen>
     <title>Image Description</title>
     <note>
       <para>This document explains the toplevel structure of the
-                KIWI NG image description document for version 9.24.34</para>
+                KIWI NG image description document for version 9.24.35</para>
     </note>
     <section xml:id="image-description-elements" xml:base="image_description/elements">
       <title>Image Description Elements</title>
       <note>
         <para>This document provides a reference for the elements
-                and attributes of the KIWI NG XML document in version 9.24.34</para>
+                and attributes of the KIWI NG XML document in version 9.24.35</para>
       </note>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
@@ -4496,6 +4548,26 @@ $ kiwi-ng system create $ARGS</screen>
               <listitem>
                 <para>Additional kernel parameters passed to the kernel by the
                                 bootloader.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>root_clone=”number”</term>
+              <listitem>
+                <para>For oem disk images, this attribute allows to create <literal>number</literal>
+                                clone(s) of the root partition, with <literal>number</literal> &gt;= 1. A clone partition
+                                is content wise an exact byte for byte copy of the origin root partition.
+                                However, to avoid conflicts at boot time the UUID of any
+                                cloned partition will be made unique. In the sequence of partitions,
+                                the clone(s) will always be created first followed by the
+                                partition considered the origin. The origin partition is the
+                                one that will be referenced and used by the system.
+                                Also see <xref linkend="clone-partitions"/></para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>boot_clone=”number”</term>
+              <listitem>
+                <para>Same as <literal>root_clone</literal> but applied to the boot partition if present</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -8466,6 +8538,19 @@ vagrant ssh</screen>
                         filesystems on the partition.</para>
           </listitem>
         </varlistentry>
+        <varlistentry>
+          <term>clone=”number”</term>
+          <listitem>
+            <para>Optional setting to indicate that this partition should be
+                        cloned <literal>number</literal> of times. A clone partition is content wise an
+                        exact byte for byte copy of the origin. However, to avoid conflicts at boot
+                        time the UUID of any cloned partition will be made unique. In the
+                        sequence of partitions, the clone(s) will always be created first
+                        followed by the partition considered the origin. The origin
+                        partition is the one that will be referenced and used by the
+                        system</para>
+          </listitem>
+        </varlistentry>
       </variablelist>
       <para>Despite the customization options of the partition table shown above
             there are the following limitations:</para>
@@ -8607,6 +8692,123 @@ vagrant ssh</screen>
                     used filesystem has its own volume management system.</para>
         </listitem>
       </itemizedlist>
+    </section>
+    <section xml:id="clone-partitions" xml:base="working_with_images/clone_partitions">
+      <title>Partition Clones</title>
+      <formalpara role="sidebar">
+        <title>Abstract</title>
+        <para>This page provides details about the partition clone feature
+                and its use cases</para>
+      </formalpara>
+      <para>KIWI NG allows to create block level clones of certain partitions
+            used in the image. Clones can be created from the <literal>root</literal>, <literal>boot</literal>
+            and any other partition listed in the <literal>&lt;partitions&gt;</literal> element.</para>
+      <para>A partition clone is a simple byte dump from one
+            block storage device to another. However, this would cause conflicts
+            during boot of the system because all unique identifiers like
+            the UUID of a filesystem will no longer be unique. The clone
+            feature of KIWI NG takes care of this part and re-creates the
+            relevant unique identifiers per cloned partition. KIWI NG allows
+            this also for complex partitions like LVM, LUKS or RAID.</para>
+      <para>The partition clone(s) will always appear first in the partition table,
+            followed by the origin partition. The origin partition is the one
+            whose identifier will be referenced and used by the system. By default
+            no cloned partition will be mounted or used by the system at boot time.</para>
+      <para>Let’s take a look at the following example:</para>
+      <screen language="xml">&lt;type image="oem" root_clone="1" boot_clone="1" firmware="uefi" filesystem="xfs" bootpartition="true" bootfilesystem="ext4"&gt;
+    &lt;partitions&gt;
+        &lt;partition name="home" size="10" mountpoint="/home" filesystem="ext3" clone="2"/&gt;
+    &lt;/partitions&gt;
+&lt;/type&gt;</screen>
+      <para>With the above setup KIWI NG will create a disk image that
+            contains the following partition table:</para>
+      <screen language="default">Number  Start (sector)    End (sector)  Size       Code  Name
+   1            2048            6143   2.0 MiB     EF02  p.legacy
+   2            6144           47103   20.0 MiB    EF00  p.UEFI
+   3           47104          661503   300.0 MiB   8300  p.lxbootclone1
+   4          661504         1275903   300.0 MiB   8300  p.lxboot
+   5         1275904         1296383   10.0 MiB    8300  p.lxhomeclone1
+   6         1296384         1316863   10.0 MiB    8300  p.lxhomeclone2
+   7         1316864         1337343   10.0 MiB    8300  p.lxhome
+   8         1337344         3864575   1.2 GiB     8300  p.lxrootclone1
+   9         3864576         6287326   1.2 GiB     8300  p.lxroot</screen>
+      <para>When booting the system only the origin partitions <literal>p.lxboot</literal>, <literal>p.lxroot</literal>
+            and <literal>p.lxhome</literal> will be mounted and visible in e.g. <literal>/etc/fstab</literal>,
+            the bootloader or the initrd. Thus partition clones are present as a data
+            source but are not relevant for the operating system from a functional
+            perspective.</para>
+      <para>As shown in the above example there is one clone request for root and boot
+            and a two clone requests for the home partition. KIWI NG does not sanity-
+            check the provided number of clones (e.g. whether your partition table
+            can hold that many partitions).</para>
+      <warning>
+        <para>There is a limit how many partitions a partition table can hold.
+                This also limits how many clones can be created.</para>
+      </warning>
+      <section xml:id="use-case">
+        <title>Use Case</title>
+        <para>Potential use cases for which a clone of one or more partitions
+                is useful include among others:</para>
+        <variablelist>
+          <varlistentry>
+            <term>Factory Resets:</term>
+            <listitem>
+              <para>Creating an image with the option to rollback to the
+                            state of the system at deployment time can be very helpful
+                            for disaster recovery</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>System Updates with Rollbacks e.g A/B:</term>
+            <listitem>
+              <para>Creating an image which holds extra space allowing to rollback
+                            modified data can make a system more robust. For example
+                            in a simple A/B update concept, partition A would get updated
+                            but would flip to B if A is considered broken after applying the
+                            update.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <note>
+          <para>Most probably any use case based on partition clones requires
+                    additional software to manage them. KIWI NG provides the
+                    option to create the clone layout but it does not provide
+                    the software to implement the actual use case for which the
+                    partition clones are needed.</para>
+        </note>
+        <para>Developers writing applications based on a clone layout created
+                with KIWI NG can leverage the metadata file <literal>/config.partids</literal>.
+                This file is created at build time and contains the mapping between
+                the partition <literal>name</literal> and the actual partition number in the partition
+                table. For partition clones, the following naming convention applies:</para>
+        <screen language="default">kiwi_(name)PartClone(id)="(partition_number)"</screen>
+        <para>The <literal>(name)</literal> is either taken from the <literal>name</literal> attribute
+                of the <literal>&lt;partition&gt;</literal> element or it is a fixed name assigned by KIWI NG.
+                There are the following reserved partition names for which cloning
+                is supported:</para>
+        <itemizedlist>
+          <listitem>
+            <para>root</para>
+          </listitem>
+          <listitem>
+            <para>readonly</para>
+          </listitem>
+          <listitem>
+            <para>boot</para>
+          </listitem>
+        </itemizedlist>
+        <para>For the mentioned example this will result in the
+                following <literal>/config.partids</literal>:</para>
+        <screen language="default">kiwi_BiosGrub="1"
+kiwi_EfiPart="2"
+kiwi_bootPartClone1="3"
+kiwi_BootPart="4"
+kiwi_homePartClone1="5"
+kiwi_homePartClone2="6"
+kiwi_HomePart="7"
+kiwi_rootPartClone1="8"
+kiwi_RootPart="9"</screen>
+      </section>
     </section>
     <section xml:id="network-boot-server" xml:base="working_with_images/setup_network_bootserver">
       <title>Setting Up a Network Boot Server</title>
@@ -9431,7 +9633,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.24.34 inside of the Open Build Service.
+                KIWI NG in version 9.24.35 inside of the Open Build Service.
                 A tutorial on the Open Buildservice itself can be found here:
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
       </note>
@@ -9740,7 +9942,7 @@ name="images"&gt;</literal>:</para>
       </para>
       <para>This document describes the development process of KIWI NG
                 and how you can be part of it. This description applies
-                to version 9.24.34.</para>
+                to version 9.24.35.</para>
     </note>
     <section xml:id="using-kiwi-ng-in-a-python-project" xml:base="contributing/kiwi_from_python">
       <title>Using KIWI NG in a Python Project</title>
@@ -9750,7 +9952,7 @@ name="images"&gt;</literal>:</para>
         </para>
         <para>KIWI NG is provided as python module under the <emphasis role="bold">kiwi</emphasis> namespace.
                 It is available for the python 3 version. The following
-                description applies for KIWI NG version 9.24.34.</para>
+                description applies for KIWI NG version 9.24.35.</para>
       </note>
       <para>KIWI NG can also function as a module for other Python projects.
             The following example demonstrates how to read an existing image
@@ -9994,7 +10196,7 @@ def test_RmWorks(container_per_test):
         <para>Depending on the demand for custom plugins, the interface
                 to hook in code into other parts of the KIWI NG processing
                 needs to be extended.</para>
-        <para>This description applies for version 9.24.34.</para>
+        <para>This description applies for version 9.24.35.</para>
       </note>
       <section xml:id="the-extension-section">
         <title>The &lt;extension&gt; Section</title>
@@ -10416,7 +10618,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
   <chapter xml:id="api" xml:base="api">
     <title>Python API</title>
     <note>
-      <para>This API documentation covers KIWI NG 9.24.34</para>
+      <para>This API documentation covers KIWI NG 9.24.35</para>
     </note>
     <section xml:id="kiwi-package" xml:base="api/kiwi">
       <title>kiwi Package</title>
@@ -17929,6 +18131,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             <listitem>
                               <para><literal>repo_package_gpgcheck</literal> () – enable/disable package gpg checks</para>
                             </listitem>
+                            <listitem>
+                              <para><literal>repo_signing_keys</literal> () – list of signing key file names</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>components</literal> () – component names for debian repos</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>distribution</literal> () – base distribution name for debian repos</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>repo_gpgcheck</literal> () – enable/disable repo gpg checks</para>
+                            </listitem>
                           </itemizedlist>
                         </listitem>
                       </varlistentry>
@@ -20765,6 +20979,18 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             </listitem>
                             <listitem>
                               <para><literal>repo_package_gpgcheck</literal> () – enable/disable package gpg checks</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>repo_signing_keys</literal> () – list of signing key file names</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>components</literal> () – component names for debian repos</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>distribution</literal> () – base distribution name for debian repos</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>repo_gpgcheck</literal> () – enable/disable repo gpg checks</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -34301,12 +34527,13 @@ end</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.tasks.base.CliTask.sextuple_token">
+                <varlistentry xml:id="kiwi.tasks.base.CliTask.tentuple_token">
                   <term>
-                    <property>kiwi.tasks.base.CliTask.sextuple_token</property>
+                    <property>kiwi.tasks.base.CliTask.tentuple_token</property>
                   </term>
                   <listitem>
-                    <para>Helper method for commandline options of the form –option a,b,c,d,e,f</para>
+                    <para>Helper method for commandline options of the
+                                form –option a,b,c,d,e,f,g,h,i,j</para>
                     <para>Make sure to provide a common result for option values which
                                 separates the information in a comma separated list of values</para>
                     <variablelist role="field_list">
