@@ -4462,6 +4462,18 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>bootstrap_package=”package_name”:</term>
+              <listitem>
+                <para>For use with the <literal>apt</literal> packagemanager only. Specifies the name
+                                of a bootstrap package which provides a bootstrap tarball
+                                in <literal>/var/lib/bootstrap/PACKAGE_NAME.ARCH.tar.xz</literal>.
+                                The tarball will be unpacked and used as the bootstrap
+                                rootfs to begin with. This allows for an alternative bootstrap
+                                method preventing the use of <literal>debootstrap</literal>. For further details
+                                see <xref linkend="debootstrap-alternative"/>.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>compressed=”true|false”:</term>
               <listitem>
                 <para>Specifies whether the image output file should be
@@ -9932,6 +9944,113 @@ name="images"&gt;</literal>:</para>
                 this resource is a responsibility of the user and not done
                 by KIWI NG</para>
       </note>
+    </section>
+    <section xml:id="debootstrap-alternative" xml:base="working_with_images/build_without_debootstrap">
+      <title>Circumvent debootstrap</title>
+      <formalpara role="sidebar">
+        <title>Abstract</title>
+        <para>This page provides information how to build Debian based
+                images with <literal>apt</literal> but without using <literal>debootstrap</literal> to bootstrap
+                the image root tree</para>
+      </formalpara>
+      <para>When building Debian based images KIWI NG uses two tools to
+            create the image root tree. First it calls <literal>debootstrap</literal> to
+            initialize a minimal root tree and next it chroot’s into that
+            tree to complete the installation via <literal>apt</literal>. The reason why it
+            is done that way is because <literal>apt</literal> does not(yet) support to
+            install packages into an empty root directory like it is done
+            with all other packagemanager interfaces implemented in KIWI NG.</para>
+      <para>The use of <literal>debootstrap</literal> comes along with some prerequisites
+            and limitations:</para>
+      <itemizedlist>
+        <listitem>
+          <para>It can only use one repository to bootstrap from</para>
+        </listitem>
+        <listitem>
+          <para>It can only use an official archive repo</para>
+        </listitem>
+        <listitem>
+          <para>It has its own dependency resolver different from apt</para>
+        </listitem>
+      </itemizedlist>
+      <para>If one ore more of this properties turns into an issue, KIWI NG
+            allows for an alternative process which is based on a prebuilt
+            bootstrap-root archive provided as a package.</para>
+      <para>To make use of a <literal>bootstrap_package</literal>, the name of that package
+            needs to be referenced in the KIWI NG description as follows:</para>
+      <screen language="xml">&lt;packages type="bootstrap" bootstrap_package="bootstrap-root"&gt;
+    &lt;package name="a"/&gt;
+    &lt;package name="b"/&gt;
+&lt;/packages&gt;</screen>
+      <para>The boostrap process now changes in a way that the provided
+            bootstrap_package <literal>bootstrap-root</literal> will be installed on the build
+            host machine. Next KIWI NG searches for a tar archive file
+            <literal>/var/lib/bootstrap/bootstrap-root.ARCH.tar.xz</literal>,
+            where <literal>ARCH</literal> is the name of the host architecture e.g <literal>x86_64</literal>.
+            If found the archive gets unpacked and serves as the bootstrap
+            root tree to begin with. The optionally provided additional
+            bootstrap packages, <literal>a</literal> and <literal>b</literal> in this example will be installed
+            like system packages via <literal>chroot</literal> and <literal>apt</literal>. Usually no additional
+            bootstrap packages are needed as they could all be handled as
+            system packages.</para>
+      <section xml:id="how-to-create-a-bootstrap-package">
+        <title>How to Create a bootstrap_package</title>
+        <para>Changing the setup in KIWI NG to use a <literal>bootstrap_package</literal> rather
+                then letting <literal>debootstrap</literal> do the job comes with the task to create
+                that package providing the bootstrap root tree. There are more than
+                one way to do this. The following procedure is just one example and
+                requires some background knowledge about the Open Build Service
+                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org">OBS</link> and its KIWI NG integration.</para>
+        <procedure>
+          <step>
+            <para>Create an OBS project and repository setup that matches your image target</para>
+          </step>
+          <step>
+            <para>Create an image build package</para>
+            <screen language="bash">osc mkpac bootstrap-root</screen>
+          </step>
+          <step>
+            <para>Create the following <literal>appliance.kiwi</literal> file</para>
+            <screen language="xml">&lt;image schemaversion="7.4" name="bootstrap-root"&gt;
+    &lt;description type="system"&gt;
+        &lt;author&gt;The Author&lt;/author&gt;
+        &lt;contact&gt;author@example.com&lt;/contact&gt;
+        &lt;specification&gt;prebuilt bootstrap rootfs for ...&lt;/specification&gt;
+    &lt;/description&gt;
+
+    &lt;preferences&gt;
+        &lt;version&gt;1.0.1&lt;/version&gt;
+        &lt;packagemanager&gt;apt&lt;/packagemanager&gt;
+        &lt;type image="tbz"/&gt;
+    &lt;/preferences&gt;
+
+    &lt;repository type="rpm-md"&gt;
+        &lt;source path="obsrepositories:/"/&gt;
+    &lt;/repository&gt;
+
+    &lt;packages type="image"&gt;
+        &lt;!-- packages included so OBS adds it as a build dependency, however this is installed by debootstrap --&gt;
+        &lt;package name="mawk"/&gt;
+    &lt;/packages&gt;
+
+    &lt;packages type="bootstrap"&gt;
+        &lt;!-- bootstrap done via debootstrap --&gt;
+    &lt;/packages&gt;
+&lt;/image&gt;</screen>
+            <screen language="bash">osc add appliance.kiwi
+osc ci</screen>
+          </step>
+          <step>
+            <para>Package the image build results into a debian package</para>
+            <para>In step 3. the bootstrap root tarball was created but not yet
+                        packaged. A debian package is needed such that it can be
+                        referenced with the <literal>bootstrap_package</literal> attribute and the repository
+                        providing it. The simplest way to package the <literal>bootstrap-root</literal> tarball
+                        is to create another package in OBS and use the tarball file as
+                        its source.</para>
+          </step>
+        </procedure>
+      </section>
     </section>
   </chapter>
   <chapter xml:id="contributing" xml:base="contributing">
@@ -18550,6 +18669,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_bootstrap_package_name">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_bootstrap_package_name</property>
+                  </term>
+                  <listitem>
+                    <para>bootstrap_package name from type=”bootstrap” packages section</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>bootstrap_package name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>str</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.XMLState.get_bootstrap_packages">
                   <term>
                     <property>kiwi.xml_state.XMLState.get_bootstrap_packages</property>
@@ -26949,7 +27092,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>root_bind</literal> () – unused</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>root_bind</literal> () – unused</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>bootstrap_package</literal> () – unused</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -27378,7 +27528,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>root_bind</literal> () – unused</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>root_bind</literal> () – unused</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>bootstrap_package</literal> () – unused</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
