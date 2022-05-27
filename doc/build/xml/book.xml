@@ -5878,12 +5878,24 @@ $ kiwi-ng system create $ARGS</screen>
             </listitem>
           </varlistentry>
           <varlistentry>
-            <term>groups=”group_a,group_b”:</term>
+            <term>groups=”group_a,group_b,group_c:id”:</term>
             <listitem>
               <para>A comma separated list of UNIX groups. The first element of the
                             list is used as the user’s primary group. The remaining elements are
                             appended to the user’s supplementary groups. When no groups are assigned
-                            then the system’s default primary group will be used.</para>
+                            then the system’s default primary group will be used. If a group should
+                            be of a specific group id, it can be appended to the name separated by
+                            a colon.</para>
+              <note>
+                <para>Group ID’s can only be set for groups that does not yet exist at
+                                the time when KIWI NG creates them. A check is made if the desired
+                                group is already present and if it exists the user will become a
+                                member of that group but any given group ID from the KIWI NG
+                                configuration will <emphasis role="bold">not</emphasis> be taken into account. Usually all
+                                standard system groups are affected by this behavior because they
+                                are provided by the OS itself. Thus it’s by intention not possible
+                                to overwrite the group ID of an existing group.</para>
+              </note>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -20678,9 +20690,10 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>List of group names matching specified user</para>
-                    <para>Each entry in the list is the name of a group that the specified
-                                user belongs to. The first item in the list is the login or primary
-                                group. The list will be empty if no groups are specified in the
+                    <para>Each entry in the list is the name of a group and optionally its
+                                group ID separated by a colon, that the specified user belongs to.
+                                The first item in the list is the login or primary group. The
+                                list will be empty if no groups are specified in the
                                 description file.</para>
                     <variablelist role="field_list">
                       <varlistentry>
