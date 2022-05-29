@@ -3,12 +3,12 @@
       type="application/relax-ng-compact-syntax"
      ?>
 <book xmlns="http://docbook.org/ns/docbook" xml:lang="en" version="5.1" xml:id="building-linux-system-appliances-with-kiwi-next-generation-kiwi-ng-version">
-  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.36</title>
+  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.38</title>
   <info/>
   <preface>
     <title>Preface</title>
     <note>
-      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.36- the command line
+      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.38- the command line
                 utility to build Linux system appliances. KIWI NG is stable and all
                 new features, bugfixes, and improvements will be developed here.
                 Versions older or equal to v7.x.x are out of maintenance and do
@@ -85,6 +85,11 @@
       <listitem>
         <para>
           <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_x86:ubuntu">Build Tests Ubuntu(x86)</link>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_arm:ubuntu">Build Tests Ubuntu(arm)</link>
         </para>
       </listitem>
       <listitem>
@@ -205,7 +210,7 @@
       <para>This document provides a conceptual overview about the steps
                 of creating an image with KIWI NG. It also explains the terminology
                 regarding the concept and process when building system images
-                with KIWI NG 9.24.36.</para>
+                with KIWI NG 9.24.38.</para>
     </note>
     <section xml:id="basic-workflow" xml:base="overview/workflow">
       <title>Basic Workflow</title>
@@ -225,7 +230,7 @@
                 complete the system usually reboots and enters a configuration procedure
                 upon start-up. The configuration may be fully automatic or it may include
                 user interaction.</para>
-        <para>This description applies for version 9.24.36.</para>
+        <para>This description applies for version 9.24.38.</para>
       </note>
       <para>A system image (usually called “image”), is a <emphasis>complete installation</emphasis> of a Linux
             system within a file. The image represents an operational system and,
@@ -535,7 +540,7 @@ $ tree -L 3 kiwi/build-tests</screen>
       </para>
       <para>This document describes how to start working with KIWI NG,
                 an OS appliance builder. This description applies for
-                version 9.24.36.</para>
+                version 9.24.38.</para>
     </note>
     <section xml:id="before-you-start">
       <title>Before you start</title>
@@ -600,7 +605,7 @@ $ tree -L 3 kiwi/build-tests</screen>
     <title>Working from the Command Line</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) commands
-                for version 9.24.36.</para>
+                for version 9.24.38.</para>
     </note>
     <section xml:id="kiwi-ng" xml:base="commands/kiwi">
       <title>kiwi-ng</title>
@@ -2002,7 +2007,7 @@ kiwi-ng image info help</screen>
     <title>KIWI Plugins</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) plugins
-                which provides extended functionality for version 9.24.36.</para>
+                which provides extended functionality for version 9.24.38.</para>
     </note>
     <section xml:id="self-contained" xml:base="plugins/self_contained">
       <title>Building in a Self-Contained Environment</title>
@@ -2340,7 +2345,7 @@ $ vi container_to_VM_layer/config.kiwi</screen>
         <emphasis role="bold">Abstract</emphasis>
       </para>
       <para>The following sections describe the concept and general workflow
-                of building appliances with KIWI NG 9.24.36.</para>
+                of building appliances with KIWI NG 9.24.38.</para>
     </note>
     <section xml:id="systemdeps" xml:base="concept_and_workflow/systemdeps">
       <title>Host Requirements To Build Images</title>
@@ -4008,13 +4013,13 @@ $ kiwi-ng system create $ARGS</screen>
     <title>Image Description</title>
     <note>
       <para>This document explains the toplevel structure of the
-                KIWI NG image description document for version 9.24.36</para>
+                KIWI NG image description document for version 9.24.38</para>
     </note>
     <section xml:id="image-description-elements" xml:base="image_description/elements">
       <title>Image Description Elements</title>
       <note>
         <para>This document provides a reference for the elements
-                and attributes of the KIWI NG XML document in version 9.24.36</para>
+                and attributes of the KIWI NG XML document in version 9.24.38</para>
       </note>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
@@ -9657,7 +9662,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.24.36 inside of the Open Build Service.
+                KIWI NG in version 9.24.38 inside of the Open Build Service.
                 A tutorial on the Open Buildservice itself can be found here:
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
       </note>
@@ -10073,7 +10078,7 @@ osc ci</screen>
       </para>
       <para>This document describes the development process of KIWI NG
                 and how you can be part of it. This description applies
-                to version 9.24.36.</para>
+                to version 9.24.38.</para>
     </note>
     <section xml:id="using-kiwi-ng-in-a-python-project" xml:base="contributing/kiwi_from_python">
       <title>Using KIWI NG in a Python Project</title>
@@ -10083,7 +10088,7 @@ osc ci</screen>
         </para>
         <para>KIWI NG is provided as python module under the <emphasis role="bold">kiwi</emphasis> namespace.
                 It is available for the python 3 version. The following
-                description applies for KIWI NG version 9.24.36.</para>
+                description applies for KIWI NG version 9.24.38.</para>
       </note>
       <para>KIWI NG can also function as a module for other Python projects.
             The following example demonstrates how to read an existing image
@@ -10327,7 +10332,7 @@ def test_RmWorks(container_per_test):
         <para>Depending on the demand for custom plugins, the interface
                 to hook in code into other parts of the KIWI NG processing
                 needs to be extended.</para>
-        <para>This description applies for version 9.24.36.</para>
+        <para>This description applies for version 9.24.38.</para>
       </note>
       <section xml:id="the-extension-section">
         <title>The &lt;extension&gt; Section</title>
@@ -10749,7 +10754,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
   <chapter xml:id="api" xml:base="api">
     <title>Python API</title>
     <note>
-      <para>This API documentation covers KIWI NG 9.24.36</para>
+      <para>This API documentation covers KIWI NG 9.24.38</para>
     </note>
     <section xml:id="kiwi-package" xml:base="api/kiwi">
       <title>kiwi Package</title>
@@ -14230,7 +14235,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiAnyMarkupPluginError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the python anymarkup module failed to load.</para>
             </listitem>
           </varlistentry>
@@ -14241,7 +14246,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiArchiveSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an unsupported image archive type is used.</para>
             </listitem>
           </varlistentry>
@@ -14252,7 +14257,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiArchiveTarError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if impossible to determine which tar command
                         version is installed on the underlying system</para>
             </listitem>
@@ -14264,7 +14269,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootImageSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an unsupported initrd system type is used.</para>
             </listitem>
           </varlistentry>
@@ -14275,7 +14280,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderConfigSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a configuration for an unsupported
                         bootloader is requested.</para>
             </listitem>
@@ -14287,7 +14292,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderGrubDataError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if no grub installation was found.</para>
             </listitem>
           </varlistentry>
@@ -14298,7 +14303,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderGrubFontError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if no grub unicode font was found.</para>
             </listitem>
           </varlistentry>
@@ -14309,7 +14314,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderGrubInstallError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if grub install to master boot record has failed.</para>
             </listitem>
           </varlistentry>
@@ -14320,7 +14325,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderGrubModulesError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the synchronisation of modules from the
                         grub installation to the boot space has failed.</para>
             </listitem>
@@ -14332,7 +14337,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderGrubPlatformError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to use grub on an
                         unsupported platform.</para>
             </listitem>
@@ -14344,7 +14349,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderGrubSecureBootError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the Microsoft signed shim loader or
                         grub2 loader could not be found in the image root system</para>
             </listitem>
@@ -14356,7 +14361,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderInstallSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an installation for an unsupported
                         bootloader is requested.</para>
             </listitem>
@@ -14368,7 +14373,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderTargetError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the target to read the bootloader path
                         from is not a disk or an iso image.</para>
             </listitem>
@@ -14380,7 +14385,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderZiplInstallError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the installation of zipl has failed.</para>
             </listitem>
           </varlistentry>
@@ -14391,7 +14396,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderZiplPlatformError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a configuration for an unsupported
                         zipl architecture is requested.</para>
             </listitem>
@@ -14403,7 +14408,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootLoaderZiplSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the data set to configure the zipl
                         bootloader is incomplete.</para>
             </listitem>
@@ -14415,7 +14420,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBootStrapPhaseFailed</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the bootstrap phase of the system prepare
                         command has failed.</para>
             </listitem>
@@ -14427,7 +14432,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBuildahError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised on inconsistent buildah class calls</para>
             </listitem>
           </varlistentry>
@@ -14438,7 +14443,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiBundleError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the system bundle command has failed.</para>
             </listitem>
           </varlistentry>
@@ -14449,7 +14454,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiCommandCapabilitiesError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception is raised when some the CommandCapabilities methods fails,
                         usually meaning there is some issue trying to parse some command output.</para>
             </listitem>
@@ -14461,7 +14466,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiCommandError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an external command called via a Command
                         instance has returned with an exit code != 0 or could not
                         be called at all.</para>
@@ -14474,7 +14479,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiCommandNotFound</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if any executable command cannot be found in
                         the evironment PATH variable.</para>
             </listitem>
@@ -14486,7 +14491,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiCommandNotLoaded</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a kiwi command task module could not be
                         loaded.</para>
             </listitem>
@@ -14498,7 +14503,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiCompatError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the given kiwi compatibility command line
                         could not be understood by the compat option parser.</para>
             </listitem>
@@ -14510,7 +14515,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiCompressionFormatUnknown</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the compression format of the data could
                         not be detected.</para>
             </listitem>
@@ -14522,7 +14527,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiConfigFileFormatNotSupported</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if kiwi description file format is not supported.</para>
             </listitem>
           </varlistentry>
@@ -14533,7 +14538,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiConfigFileNotFound</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if no kiwi XML description was found.</para>
             </listitem>
           </varlistentry>
@@ -14544,7 +14549,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiContainerBuilderError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception is raised when something fails during a container image
                         build procedure.</para>
             </listitem>
@@ -14556,7 +14561,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiContainerImageSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt to create a container instance
                         for an unsupported container type is performed.</para>
             </listitem>
@@ -14568,7 +14573,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiContainerSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an error in the creation of the
                         container archive happened.</para>
             </listitem>
@@ -14580,7 +14585,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiCredentialsError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if required credentials information is missing</para>
             </listitem>
           </varlistentry>
@@ -14591,7 +14596,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiCustomPartitionConflictError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the entry in a custom partition setup
                         conflicts with an existing partition table layout setting</para>
             </listitem>
@@ -14603,7 +14608,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiDataStructureError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the XML description failed to parse the
                         data structure.</para>
             </listitem>
@@ -14615,7 +14620,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiDebootstrapError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if not enough user data to call debootstrap
                         were provided or the debootstrap has failed.</para>
             </listitem>
@@ -14627,7 +14632,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiDecodingError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception is raised on decoding literals failure</para>
             </listitem>
           </varlistentry>
@@ -14638,7 +14643,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiDescriptionInvalid</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the XML description failed to validate
                         the XML schema.</para>
             </listitem>
@@ -14650,7 +14655,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiDeviceProviderError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a storage provide is asked for its
                         managed device but no such device exists.</para>
             </listitem>
@@ -14662,7 +14667,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiDiskBootImageError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a kiwi boot image does not provide the
                         requested data, e.g kernel, or hypervisor files.</para>
             </listitem>
@@ -14674,7 +14679,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiDiskFormatSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to create a disk format
                         instance of an unsupported disk format.</para>
             </listitem>
@@ -14686,7 +14691,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiDiskGeometryError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the disk geometry (partition table) could
                         not be read or evaluated against their expected geometry and
                         capabilities.</para>
@@ -14699,7 +14704,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiDistributionNameError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the distribution name could not be found.
                         The information is extracted from the boot attribute of the
                         XML description. If no boot attribute is present or does not
@@ -14736,7 +14741,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiExtensionError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an extension section of the same namespace
                         is used multiple times as toplevel section within the extension
                         section. Each extension must have a single toplevel entry point
@@ -14750,7 +14755,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiFileAccessError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if accessing a file or its metadata failed</para>
             </listitem>
           </varlistentry>
@@ -14761,7 +14766,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiFileNotFound</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the requested file could not be found.</para>
             </listitem>
           </varlistentry>
@@ -14772,7 +14777,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiFileSystemSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to build an
                         unsupported or unspecified filesystem.</para>
             </listitem>
@@ -14784,7 +14789,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiFileSystemSyncError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the data sync from the system into the
                         loop mounted filesystem image failed.</para>
             </listitem>
@@ -14796,7 +14801,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiFormatSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the requested disk format could not be created.</para>
             </listitem>
           </varlistentry>
@@ -14807,7 +14812,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiHelpNoCommandGiven</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the request for the help page is
                         executed without a command to show the help for.</para>
             </listitem>
@@ -14819,7 +14824,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiImageResizeError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the request to resize a disk image failed.
                         Reasons could be a missing raw disk reference or a wrong size
                         specification.</para>
@@ -14832,7 +14837,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiImportDescriptionError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the XML description data and scripts could
                         not be imported into the root of the image.</para>
             </listitem>
@@ -14844,7 +14849,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiIncludFileNotFoundError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the file reference in an &lt;include&gt;
                         statement could not be found</para>
             </listitem>
@@ -14856,7 +14861,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiInstallBootImageError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the required files to boot an installation
                         image could not be found, e.g kernel or hypervisor.</para>
             </listitem>
@@ -14868,7 +14873,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiInstallMediaError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a request for an installation media is made
                         but the system image type is not an oem type.</para>
             </listitem>
@@ -14880,7 +14885,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiInstallPhaseFailed</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the install phase of a system prepare command
                         has failed.</para>
             </listitem>
@@ -14892,7 +14897,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiIsoLoaderError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if no isolinux loader file could be found.</para>
             </listitem>
           </varlistentry>
@@ -14903,7 +14908,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiIsoMetaDataError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an inconsistency in the ISO header
                         was found such like invalid eltorito specification or a
                         broken path table.</para>
@@ -14916,7 +14921,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiIsoToolError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an iso helper tool such as isoinfo
                         could not be found on the build system.</para>
             </listitem>
@@ -14928,7 +14933,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiKernelLookupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the search for the kernel image file failed</para>
             </listitem>
           </varlistentry>
@@ -14939,7 +14944,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiKisBootImageError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a required boot file e.g the kernel could
                         not be found in the process of building a kis image.</para>
             </listitem>
@@ -14951,7 +14956,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiLiveBootImageError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to use an
                         unsupported live iso type.</para>
             </listitem>
@@ -14963,7 +14968,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiLoadCommandUndefined</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if no command is specified for a given
                         service on the commandline.</para>
             </listitem>
@@ -14975,7 +14980,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiLogFileSetupFailed</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the log file could not be created.</para>
             </listitem>
           </varlistentry>
@@ -14986,7 +14991,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiLoopSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if not enough user data to create a
                         loop device is specified.</para>
             </listitem>
@@ -14998,7 +15003,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiLuksSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if not enough user data is provided to
                         setup the luks encryption on the given device.</para>
             </listitem>
@@ -15010,7 +15015,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiMappedDeviceError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the device to become mapped does not exist.</para>
             </listitem>
           </varlistentry>
@@ -15021,7 +15026,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiMarkupConversionError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the markup format conversion is not possible.</para>
             </listitem>
           </varlistentry>
@@ -15032,7 +15037,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiMountKernelFileSystemsError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a kernel filesystem such as proc or sys
                         could not be mounted.</para>
             </listitem>
@@ -15044,7 +15049,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiMountSharedDirectoryError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the host &lt;-&gt; image shared directory
                         could not be mounted.</para>
             </listitem>
@@ -15056,7 +15061,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiNotImplementedError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a functionality is not yet implemented.</para>
             </listitem>
           </varlistentry>
@@ -15067,7 +15072,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiOCIArchiveToolError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the requested OCI archive tool is not supported</para>
             </listitem>
           </varlistentry>
@@ -15078,7 +15083,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiOffsetError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the offset for a seek operation does not
                         match the expected data to write</para>
             </listitem>
@@ -15090,7 +15095,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiPackageManagerSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to create a package
                         manager instance for an unsupported package manager.</para>
             </listitem>
@@ -15102,7 +15107,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiPackagesDeletePhaseFailed</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the packages deletion phase in system prepare
                         fails.</para>
             </listitem>
@@ -15114,7 +15119,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiPartitionTooSmallError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the specified partition size is smaller
                         than the required bytes to store the data</para>
             </listitem>
@@ -15126,7 +15131,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiPartitionerGptFlagError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to set an unknown
                         partition flag for an entry in the GPT table.</para>
             </listitem>
@@ -15138,7 +15143,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiPartitionerMsDosFlagError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to set an unknown
                         partition flag for an entry in the MSDOS table.</para>
             </listitem>
@@ -15150,7 +15155,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiPartitionerSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to create an instance
                         of a partitioner for an unsupporte partitioner.</para>
             </listitem>
@@ -15162,7 +15167,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiPrivilegesError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if root privileges are required but not granted.</para>
             </listitem>
           </varlistentry>
@@ -15173,7 +15178,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiProfileNotFound</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a specified profile does not exist in the
                         XML configuration.</para>
             </listitem>
@@ -15185,7 +15190,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRaidSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if invalid or not enough user data is provided
                         to create a raid array on the specified storage device.</para>
             </listitem>
@@ -15197,7 +15202,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRepositorySetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to create an instance of
                         a repository for an unsupported package manager.</para>
             </listitem>
@@ -15209,7 +15214,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRequestError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a package request could not be processed by
                         the corresponding package manager instance.</para>
             </listitem>
@@ -15221,7 +15226,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRequestedTypeError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to build an image for
                         an unsupported image type.</para>
             </listitem>
@@ -15233,7 +15238,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiResizeRawDiskError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an attempt was made to resize the image disk
                         to a smaller size than the current one. Simply shrinking a disk image
                         file is not possible without data corruption because the partitions
@@ -15253,7 +15258,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiResultError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the image build result pickle information
                         could not be created or loaded.</para>
             </listitem>
@@ -15265,7 +15270,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRootDirExists</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the specified image root directory already
                         exists and should not be re-used.</para>
             </listitem>
@@ -15277,7 +15282,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRootImportError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception is raised when something fails during the root import
                         procedure.</para>
             </listitem>
@@ -15289,7 +15294,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRootInitCreationError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the initialization of a new image root
                         directory has failed.</para>
             </listitem>
@@ -15301,7 +15306,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRpmDirNotRemoteError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the provided rpm-dir repository is not local</para>
             </listitem>
           </varlistentry>
@@ -15312,7 +15317,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRuntimeConfigFileError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the provided custom runtime config
                         file could not be found</para>
             </listitem>
@@ -15324,7 +15329,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRuntimeConfigFormatError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the expected format in the yaml KIWI
                         runtime config file does not match</para>
             </listitem>
@@ -15336,7 +15341,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiRuntimeError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a runtime check has failed.</para>
             </listitem>
           </varlistentry>
@@ -15347,7 +15352,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSatSolverJobError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a sat solver job can not be done, e.g because
                         the requested package or collection does not exist in the registered
                         repository metadata</para>
@@ -15360,7 +15365,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSatSolverJobProblems</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the sat solver operations returned with solver
                         problems e.g package conflicts</para>
             </listitem>
@@ -15372,7 +15377,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSatSolverPluginError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the python solv module failed to load.
                         The solv module is provided by SUSE’s rpm package python-solv
                         and provides a python binding to the libsolv C library</para>
@@ -15385,7 +15390,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSchemaImportError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the schema file could not be read
                         by lxml.RelaxNG.</para>
             </listitem>
@@ -15397,7 +15402,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiScriptFailed</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a user script returned with an exit code != 0.</para>
             </listitem>
           </varlistentry>
@@ -15408,7 +15413,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSetupIntermediateConfigError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the setup of the temporary image system
                         configuration for the duration of the build process has
                         failed.</para>
@@ -15421,7 +15426,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiShellVariableValueError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if a given python value cannot be converted
                         into a string representation for use in shell scripts</para>
             </listitem>
@@ -15433,7 +15438,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSizeError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception is raised when the convertion from a given size in string
                         format to a number.</para>
             </listitem>
@@ -15445,7 +15450,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSolverRepositorySetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the repository type is not supported for
                         the creation of a SAT solvable</para>
             </listitem>
@@ -15457,7 +15462,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSystemDeletePackagesFailed</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the deletion of a package has failed in
                         the corresponding package manager instance.</para>
             </listitem>
@@ -15469,7 +15474,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSystemInstallPackagesFailed</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the installation of a package has failed in
                         the corresponding package manager instance.</para>
             </listitem>
@@ -15481,7 +15486,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiSystemUpdateFailed</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the package upgrade has failed in
                         the corresponding package manager instance.</para>
             </listitem>
@@ -15493,7 +15498,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiTargetDirectoryNotFound</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the specified target directory to store
                         the image results was not found.</para>
             </listitem>
@@ -15505,7 +15510,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiTemplateError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the substitution of variables in a
                         configuration file template has failed.</para>
             </listitem>
@@ -15517,7 +15522,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiTypeNotFound</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if no build type was found in the XML description.</para>
             </listitem>
           </varlistentry>
@@ -15528,7 +15533,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiUmountBusyError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the attempt to umount a resource has failed</para>
             </listitem>
           </varlistentry>
@@ -15539,7 +15544,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiUnknownServiceName</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an unknown service name was provided
                         on the commandline.</para>
             </listitem>
@@ -15551,7 +15556,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiUriOpenError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the urllib urlopen request has failed</para>
             </listitem>
           </varlistentry>
@@ -15562,7 +15567,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiUriStyleUnknown</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if an unsupported URI style was used in the
                         source definition of a repository.</para>
             </listitem>
@@ -15574,7 +15579,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiUriTypeUnknown</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the protocol type of an URI is unknown
                         in the source definition of a repository.</para>
             </listitem>
@@ -15586,7 +15591,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiValidationError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the XML validation against the schema has failed.</para>
             </listitem>
           </varlistentry>
@@ -15597,7 +15602,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiVhdTagError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the GUID tag is not provided in the
                         expected format.</para>
             </listitem>
@@ -15609,7 +15614,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiVolumeGroupConflict</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the requested LVM volume group already is
                         in use on the build system.</para>
             </listitem>
@@ -15621,7 +15626,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiVolumeManagerSetupError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the preconditions for volume mangement
                         support are not met or an attempt was made to create an
                         instance of a volume manager for an unsupported volume
@@ -15635,7 +15640,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiVolumeRootIDError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the root volume can not be found. This
                         concept currently exists only for the btrfs subvolume system.</para>
             </listitem>
@@ -15647,7 +15652,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.exceptions.KiwiVolumeTooSmallError</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>kiwi.exceptions.KiwiError</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
               <para>Exception raised if the specified volume size is smaller
                         than the required bytes to store the data</para>
             </listitem>
@@ -16066,7 +16071,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.logger.Logger</literal>
             </term>
             <listitem>
-              <para>Bases: <literal>logging.Logger</literal></para>
+              <para>Bases: <literal>Logger</literal></para>
               <para>
                 <emphasis role="bold">Extended logging facility based on Python logging</emphasis>
               </para>
@@ -16266,7 +16271,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.logger_color_formatter.ColorFormatter</literal>
             </term>
             <listitem>
-              <para>Bases: <literal>logging.Formatter</literal></para>
+              <para>Bases: <literal>Formatter</literal></para>
               <para>
                 <emphasis role="bold">Extended standard logging Formatter</emphasis>
               </para>
@@ -16384,7 +16389,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.logger_filter.DebugFilter</literal>
             </term>
             <listitem>
-              <para>Bases: <literal>logging.Filter</literal></para>
+              <para>Bases: <literal>Filter</literal></para>
               <para>
                 <emphasis role="bold">Extended standard debug logging Filter</emphasis>
               </para>
@@ -16428,7 +16433,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.logger_filter.ErrorFilter</literal>
             </term>
             <listitem>
-              <para>Bases: <literal>logging.Filter</literal></para>
+              <para>Bases: <literal>Filter</literal></para>
               <para>
                 <emphasis role="bold">Extended standard error logging Filter</emphasis>
               </para>
@@ -16472,7 +16477,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.logger_filter.InfoFilter</literal>
             </term>
             <listitem>
-              <para>Bases: <literal>logging.Filter</literal></para>
+              <para>Bases: <literal>Filter</literal></para>
               <para>
                 <emphasis role="bold">Extended standard logging Filter</emphasis>
               </para>
@@ -16516,7 +16521,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.logger_filter.LoggerSchedulerFilter</literal>
             </term>
             <listitem>
-              <para>Bases: <literal>logging.Filter</literal></para>
+              <para>Bases: <literal>Filter</literal></para>
               <para>
                 <emphasis role="bold">Extended standard logging Filter</emphasis>
               </para>
@@ -16560,7 +16565,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.logger_filter.WarningFilter</literal>
             </term>
             <listitem>
-              <para>Bases: <literal>logging.Filter</literal></para>
+              <para>Bases: <literal>Filter</literal></para>
               <para>
                 <emphasis role="bold">Extended standard warning logging Filter</emphasis>
               </para>
@@ -22006,7 +22011,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.boot.image.dracut.BootImageDracut</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.boot.image.base.BootImageBase"><literal>kiwi.boot.image.base.BootImageBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.boot.image.base.BootImageBase"><literal>BootImageBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of dracut boot(initrd) images.</emphasis>
               </para>
@@ -22213,7 +22218,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.boot.image.builtin_kiwi.BootImageKiwi</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.boot.image.base.BootImageBase"><literal>kiwi.boot.image.base.BootImageBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.boot.image.base.BootImageBase"><literal>BootImageBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements preparation and creation of kiwi boot(initrd) images</emphasis>
               </para>
@@ -23013,7 +23018,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.bootloader.config.grub2.BootLoaderConfigGrub2</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.bootloader.config.base.BootLoaderConfigBase"><literal>kiwi.bootloader.config.base.BootLoaderConfigBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.bootloader.config.base.BootLoaderConfigBase"><literal>BootLoaderConfigBase</literal></link></para>
               <para>
                 <emphasis role="bold">grub2 bootloader configuration.</emphasis>
               </para>
@@ -23284,7 +23289,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.bootloader.config.isolinux.BootLoaderConfigIsoLinux</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.bootloader.config.base.BootLoaderConfigBase"><literal>kiwi.bootloader.config.base.BootLoaderConfigBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.bootloader.config.base.BootLoaderConfigBase"><literal>BootLoaderConfigBase</literal></link></para>
               <para>
                 <emphasis role="bold">isolinux bootloader configuration.</emphasis>
               </para>
@@ -23583,7 +23588,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.bootloader.install.grub2.BootLoaderInstallGrub2</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.bootloader.install.base.BootLoaderInstallBase"><literal>kiwi.bootloader.install.base.BootLoaderInstallBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.bootloader.install.base.BootLoaderInstallBase"><literal>BootLoaderInstallBase</literal></link></para>
               <para>
                 <emphasis role="bold">grub2 bootloader installation</emphasis>
               </para>
@@ -25123,7 +25128,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.container.setup.docker.ContainerSetupDocker</literal>
             </term>
             <listitem>
-              <para>Bases: <literal>kiwi.container.setup.oci.ContainerSetupOCI</literal></para>
+              <para>Bases: <literal>ContainerSetupOCI</literal></para>
               <para>Docker container setup</para>
             </listitem>
           </varlistentry>
@@ -25407,7 +25412,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.btrfs.FileSystemBtrfs</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of btrfs filesystem</emphasis>
               </para>
@@ -25465,7 +25470,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.clicfs.FileSystemClicFs</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of clicfs filesystem</emphasis>
               </para>
@@ -25533,7 +25538,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.ext2.FileSystemExt2</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of ext2 filesystem</emphasis>
               </para>
@@ -25591,7 +25596,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.ext3.FileSystemExt3</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of ext3 filesystem</emphasis>
               </para>
@@ -25649,7 +25654,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.ext4.FileSystemExt4</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of ext4 filesystem</emphasis>
               </para>
@@ -25707,7 +25712,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.fat16.FileSystemFat16</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of fat16 filesystem</emphasis>
               </para>
@@ -25765,7 +25770,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.fat32.FileSystemFat32</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of fat32 filesystem</emphasis>
               </para>
@@ -25823,7 +25828,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.isofs.FileSystemIsoFs</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of iso filesystem</emphasis>
               </para>
@@ -25936,7 +25941,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.squashfs.FileSystemSquashFs</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of squashfs filesystem</emphasis>
               </para>
@@ -25982,7 +25987,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.filesystem.xfs.FileSystemXfs</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>kiwi.filesystem.base.FileSystemBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.filesystem.base.FileSystemBase"><literal>FileSystemBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements creation of xfs filesystem</emphasis>
               </para>
@@ -26231,7 +26236,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.iso_tools.xorriso.IsoToolsXorrIso</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.iso_tools.base.IsoToolsBase"><literal>kiwi.iso_tools.base.IsoToolsBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.iso_tools.base.IsoToolsBase"><literal>IsoToolsBase</literal></link></para>
               <para>
                 <emphasis role="bold">xorriso wrapper class</emphasis>
               </para>
@@ -26886,7 +26891,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.package_manager.dnf.PackageManagerDnf</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.package_manager.base.PackageManagerBase"><literal>kiwi.package_manager.base.PackageManagerBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.package_manager.base.PackageManagerBase"><literal>PackageManagerBase</literal></link></para>
               <para>
                 <emphasis role="bold">*Implements base class for installation/deletion of
                             packages and collections using dnf*</emphasis>
@@ -27287,7 +27292,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.package_manager.zypper.PackageManagerZypper</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.package_manager.base.PackageManagerBase"><literal>kiwi.package_manager.base.PackageManagerBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.package_manager.base.PackageManagerBase"><literal>PackageManagerBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements Installation/Deletion of packages/collections with zypper</emphasis>
               </para>
@@ -27933,7 +27938,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.partitioner.dasd.PartitionerDasd</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.partitioner.base.PartitionerBase"><literal>kiwi.partitioner.base.PartitionerBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.partitioner.base.PartitionerBase"><literal>PartitionerBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements DASD partition setup</emphasis>
               </para>
@@ -28010,7 +28015,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.partitioner.gpt.PartitionerGpt</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.partitioner.base.PartitionerBase"><literal>kiwi.partitioner.base.PartitionerBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.partitioner.base.PartitionerBase"><literal>PartitionerBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements GPT partition setup</emphasis>
               </para>
@@ -28131,7 +28136,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.partitioner.msdos.PartitionerMsDos</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.partitioner.base.PartitionerBase"><literal>kiwi.partitioner.base.PartitionerBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.partitioner.base.PartitionerBase"><literal>PartitionerBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implement old style msdos partition setup</emphasis>
               </para>
@@ -28540,7 +28545,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.repository.dnf.RepositoryDnf</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.repository.base.RepositoryBase"><literal>kiwi.repository.base.RepositoryBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.repository.base.RepositoryBase"><literal>RepositoryBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements repository handling for dnf package manager</emphasis>
               </para>
@@ -28797,7 +28802,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.repository.zypper.RepositoryZypper</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.repository.base.RepositoryBase"><literal>kiwi.repository.base.RepositoryBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.repository.base.RepositoryBase"><literal>RepositoryBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements repo handling for zypper package manager</emphasis>
               </para>
@@ -29324,7 +29329,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.solver.repository.rpm_md.SolverRepositoryRpmMd</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.solver.repository.base.SolverRepositoryBase"><literal>kiwi.solver.repository.base.SolverRepositoryBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.solver.repository.base.SolverRepositoryBase"><literal>SolverRepositoryBase</literal></link></para>
               <para>
                 <emphasis role="bold">Class for SAT solvable creation for rpm-md type repositories.</emphasis>
               </para>
@@ -29361,7 +29366,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.solver.repository.rpm_dir.SolverRepositoryRpmDir</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.solver.repository.base.SolverRepositoryBase"><literal>kiwi.solver.repository.base.SolverRepositoryBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.solver.repository.base.SolverRepositoryBase"><literal>SolverRepositoryBase</literal></link></para>
               <para>
                 <emphasis role="bold">Class for SAT solvable creation for rpm_dir type repositories.</emphasis>
               </para>
@@ -29374,7 +29379,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.solver.repository.suse.SolverRepositorySUSE</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.solver.repository.base.SolverRepositoryBase"><literal>kiwi.solver.repository.base.SolverRepositoryBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.solver.repository.base.SolverRepositoryBase"><literal>SolverRepositoryBase</literal></link></para>
               <para>
                 <emphasis role="bold">Class for SAT solvable creation for SUSE type repositories.</emphasis>
               </para>
@@ -29669,7 +29674,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.disk.Disk</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>kiwi.storage.device_provider.DeviceProvider</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>DeviceProvider</literal></link></para>
               <para>
                 <emphasis role="bold">Implements storage disk and partition table setup</emphasis>
               </para>
@@ -30124,7 +30129,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.loop_device.LoopDevice</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>kiwi.storage.device_provider.DeviceProvider</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>DeviceProvider</literal></link></para>
               <para>
                 <emphasis role="bold">Create and manage loop device file for block operations</emphasis>
               </para>
@@ -30226,7 +30231,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.luks_device.LuksDevice</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>kiwi.storage.device_provider.DeviceProvider</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>DeviceProvider</literal></link></para>
               <para>
                 <emphasis role="bold">Implements luks setup on a storage device</emphasis>
               </para>
@@ -30373,7 +30378,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.mapped_device.MappedDevice</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>kiwi.storage.device_provider.DeviceProvider</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>DeviceProvider</literal></link></para>
               <para>
                 <emphasis role="bold">Hold a reference on a single device</emphasis>
               </para>
@@ -30453,7 +30458,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.raid_device.RaidDevice</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>kiwi.storage.device_provider.DeviceProvider</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>DeviceProvider</literal></link></para>
               <para>
                 <emphasis role="bold">Implement raid setup on a storage device</emphasis>
               </para>
@@ -30565,7 +30570,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.clone_device.CloneDevice</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>kiwi.storage.device_provider.DeviceProvider</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.device_provider.DeviceProvider"><literal>DeviceProvider</literal></link></para>
               <para>
                 <emphasis role="bold">Implements device cloning</emphasis>
               </para>
@@ -31014,7 +31019,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.gce.DiskFormatGce</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>kiwi.storage.subformat.base.DiskFormatBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>DiskFormatBase</literal></link></para>
               <para>
                 <emphasis role="bold">Create GCE - Google Compute Engine image format</emphasis>
               </para>
@@ -31114,7 +31119,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.ova.DiskFormatOva</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>kiwi.storage.subformat.base.DiskFormatBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>DiskFormatBase</literal></link></para>
               <para>
                 <emphasis role="bold">Create ova disk format, based on vmdk</emphasis>
               </para>
@@ -31178,7 +31183,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.qcow2.DiskFormatQcow2</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>kiwi.storage.subformat.base.DiskFormatBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>DiskFormatBase</literal></link></para>
               <para>
                 <emphasis role="bold">Create qcow2 disk format</emphasis>
               </para>
@@ -31246,7 +31251,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>kiwi.storage.subformat.base.DiskFormatBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>DiskFormatBase</literal></link></para>
               <para>Base class for creating vagrant boxes.</para>
               <para>The documentation of the vagrant box format can be found here:
                         <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://www.vagrantup.com/docs/boxes/format.html"/>
@@ -31467,7 +31472,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.vagrant_libvirt.DiskFormatVagrantLibVirt</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase"><literal>kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase"><literal>DiskFormatVagrantBase</literal></link></para>
               <para>
                 <emphasis role="bold">Create a vagrant box for the libvirt provider</emphasis>
               </para>
@@ -31576,7 +31581,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.vagrant_virtualbox.DiskFormatVagrantVirtualBox</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase"><literal>kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase"><literal>DiskFormatVagrantBase</literal></link></para>
               <para>
                 <emphasis role="bold">Create a vagrant box for the virtualbox provider</emphasis>
               </para>
@@ -31663,7 +31668,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.vdi.DiskFormatVdi</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>kiwi.storage.subformat.base.DiskFormatBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>DiskFormatBase</literal></link></para>
               <para>
                 <emphasis role="bold">Create vdi disk format</emphasis>
               </para>
@@ -31708,7 +31713,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.vhd.DiskFormatVhd</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>kiwi.storage.subformat.base.DiskFormatBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>DiskFormatBase</literal></link></para>
               <para>
                 <emphasis role="bold">Create vhd disk format</emphasis>
               </para>
@@ -31753,7 +31758,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.vhdfixed.DiskFormatVhdFixed</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>kiwi.storage.subformat.base.DiskFormatBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>DiskFormatBase</literal></link></para>
               <para>
                 <emphasis role="bold">Create vhd image format in fixed subformat</emphasis>
               </para>
@@ -31821,7 +31826,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.vhdx.DiskFormatVhdx</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>kiwi.storage.subformat.base.DiskFormatBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>DiskFormatBase</literal></link></para>
               <para>
                 <emphasis role="bold">Create vhdx image format in dynamic subformat</emphasis>
               </para>
@@ -31866,7 +31871,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.storage.subformat.vmdk.DiskFormatVmdk</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>kiwi.storage.subformat.base.DiskFormatBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.storage.subformat.base.DiskFormatBase"><literal>DiskFormatBase</literal></link></para>
               <para>Create vmdk disk format</para>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.subformat.vmdk.DiskFormatVmdk.create_image_format">
@@ -34741,7 +34746,7 @@ end</screen>
               <literal>kiwi.tasks.result_bundle.ResultBundleTask</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>kiwi.tasks.base.CliTask</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>CliTask</literal></link></para>
               <para>Implements result bundler</para>
               <para>Attributes</para>
               <itemizedlist>
@@ -34784,7 +34789,7 @@ end</screen>
               <literal>kiwi.tasks.result_list.ResultListTask</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>kiwi.tasks.base.CliTask</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>CliTask</literal></link></para>
               <para>Implements result listing</para>
               <para>Attributes</para>
               <itemizedlist>
@@ -34823,7 +34828,7 @@ end</screen>
               <literal>kiwi.tasks.system_build.SystemBuildTask</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>kiwi.tasks.base.CliTask</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>CliTask</literal></link></para>
               <para>Implements building of system images</para>
               <para>Attributes</para>
               <itemizedlist>
@@ -34863,7 +34868,7 @@ end</screen>
               <literal>kiwi.tasks.system_create.SystemCreateTask</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>kiwi.tasks.base.CliTask</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>CliTask</literal></link></para>
               <para>Implements creation of system images</para>
               <para>Attributes</para>
               <itemizedlist>
@@ -34904,7 +34909,7 @@ end</screen>
               <literal>kiwi.tasks.system_prepare.SystemPrepareTask</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>kiwi.tasks.base.CliTask</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>CliTask</literal></link></para>
               <para>Implements preparation and installation of a new root system</para>
               <para>Attributes</para>
               <itemizedlist>
@@ -34943,7 +34948,7 @@ end</screen>
               <literal>kiwi.tasks.system_update.SystemUpdateTask</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>kiwi.tasks.base.CliTask</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.tasks.base.CliTask"><literal>CliTask</literal></link></para>
               <para>Implements update and maintenance of root systems</para>
               <para>Attributes</para>
               <itemizedlist>
@@ -35905,7 +35910,7 @@ target
               <literal>kiwi.volume_manager.btrfs.VolumeManagerBtrfs</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.volume_manager.base.VolumeManagerBase"><literal>kiwi.volume_manager.base.VolumeManagerBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.volume_manager.base.VolumeManagerBase"><literal>VolumeManagerBase</literal></link></para>
               <para>Implements btrfs sub-volume management</para>
               <variablelist role="field_list">
                 <varlistentry>
@@ -36148,7 +36153,7 @@ target
               <literal>kiwi.volume_manager.lvm.VolumeManagerLVM</literal>
             </term>
             <listitem>
-              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.volume_manager.base.VolumeManagerBase"><literal>kiwi.volume_manager.base.VolumeManagerBase</literal></link></para>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.volume_manager.base.VolumeManagerBase"><literal>VolumeManagerBase</literal></link></para>
               <para>
                 <emphasis role="bold">Implements LVM volume management</emphasis>
               </para>
