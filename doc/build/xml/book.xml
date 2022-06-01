@@ -3,12 +3,12 @@
       type="application/relax-ng-compact-syntax"
      ?>
 <book xmlns="http://docbook.org/ns/docbook" xml:lang="en" version="5.1" xml:id="building-linux-system-appliances-with-kiwi-next-generation-kiwi-ng-version">
-  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.39</title>
+  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.40</title>
   <info/>
   <preface>
     <title>Preface</title>
     <note>
-      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.39- the command line
+      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.40- the command line
                 utility to build Linux system appliances. KIWI NG is stable and all
                 new features, bugfixes, and improvements will be developed here.
                 Versions older or equal to v7.x.x are out of maintenance and do
@@ -210,7 +210,7 @@
       <para>This document provides a conceptual overview about the steps
                 of creating an image with KIWI NG. It also explains the terminology
                 regarding the concept and process when building system images
-                with KIWI NG 9.24.39.</para>
+                with KIWI NG 9.24.40.</para>
     </note>
     <section xml:id="basic-workflow" xml:base="overview/workflow">
       <title>Basic Workflow</title>
@@ -230,7 +230,7 @@
                 complete the system usually reboots and enters a configuration procedure
                 upon start-up. The configuration may be fully automatic or it may include
                 user interaction.</para>
-        <para>This description applies for version 9.24.39.</para>
+        <para>This description applies for version 9.24.40.</para>
       </note>
       <para>A system image (usually called “image”), is a <emphasis>complete installation</emphasis> of a Linux
             system within a file. The image represents an operational system and,
@@ -540,7 +540,7 @@ $ tree -L 3 kiwi/build-tests</screen>
       </para>
       <para>This document describes how to start working with KIWI NG,
                 an OS appliance builder. This description applies for
-                version 9.24.39.</para>
+                version 9.24.40.</para>
     </note>
     <section xml:id="before-you-start">
       <title>Before you start</title>
@@ -605,7 +605,7 @@ $ tree -L 3 kiwi/build-tests</screen>
     <title>Working from the Command Line</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) commands
-                for version 9.24.39.</para>
+                for version 9.24.40.</para>
     </note>
     <section xml:id="kiwi-ng" xml:base="commands/kiwi">
       <title>kiwi-ng</title>
@@ -2007,7 +2007,7 @@ kiwi-ng image info help</screen>
     <title>KIWI Plugins</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) plugins
-                which provides extended functionality for version 9.24.39.</para>
+                which provides extended functionality for version 9.24.40.</para>
     </note>
     <section xml:id="self-contained" xml:base="plugins/self_contained">
       <title>Building in a Self-Contained Environment</title>
@@ -2345,7 +2345,7 @@ $ vi container_to_VM_layer/config.kiwi</screen>
         <emphasis role="bold">Abstract</emphasis>
       </para>
       <para>The following sections describe the concept and general workflow
-                of building appliances with KIWI NG 9.24.39.</para>
+                of building appliances with KIWI NG 9.24.40.</para>
     </note>
     <section xml:id="systemdeps" xml:base="concept_and_workflow/systemdeps">
       <title>Host Requirements To Build Images</title>
@@ -4013,13 +4013,13 @@ $ kiwi-ng system create $ARGS</screen>
     <title>Image Description</title>
     <note>
       <para>This document explains the toplevel structure of the
-                KIWI NG image description document for version 9.24.39</para>
+                KIWI NG image description document for version 9.24.40</para>
     </note>
     <section xml:id="image-description-elements" xml:base="image_description/elements">
       <title>Image Description Elements</title>
       <note>
         <para>This document provides a reference for the elements
-                and attributes of the KIWI NG XML document in version 9.24.39</para>
+                and attributes of the KIWI NG XML document in version 9.24.40</para>
       </note>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
@@ -9662,7 +9662,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.24.39 inside of the Open Build Service.
+                KIWI NG in version 9.24.40 inside of the Open Build Service.
                 A tutorial on the Open Buildservice itself can be found here:
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
       </note>
@@ -10078,7 +10078,7 @@ osc ci</screen>
       </para>
       <para>This document describes the development process of KIWI NG
                 and how you can be part of it. This description applies
-                to version 9.24.39.</para>
+                to version 9.24.40.</para>
     </note>
     <section xml:id="using-kiwi-ng-in-a-python-project" xml:base="contributing/kiwi_from_python">
       <title>Using KIWI NG in a Python Project</title>
@@ -10088,7 +10088,7 @@ osc ci</screen>
         </para>
         <para>KIWI NG is provided as python module under the <emphasis role="bold">kiwi</emphasis> namespace.
                 It is available for the python 3 version. The following
-                description applies for KIWI NG version 9.24.39.</para>
+                description applies for KIWI NG version 9.24.40.</para>
       </note>
       <para>KIWI NG can also function as a module for other Python projects.
             The following example demonstrates how to read an existing image
@@ -10332,7 +10332,7 @@ def test_RmWorks(container_per_test):
         <para>Depending on the demand for custom plugins, the interface
                 to hook in code into other parts of the KIWI NG processing
                 needs to be extended.</para>
-        <para>This description applies for version 9.24.39.</para>
+        <para>This description applies for version 9.24.40.</para>
       </note>
       <section xml:id="the-extension-section">
         <title>The &lt;extension&gt; Section</title>
@@ -10754,7 +10754,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
   <chapter xml:id="api" xml:base="api">
     <title>Python API</title>
     <note>
-      <para>This API documentation covers KIWI NG 9.24.39</para>
+      <para>This API documentation covers KIWI NG 9.24.40</para>
     </note>
     <section xml:id="kiwi-package" xml:base="api/kiwi">
       <title>kiwi Package</title>
@@ -10830,9 +10830,11 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains dictionary of command arguments</para>
-                          <screen language="python">{
+                          <para>
+                            <screen language="python">{
     '--command-option': 'value'
 }</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -10857,9 +10859,11 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains dictionary of global arguments</para>
-                          <screen language="python">{
+                          <para>
+                            <screen language="python">{
     '--global-option': 'value'
 }</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -11003,11 +11007,13 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains process results in command type</para>
-                          <screen language="python">command(
+                          <para>
+                            <screen language="python">command(
     output='string', output_available=bool,
     error='string', error_available=bool,
     process=subprocess
 )</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -11057,7 +11063,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains call results in command type</para>
-                          <screen language="python">command(output='string', error='string', returncode=int)</screen>
+                          <para>
+                            <screen language="python">command(output='string', error='string', returncode=int)</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -12596,7 +12604,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>list of kernel options</para>
-                          <screen language="python">['option=value', 'option']</screen>
+                          <para>
+                            <screen language="python">['option=value', 'option']</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -13857,7 +13867,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>video type map</para>
-                          <screen language="python">{'kernel_hex_mode': video_type(grub2='mode', isolinux='mode')}</screen>
+                          <para>
+                            <screen language="python">{'kernel_hex_mode': video_type(grub2='mode', isolinux='mode')}</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -13930,7 +13942,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains list of options</para>
-                          <screen language="python">['--option=value']</screen>
+                          <para>
+                            <screen language="python">['--option=value']</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -18020,7 +18034,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains list of options</para>
-                          <screen language="python">['--option=value']</screen>
+                          <para>
+                            <screen language="python">['--option=value']</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -19398,7 +19414,8 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Dict of the form:</para>
-                          <screen language="python">{
+                          <para>
+                            <screen language="python">{
     'enable': [
         "module:stream", "module"
     ],
@@ -19406,6 +19423,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
         "module"
     ]
 }</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -20024,7 +20042,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains list of package_type tuples</para>
-                          <screen language="python">[package_type(packages_section=object, package_section=object)]</screen>
+                          <para>
+                            <screen language="python">[package_type(packages_section=object, package_section=object)]</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -20082,7 +20102,8 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains dict of ptable_entry_type tuples</para>
-                          <screen language="python">{
+                          <para>
+                            <screen language="python">{
     'NAME': ptable_entry_type(
         mbsize=int,
         clone=int,
@@ -20092,6 +20113,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
         filesystem=str
     )
 }</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -20873,7 +20895,8 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains list of volume_type tuples</para>
-                          <screen language="python">[
+                          <para>
+                            <screen language="python">[
     volume_type(
         name=volume_name,
         size=volume_size,
@@ -20885,6 +20908,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
         is_root_volume=True|False
     )
 ]</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -21731,10 +21755,12 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Returns</term>
                         <listitem>
                           <para>Contains boot_names_type tuple</para>
-                          <screen language="python">boot_names_type(
+                          <para>
+                            <screen language="python">boot_names_type(
     kernel_name='INSTALLED_KERNEL',
     initrd_name='DRACUT_OUTPUT_NAME'
 )</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -23035,7 +23061,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <para><literal>custom_args</literal> () – </para>
                           <para>Contains grub config arguments</para>
-                          <screen language="python">{'grub_directory_name': 'grub|grub2'}</screen>
+                          <para>
+                            <screen language="python">{'grub_directory_name': 'grub|grub2'}</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -23641,7 +23669,8 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <para><literal>custom_args</literal> () – </para>
                           <para>Contains custom grub2 bootloader arguments</para>
-                          <screen language="python">{
+                          <para>
+                            <screen language="python">{
     'target_removable': bool,
     'system_volumes': list_of_volumes,
     'firmware': FirmWare_instance,
@@ -23649,6 +23678,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
     'boot_device': string,
     'root_device': string
 }</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -25347,13 +25377,15 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <para><literal>custom_args</literal> () – </para>
                           <para>custom arguments</para>
-                          <screen language="python">{
+                          <para>
+                            <screen language="python">{
     'create_options': ['option'],
     'mount_options': ['option'],
     'meta_data': {
         'key': 'value'
     }
 }</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -27242,7 +27274,8 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <para><literal>collection_modules</literal> () – </para>
                           <para>Expect dict of the form:</para>
-                          <screen language="python">{
+                          <para>
+                            <screen language="python">{
     'enable': [
         "module:stream", "module"
     ],
@@ -27250,6 +27283,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
         "module"
     ]
 }</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -31079,7 +31113,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <para><literal>custom_args</literal> () – </para>
                           <para>custom gce argument dictionary</para>
-                          <screen language="python">{'--tag': 'billing_code'}</screen>
+                          <para>
+                            <screen language="python">{'--tag': 'billing_code'}</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -31420,7 +31456,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <para><literal>custom_args</literal> () – </para>
                           <para>Contains instance of xml_parse::vagrantconfig</para>
-                          <screen language="python">{'vagrantconfig': object}</screen>
+                          <para>
+                            <screen language="python">{'vagrantconfig': object}</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -31787,7 +31825,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <listitem>
                           <para><literal>custom_args</literal> () – </para>
                           <para>custom vhdfixed and qemu argument dictionary</para>
-                          <screen language="python">{'--tag': 'billing_code', '--qemu-opt': 'value'}</screen>
+                          <para>
+                            <screen language="python">{'--tag': 'billing_code', '--qemu-opt': 'value'}</screen>
+                          </para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -33919,6 +33959,16 @@ end</screen>
                                 theme for the plymouth splash system. Only in case the tool could
                                 be found in the image root, it is assumed plymouth splash is in
                                 use and the tool is called in a chroot operation</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.setup.SystemSetup.setup_selinux_file_contexts">
+                  <term>
+                    <property>kiwi.system.setup.SystemSetup.setup_selinux_file_contexts</property>
+                  </term>
+                  <listitem>
+                    <para>Set SELinux file security contexts if the default context file is found</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
