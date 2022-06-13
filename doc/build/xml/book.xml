@@ -4637,6 +4637,14 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>selinux_policy.attribute=”targeted|mls|minimum”:</term>
+              <listitem>
+                <para>The <literal>selinux_policy</literal> attribute sets the SELinux policy to use.
+                                <literal>targeted</literal> policy is the default policy. Only change this option
+                                if you want to use the <literal>mls</literal> or <literal>minimum</literal> policy.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>spare_part=”number”:</term>
               <listitem>
                 <para>Request a spare partition right before the root partition
