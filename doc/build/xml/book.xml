@@ -3623,6 +3623,32 @@ install() {
 }</screen>
           </step>
         </procedure>
+        <note>
+          <para>Declaring Extra Tools for Hook Scripts</para>
+          <para>The install() function called by dracut can define extra tools needed by
+                    a defined hook script. The “inst_multiple” command and its parameters
+                    inform dracut to include these extra tools/items in the initrd.</para>
+          <para>The tools/items defined here can be any file, but are usually executables
+                    and libraries needed by the hook script.</para>
+          <itemizedlist>
+            <listitem>
+              <para>Each file MUST be included in the Kiwi description either in a
+                            package, archive, or in the “root” tree in the image description
+                            directory.</para>
+            </listitem>
+            <listitem>
+              <para>The parameters of the inst_multiple command are space separated.</para>
+            </listitem>
+            <listitem>
+              <para>Each parameter can be a single executable name if it exists in /bin,
+                            /sbin, /usr/bin, or /usr/sbin directories.</para>
+            </listitem>
+            <listitem>
+              <para>Otherwise, a full pathname to the file is required. This is usually
+                            true for libraries and other special files.</para>
+            </listitem>
+          </itemizedlist>
+        </note>
         <para>That’s it! At the time KIWI NG calls dracut the <literal>90my-module</literal> will be taken
                 into account and is installed into the generated initrd. At boot time
                 systemd calls the scripts as part of the <literal>dracut-pre-mount.service</literal>.</para>
