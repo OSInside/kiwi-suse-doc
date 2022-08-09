@@ -4451,6 +4451,14 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>efifatimagesize=”nonNegativeInteger”:</term>
+              <listitem>
+                <para>For ISO images (live and install) the EFI boot requires
+                                an embedded FAT image. This attribute specifies the size
+                                in MB. If not set the FAT image size is set to 20 MB</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>efiparttable=”msdos|gpt”:</term>
               <listitem>
                 <para>For images with an EFI firmware specifies the partition
