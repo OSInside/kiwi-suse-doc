@@ -5510,7 +5510,8 @@ $ kiwi-ng system create $ARGS</screen>
             <listitem>
               <para>Specifies an alternative name for the configured repository. If the
                             attribute is not specified KIWI NG will generate a random alias name
-                            for the repository.</para>
+                            for the repository. The specified name must match the pattern:
+                            <literal>[a-zA-Z0-9_-.]+</literal></para>
             </listitem>
           </varlistentry>
           <varlistentry>
