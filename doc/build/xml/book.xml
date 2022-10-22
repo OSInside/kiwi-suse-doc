@@ -25187,23 +25187,6 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </listitem>
                 </varlistentry>
               </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.container.setup.base.ContainerSetupBase.setup_static_device_nodes">
-                  <term>
-                    <property>kiwi.container.setup.base.ContainerSetupBase.setup_static_device_nodes</property>
-                  </term>
-                  <listitem>
-                    <para>Container device node setup</para>
-                    <para>Without subsystems like udev running in a container it is
-                                required to provide a set of device nodes to let the
-                                system in the container function correctly. This is
-                                done by syncing the host system nodes to the container.
-                                That this will also create device nodes which are not
-                                necessarily present in the container later is a know
-                                limitation of this method and considered harmless</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
             </listitem>
           </varlistentry>
         </variablelist>
