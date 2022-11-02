@@ -618,13 +618,16 @@ kiwi-ng [--profile=&lt;name&gt;...]
         [--temp-dir=&lt;directory&gt;]
         [--type=&lt;build_type&gt;]
         [--logfile=&lt;filename&gt;]
+        [--logsocket=&lt;socketfile&gt;]
         [--debug]
         [--debug-run-scripts-in-screen]
         [--color-output]
         [--config=&lt;configfile&gt;]
         [--kiwi-file=&lt;kiwifile&gt;]
     image &lt;command&gt; [&lt;args&gt;...]
-kiwi-ng [--debug]
+kiwi-ng [--logfile=&lt;filename&gt;]
+        [--logsocket=&lt;socketfile&gt;]
+        [--debug]
         [--debug-run-scripts-in-screen]
         [--color-output]
         [--config=&lt;configfile&gt;]
@@ -635,6 +638,7 @@ kiwi-ng [--profile=&lt;name&gt;...]
         [--target-arch=&lt;name&gt;]
         [--type=&lt;build_type&gt;]
         [--logfile=&lt;filename&gt;]
+        [--logsocket=&lt;socketfile&gt;]
         [--debug]
         [--debug-run-scripts-in-screen]
         [--color-output]
@@ -733,6 +737,15 @@ kiwi-ng help</screen>
               <para>Specify log file. the logfile contains detailed information about
                             the process. The special call: <literal>--logfile stdout</literal> sends all
                             information to standard out instead of writing to a file</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--logsocket</option>
+            </term>
+            <listitem>
+              <para>send log data to the given Unix Domain socket in the same
+                            format as with –logfile</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -15058,6 +15071,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
         <variablelist>
+          <varlistentry xml:id="kiwi.exceptions.KiwiLogSocketSetupFailed">
+            <term>
+              <literal>kiwi.exceptions.KiwiLogSocketSetupFailed</literal>
+            </term>
+            <listitem>
+              <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.exceptions.KiwiError"><literal>KiwiError</literal></link></para>
+              <para>Exception raised if the Unix Domain log socket could not be created.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
           <varlistentry xml:id="kiwi.exceptions.KiwiLoopSetupError">
             <term>
               <literal>kiwi.exceptions.KiwiLoopSetupError</literal>
@@ -16310,6 +16334,26 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Set color format for all console handlers</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.logger.Logger.set_log_socket">
+                  <term>
+                    <property>kiwi.logger.Logger.set_log_socket</property>
+                  </term>
+                  <listitem>
+                    <para>Set log socket handler</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <para><literal>filename</literal> () – UDS socket file path. Note if there is no server
+                                            listening on the socket the log handler setup
+                                            will fail</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
                   </listitem>
                 </varlistentry>
               </variablelist>
