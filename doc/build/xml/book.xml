@@ -619,6 +619,7 @@ kiwi-ng [--profile=&lt;name&gt;...]
         [--type=&lt;build_type&gt;]
         [--logfile=&lt;filename&gt;]
         [--logsocket=&lt;socketfile&gt;]
+        [--loglevel=&lt;number&gt;]
         [--debug]
         [--debug-run-scripts-in-screen]
         [--color-output]
@@ -627,6 +628,7 @@ kiwi-ng [--profile=&lt;name&gt;...]
     image &lt;command&gt; [&lt;args&gt;...]
 kiwi-ng [--logfile=&lt;filename&gt;]
         [--logsocket=&lt;socketfile&gt;]
+        [--loglevel=&lt;number&gt;]
         [--debug]
         [--debug-run-scripts-in-screen]
         [--color-output]
@@ -639,6 +641,7 @@ kiwi-ng [--profile=&lt;name&gt;...]
         [--type=&lt;build_type&gt;]
         [--logfile=&lt;filename&gt;]
         [--logsocket=&lt;socketfile&gt;]
+        [--loglevel=&lt;number&gt;]
         [--debug]
         [--debug-run-scripts-in-screen]
         [--color-output]
@@ -718,7 +721,7 @@ kiwi-ng help</screen>
               <option>--debug</option>
             </term>
             <listitem>
-              <para>Print debug information on the commandline.</para>
+              <para>Print debug information on the commandline. Same as: ‘–loglevel 10’</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -746,6 +749,28 @@ kiwi-ng help</screen>
             <listitem>
               <para>send log data to the given Unix Domain socket in the same
                             format as with –logfile</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--loglevel</option>
+            </term>
+            <listitem>
+              <para>specify logging level as number. Details about the
+                            available log levels can be found at:
+                            <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://docs.python.org/3/library/logging.html#logging-levels"/>
+                            Setting a log level causes all message &gt;= level to be
+                            displayed.</para>
+              <screen language="bash">----------------------------
+| Level    | Numeric value |
+----------------------------
+| CRITICAL | 50            |
+| ERROR    | 40            |
+| WARNING  | 30            |
+| INFO     | 20            |
+| DEBUG    | 10            |
+| NOTSET   | 0             |
+----------------------------</screen>
             </listitem>
           </varlistentry>
           <varlistentry>
