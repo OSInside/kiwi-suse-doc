@@ -3,12 +3,12 @@
       type="application/relax-ng-compact-syntax"
      ?>
 <book xmlns="http://docbook.org/ns/docbook" xml:lang="en" version="5.1" xml:id="building-linux-system-appliances-with-kiwi-next-generation-kiwi-ng-version">
-  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.49</title>
+  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.59</title>
   <info/>
   <preface>
     <title>Preface</title>
     <note>
-      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.49- the command line
+      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.59- the command line
                 utility to build Linux system appliances. KIWI NG is stable and all
                 new features, bugfixes, and improvements will be developed here.
                 Versions older or equal to v7.x.x are out of maintenance and do
@@ -70,11 +70,6 @@
       <listitem>
         <para>
           <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_arm:fedora">Build Tests Fedora(arm)</link>
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://build.opensuse.org/project/show/Virtualization:Appliances:Images:Testing_ppc:fedora">Build Tests Fedora(ppc64le)</link>
         </para>
       </listitem>
       <listitem>
@@ -210,7 +205,7 @@
       <para>This document provides a conceptual overview about the steps
                 of creating an image with KIWI NG. It also explains the terminology
                 regarding the concept and process when building system images
-                with KIWI NG 9.24.49.</para>
+                with KIWI NG 9.24.59.</para>
     </note>
     <section xml:id="basic-workflow" xml:base="overview/workflow">
       <title>Basic Workflow</title>
@@ -230,7 +225,7 @@
                 complete the system usually reboots and enters a configuration procedure
                 upon start-up. The configuration may be fully automatic or it may include
                 user interaction.</para>
-        <para>This description applies for version 9.24.49.</para>
+        <para>This description applies for version 9.24.59.</para>
       </note>
       <para>A system image (usually called “image”), is a <emphasis>complete installation</emphasis> of a Linux
             system within a file. The image represents an operational system and,
@@ -540,7 +535,7 @@ $ tree -L 3 kiwi/build-tests</screen>
       </para>
       <para>This document describes how to start working with KIWI NG,
                 an OS appliance builder. This description applies for
-                version 9.24.49.</para>
+                version 9.24.59.</para>
     </note>
     <section xml:id="before-you-start">
       <title>Before you start</title>
@@ -605,7 +600,7 @@ $ tree -L 3 kiwi/build-tests</screen>
     <title>Working from the Command Line</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) commands
-                for version 9.24.49.</para>
+                for version 9.24.59.</para>
     </note>
     <section xml:id="kiwi-ng" xml:base="commands/kiwi">
       <title>kiwi-ng</title>
@@ -737,7 +732,7 @@ kiwi-ng help</screen>
               <option>--logfile</option>
             </term>
             <listitem>
-              <para>Specify log file. the logfile contains detailed information about
+              <para>Specify log file. The logfile contains detailed information about
                             the process. The special call: <literal>--logfile stdout</literal> sends all
                             information to standard out instead of writing to a file</para>
             </listitem>
@@ -983,7 +978,9 @@ kiwi-ng system prepare --description=&lt;directory&gt; --root=&lt;directory&gt;
     [--ignore-repos]
     [--ignore-repos-used-for-build]
     [--set-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck,{signing_keys},components,distribution,repo_gpgcheck&gt;]
+    [--set-repo-credentials=&lt;user:pass_or_filename&gt;]
     [--add-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck,{signing_keys},components,distribution,repo_gpgcheck&gt;...]
+    [--add-repo-credentials=&lt;user:pass_or_filename&gt;...]
     [--add-package=&lt;name&gt;...]
     [--add-bootstrap-package=&lt;name&gt;...]
     [--delete-package=&lt;name&gt;...]
@@ -1041,6 +1038,19 @@ kiwi-ng system prepare help</screen>
                             description. This option can be specified multiple times.
                             For details about the provided option values see the <emphasis role="bold">–set-repo</emphasis>
                             information below</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--add-repo-credentials</option>
+            </term>
+            <listitem>
+              <para>For <emphasis role="bold">uri://user:pass@location</emphasis> type repositories, set the user and
+                            password connected with an add-repo specification. The first
+                            add-repo-credentials is connected with the first add-repo
+                            specification and so on. If the provided value describes a filename
+                            in the filesystem, the first line of that file is read and used
+                            as credentials information.</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -1201,6 +1211,17 @@ kiwi-ng system prepare help</screen>
           </varlistentry>
           <varlistentry>
             <term>
+              <option>--set-repo-credentials</option>
+            </term>
+            <listitem>
+              <para>For <emphasis role="bold">uri://user:pass@location</emphasis> type repositories, set the user and
+                            password connected to the set-repo specification. If the provided value
+                            describes a filename in the filesystem, the first line of that file is
+                            read and used as credentials information.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
               <option>--set-container-derived-from</option>
             </term>
             <listitem>
@@ -1299,7 +1320,9 @@ kiwi-ng system build --description=&lt;directory&gt; --target-dir=&lt;directory&
     [--ignore-repos]
     [--ignore-repos-used-for-build]
     [--set-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck,{signing_keys},components,distribution,repo_gpgcheck&gt;]
+    [--set-repo-credentials=&lt;user:pass_or_filename&gt;]
     [--add-repo=&lt;source,type,alias,priority,imageinclude,package_gpgcheck,{signing_keys},components,distribution,repo_gpgcheck&gt;...]
+    [--add-repo-credentials=&lt;user:pass_or_filename&gt;...]
     [--add-package=&lt;name&gt;...]
     [--add-bootstrap-package=&lt;name&gt;...]
     [--delete-package=&lt;name&gt;...]
@@ -1358,6 +1381,19 @@ kiwi-ng system build help</screen>
                             description. This option can be specified multiple times.
                             For details about the provided option values see the <emphasis role="bold">–set-repo</emphasis>
                             information below</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+              <option>--add-repo-credentials</option>
+            </term>
+            <listitem>
+              <para>For <emphasis role="bold">uri://user:pass@location</emphasis> type repositories, set the user and
+                            password connected with an add-repo specification. The first
+                            add-repo-credentials is connected with the first add-repo
+                            specification and so on. If the provided value describes a filename
+                            in the filesystem, the first line of that file is read and used
+                            as credentials information.</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -1511,10 +1547,21 @@ kiwi-ng system build help</screen>
           </varlistentry>
           <varlistentry>
             <term>
+              <option>--set-repo-credentials</option>
+            </term>
+            <listitem>
+              <para>For <emphasis role="bold">uri://user:pass@location</emphasis> type repositories, set the user and
+                            password connected to the set-repo specification. If the provided
+                            value describes a filename in the filesystem, the first line of that file
+                            is read and used as credentials information.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
               <option>--set-container-derived-from</option>
             </term>
             <listitem>
-              <para>overwrite the source location of the base container for the selected
+              <para>Overwrite the source location of the base container for the selected
                             image type. The setting is only effective if the configured image type
                             is setup with an initial derived_from reference</para>
             </listitem>
@@ -1524,7 +1571,7 @@ kiwi-ng system build help</screen>
               <option>--set-container-tag</option>
             </term>
             <listitem>
-              <para>overwrite the container tag in the container configuration.
+              <para>Overwrite the container tag in the container configuration.
                             The setting is only effective if the container configuraiton
                             provides an initial tag value</para>
             </listitem>
@@ -2049,7 +2096,7 @@ kiwi-ng image info help</screen>
     <title>KIWI Plugins</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) plugins
-                which provides extended functionality for version 9.24.49.</para>
+                which provides extended functionality for version 9.24.59.</para>
     </note>
     <section xml:id="self-contained" xml:base="plugins/self_contained">
       <title>Building in a Self-Contained Environment</title>
@@ -2387,7 +2434,7 @@ $ vi container_to_VM_layer/config.kiwi</screen>
         <emphasis role="bold">Abstract</emphasis>
       </para>
       <para>The following sections describe the concept and general workflow
-                of building appliances with KIWI NG 9.24.49.</para>
+                of building appliances with KIWI NG 9.24.59.</para>
     </note>
     <section xml:id="systemdeps" xml:base="concept_and_workflow/systemdeps">
       <title>Host Requirements To Build Images</title>
@@ -3064,6 +3111,29 @@ popd</screen>
                         has been applied. It is usually used to apply a permanent and final
                         change of data in the root tree, such as modifying a package provided
                         config file.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>config-overlay.sh</term>
+          <listitem>
+            <para>Available only if <literal>delta_root="true"</literal> is set. In this case the
+                        script runs at the end of the <xref linkend="prepare-step"/>
+                        prior the umount of the overlay root tree. It runs after an
+                        eventually given <literal>config.sh</literal> and is the last entry point to
+                        change the delta root tree.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>config-host-overlay.sh</term>
+          <listitem>
+            <para>Available only if <literal>delta_root="true"</literal> is set. In this case the
+                        script runs at the end of the <xref linkend="prepare-step"/>
+                        prior the umount of the overlay root tree. The script is called
+                        <emphasis role="bold">NOT CHROOTED</emphasis> from the host with the image root directory as
+                        its working directory. It runs after an eventually given
+                        <literal>config.sh</literal> and is together with an eventually given
+                        <literal>config-overlay.sh</literal> script, the last entry point to change the
+                        delta root tree.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -4081,13 +4151,13 @@ $ kiwi-ng system create $ARGS</screen>
     <title>Image Description</title>
     <note>
       <para>This document explains the toplevel structure of the
-                KIWI NG image description document for version 9.24.49</para>
+                KIWI NG image description document for version 9.24.59</para>
     </note>
     <section xml:id="image-description-elements" xml:base="image_description/elements">
       <title>Image Description Elements</title>
       <note>
         <para>This document provides a reference for the elements
-                and attributes of the KIWI NG XML document in version 9.24.49</para>
+                and attributes of the KIWI NG XML document in version 9.24.59</para>
       </note>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
@@ -4972,29 +5042,34 @@ $ kiwi-ng system create $ARGS</screen>
               <listitem>
                 <para>For the <literal>oem</literal> type only, specifies to use an <literal>overlayfs</literal> based root
                                 filesystem consisting out of a squashfs compressed read-only root
-                                filesystem combined with a write-partition or tmpfs.
-                                The optional kernel boot parameter <literal>rd.root.overlay.readonly</literal> can
+                                filesystem combined with an optional write-partition or tmpfs.
+                                The optional kernel boot parameter <literal>rd.root.overlay.temporary</literal> can
                                 be used to point the write area into a <literal>tmpfs</literal> instead of
-                                the existing persistent write-partition. In this mode all
-                                written data is temporary until reboot of the system. The kernel
-                                boot parameter <literal>rd.root.overlay.size</literal> can be used to configure
-                                the size for the <literal>tmpfs</literal> that is used for the <literal>overlayfs</literal> mount
-                                process if <literal>rd.root.overlay.readonly</literal> is requested. That size
-                                basically configures the amount of space available for writing
-                                new data during the runtime of the system. The default value
-                                is set to <literal>50%</literal> which means one half of the available RAM space can
-                                be used for writing new data. By default the persistent
-                                write-partition is used. The size of that partition can be
-                                influenced via the optional <literal>&lt;size&gt;</literal> element in the <literal>&lt;type&gt;</literal>
-                                section or via the optional <literal>&lt;oem-resize&gt;</literal> element in the
-                                <literal>&lt;oemconfig&gt;</literal> section of the XML description. Setting a fixed
+                                a persistent write-partition. In this mode all written data is
+                                temporary until reboot of the system. The kernel boot parameter
+                                <literal>rd.root.overlay.size</literal> can be used to configure the size for the
+                                <literal>tmpfs</literal> that is used for the <literal>overlayfs</literal> mount process if
+                                <literal>rd.root.overlay.temporary</literal> is requested. That size configures the
+                                amount of space available for writing new data during the runtime
+                                of the system. The default value is set to <literal>50%</literal> which means one
+                                half of the available RAM space can be used for writing new data.
+                                By default the persistent write-partition is used. The size of that
+                                partition can be influenced via the optional <literal>&lt;size&gt;</literal> element in
+                                the <literal>&lt;type&gt;</literal> section or via the optional <literal>&lt;oem-resize&gt;</literal> element in
+                                the <literal>&lt;oemconfig&gt;</literal> section of the XML description. Setting a fixed
                                 <literal>&lt;size&gt;</literal> value will set the size of the image disk to that
                                 value and results in an image file of that size. The available
                                 space for the write partition is that size reduced by the
                                 size the squashfs read-only system needs. If the <literal>&lt;oem-resize&gt;</literal>
                                 element is set to <literal>true</literal> an eventually given <literal>&lt;size&gt;</literal> element
                                 will not have any effect because the write partition will be
-                                resized on first boot to the available disk space.</para>
+                                resized on first boot to the available disk space.
+                                To disable the use of any overlay the kernel boot parameter
+                                <literal>rd.root.overlay.readonly</literal> can be used. It takes precedence
+                                over all other overlay kernel parameters because it leads to the
+                                deactivation of any overlayfs based action and just boots up with
+                                the squashfs root filesystem. In fact this mode is the same
+                                as not installing the <literal>kiwi-overlay</literal> dracut module.</para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -5231,6 +5306,22 @@ $ kiwi-ng system create $ARGS</screen>
               </listitem>
             </varlistentry>
             <varlistentry>
+              <term>delta_root=”true|false”:</term>
+              <listitem>
+                <para>For container images and in combination with the <literal>derived_from</literal>
+                                attribute. If <literal>delta_root</literal> is set to <literal>true</literal>, {kiwi-ng} creates
+                                a container image which only contains the differences compared
+                                to the given <literal>derived_from</literal> container. Such a container is on
+                                its own no longer functional and requires a tool which is able
+                                to provision a container instance from the <literal>derived_from</literal>
+                                container combined with the <literal>delta_root</literal> application container.
+                                Such a tool exists with the
+                                <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/Elektrobit/oci-pilot">oci-pilot</link>
+                                project and allows to manage applications as containers
+                                that feels like native applications on the host system.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
               <term>ensure_empty_tmpdirs=”true|false”:</term>
               <listitem>
                 <para>For OCI container images, specifies whether to ensure /run and /tmp
@@ -5264,11 +5355,48 @@ $ kiwi-ng system create $ARGS</screen>
         <section xml:id="preferences-type-bootloader">
           <title>&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</title>
           <para>The <literal>bootloader</literal> element is used to select the bootloader. At the moment,
-                    <literal>grub2</literal>, <literal>isolinux</literal>, <literal>zipl</literal> and <literal>grub2_s390x_emu</literal> (a combination of zipl
-                    and a userspace GRUB2) are supported. The special <literal>custom</literal> entry allows
-                    to skip the bootloader configuration and installation and leaves this up
-                    to the user, which can be done by using the <literal>editbootinstall</literal> and
-                    <literal>editbootconfig</literal> custom scripts.</para>
+                    <literal>grub2</literal>, <literal>systemd_boot</literal>, <literal>isolinux</literal> and the combination of zipl
+                    plus userspace grub2 <literal>grub2_s390x_emu</literal> are supported. The special
+                    <literal>custom</literal> entry allows to skip the bootloader configuration and installation
+                    and leaves this up to the user, which can be done by using
+                    the <literal>editbootinstall</literal> and <literal>editbootconfig</literal> custom scripts.</para>
+          <note>
+            <para>bootloaders provides a very different set of features and only
+                        work within their individual implementation priorities. KIWI NG
+                        provides an API for bootloaders but not all API methods can be
+                        implemented for all bootloaders due to the fact that some
+                        features only exists in one but not in another bootloader. If
+                        a bootloader setting is used that is not understood by the
+                        selected bootloader the image build process will fail with
+                        an exception message.</para>
+          </note>
+          <variablelist>
+            <varlistentry>
+              <term>name=”grub2|systemd_boot|isolinux|grub2_s390x_emu”:</term>
+              <listitem>
+                <para>Specifies the bootloader to use for this image.</para>
+                <note>
+                  <para>systemd_boot ESP size</para>
+                  <para>The implementation to support systemd-boot reads all
+                                    data from the ESP (EFI Standard Partition). This also
+                                    includes the kernel and initrd which requires the size
+                                    of the ESP to be configured appropriately. By default
+                                    KIWI NG configures the ESP with 20MB. For systemd_boot
+                                    this is usually too small and can be changed with the
+                                    <literal>efipartsize</literal> attribute. Reading boot relevant files
+                                    from another filesystem requires to provide alternative
+                                    EFI filesystem drivers e.g efifs and also needs
+                                    adaptions on the setup of <literal>bootctl</literal>.</para>
+                </note>
+                <note>
+                  <para>systemd_boot and shim</para>
+                  <para>At the moment the EFI image provided along with systemd-boot
+                                    is not compatible with the shim signed loader provided in an
+                                    extra effort by the distributions.</para>
+                </note>
+              </listitem>
+            </varlistentry>
+          </variablelist>
           <para>In addition to the mandatory name attribute, the following optional
                     attributes are supported:</para>
           <variablelist>
@@ -5512,6 +5640,23 @@ $ kiwi-ng system create $ARGS</screen>
                         complete disk setup, so there cannot be any overlapping volumes
                         or mount points. As a result, whatever is written in <literal>&lt;partitions&gt;</literal>
                         cannot be expressed in the same way in <literal>&lt;volumes&gt;</literal>.</para>
+          </note>
+        </section>
+        <section xml:id="preferences-type-bootloader-bootloadersettings">
+          <title>&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;&lt;bootloadersettings&gt;</title>
+          <para>Used to specify custom arguments for the tools called to setup
+                    secure boot e.g <literal>shiminstall</literal>, installation of the bootloader
+                    e.g <literal>grub-install</literal> or configuration of the bootloader e.g <literal>grub-mkconfig</literal>.</para>
+          <screen language="xml">&lt;bootloadersettings&gt;
+    &lt;shimoption name="--suse-enable-tpm"/&gt;
+    &lt;shimoption name="--bootloader-id" value="some-id"/&gt;
+    &lt;installoption name="--suse-enable-tpm"/&gt;
+    &lt;configoption name="--debug"/&gt;
+&lt;/bootloadersettings&gt;</screen>
+          <note>
+            <para>{kiwi-ng} does not judge on the given parameters and if the provided
+                        data is effectively used depends on the individual bootloader
+                        implementation.</para>
           </note>
         </section>
         <section xml:id="preferences-type-partitions">
@@ -8681,7 +8826,7 @@ vagrant ssh</screen>
             there are the following limitations:</para>
       <procedure>
         <step>
-          <para>The root partition is always the last one</para>
+          <para>By default the root partition is always the last one</para>
           <para>Disk imags build with KIWI NG are designed to be expandable.
                     For this feature to work the partition containing the system
                     rootfs must always be the last one. If this is unwanted for
@@ -8690,10 +8835,9 @@ vagrant ssh</screen>
                     table. For details lookup <literal>spare_part</literal> in <xref linkend="image-description-elements"/></para>
         </step>
         <step>
-          <para>There can be no gaps in the partition table</para>
-          <para>The way partitions are configured does not allow for gaps in the
-                    table. As of today there was no use case were it made sense to
-                    leave a gap between table entries. However, leaving some space
+          <para>By default there are no gaps in the partition table</para>
+          <para>The way partitions are configured is done such that there are no
+                    gaps in the table of the image. However, leaving some space
                     free at the <emphasis role="bold">end</emphasis> of the partition geometry is possible in the
                     following ways:</para>
           <itemizedlist>
@@ -8702,9 +8846,19 @@ vagrant ssh</screen>
                 <emphasis role="bold">Deploy with unpartitioned free space.</emphasis>
               </para>
               <para>To leave space unpartitioned on first boot of a disk image
-                            it is possible to configured an <literal>&lt;oem-systemsize&gt;</literal> which is
+                            it is possible to configure an <literal>&lt;oem-systemsize&gt;</literal> which is
                             smaller than the disk the image gets deployed to. Details
                             about this setting can be found in <xref linkend="image-description-elements"/></para>
+            </listitem>
+            <listitem>
+              <para>
+                <emphasis role="bold">Build with unpartitioned free space.</emphasis>
+              </para>
+              <para>To leave space unpartitioned at build time of the image it
+                            is possible to disable <literal>&lt;oem-resize&gt;</literal> and configure an
+                            <literal>&lt;oem-systemsize&gt;</literal> which is smaller than the kiwi calculated
+                            disk size or the fixed setting for the disk size via the
+                            <literal>size&gt;</literal> element.</para>
             </listitem>
             <listitem>
               <para>
@@ -9758,7 +9912,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.24.49 inside of the Open Build Service.
+                KIWI NG in version 9.24.59 inside of the Open Build Service.
                 A tutorial on the Open Buildservice itself can be found here:
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
       </note>
@@ -10174,7 +10328,7 @@ osc ci</screen>
       </para>
       <para>This document describes the development process of KIWI NG
                 and how you can be part of it. This description applies
-                to version 9.24.49.</para>
+                to version 9.24.59.</para>
     </note>
     <section xml:id="using-kiwi-ng-in-a-python-project" xml:base="contributing/kiwi_from_python">
       <title>Using KIWI NG in a Python Project</title>
@@ -10184,7 +10338,7 @@ osc ci</screen>
         </para>
         <para>KIWI NG is provided as python module under the <emphasis role="bold">kiwi</emphasis> namespace.
                 It is available for the python 3 version. The following
-                description applies for KIWI NG version 9.24.49.</para>
+                description applies for KIWI NG version 9.24.59.</para>
       </note>
       <para>KIWI NG can also function as a module for other Python projects.
             The following example demonstrates how to read an existing image
@@ -10428,7 +10582,7 @@ def test_RmWorks(container_per_test):
         <para>Depending on the demand for custom plugins, the interface
                 to hook in code into other parts of the KIWI NG processing
                 needs to be extended.</para>
-        <para>This description applies for version 9.24.49.</para>
+        <para>This description applies for version 9.24.59.</para>
       </note>
       <section xml:id="the-extension-section">
         <title>The &lt;extension&gt; Section</title>
@@ -10850,7 +11004,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
   <chapter xml:id="api" xml:base="api">
     <title>Python API</title>
     <note>
-      <para>This API documentation covers KIWI NG 9.24.49</para>
+      <para>This API documentation covers KIWI NG 9.24.59</para>
     </note>
     <section xml:id="kiwi-package" xml:base="api/kiwi">
       <title>kiwi Package</title>
@@ -11187,7 +11341,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.error">
                   <term>
-                    <property>kiwi.command.command_call_type.error</property>
+                    <literal>kiwi.command.command_call_type.error</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -11197,7 +11351,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.error_available">
                   <term>
-                    <property>kiwi.command.command_call_type.error_available</property>
+                    <literal>kiwi.command.command_call_type.error_available</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -11207,7 +11361,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.output">
                   <term>
-                    <property>kiwi.command.command_call_type.output</property>
+                    <literal>kiwi.command.command_call_type.output</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -11217,7 +11371,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.output_available">
                   <term>
-                    <property>kiwi.command.command_call_type.output_available</property>
+                    <literal>kiwi.command.command_call_type.output_available</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -11227,7 +11381,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.process">
                   <term>
-                    <property>kiwi.command.command_call_type.process</property>
+                    <literal>kiwi.command.command_call_type.process</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 4</para>
@@ -11247,7 +11401,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_type.error">
                   <term>
-                    <property>kiwi.command.command_type.error</property>
+                    <literal>kiwi.command.command_type.error</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -11257,7 +11411,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_type.output">
                   <term>
-                    <property>kiwi.command.command_type.output</property>
+                    <literal>kiwi.command.command_type.output</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -11267,7 +11421,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_type.returncode">
                   <term>
-                    <property>kiwi.command.command_type.returncode</property>
+                    <literal>kiwi.command.command_type.returncode</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -12632,6 +12786,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_exclude_list_for_removed_files_detection">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_exclude_list_for_removed_files_detection</property>
+                  </term>
+                  <listitem>
+                    <para>Provides list of files/dirs to exclude from the removed
+                                files detection in a delta root build</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_exclude_list_for_root_data_sync">
                   <term>
                     <property>kiwi.defaults.Defaults.get_exclude_list_for_root_data_sync</property>
@@ -13461,6 +13626,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_part_mapper_tool">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_part_mapper_tool</property>
+                  </term>
+                  <listitem>
+                    <para>Provides the default partition mapper tool name.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>str</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.defaults.Defaults.get_platform_name">
                   <term>
                     <property>kiwi.defaults.Defaults.get_platform_name</property>
@@ -13566,6 +13755,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.defaults.Defaults.get_removed_files_name">
+                  <term>
+                    <property>kiwi.defaults.Defaults.get_removed_files_name</property>
+                  </term>
+                  <listitem>
+                    <para>Provides base file name to store removed files
+                                in a delta root build</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -14236,7 +14436,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.grub_loader_type.binaryname">
                   <term>
-                    <property>kiwi.defaults.grub_loader_type.binaryname</property>
+                    <literal>kiwi.defaults.grub_loader_type.binaryname</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -14246,7 +14446,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.grub_loader_type.filename">
                   <term>
-                    <property>kiwi.defaults.grub_loader_type.filename</property>
+                    <literal>kiwi.defaults.grub_loader_type.filename</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -14266,7 +14466,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.shim_loader_type.binaryname">
                   <term>
-                    <property>kiwi.defaults.shim_loader_type.binaryname</property>
+                    <literal>kiwi.defaults.shim_loader_type.binaryname</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -14276,7 +14476,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.shim_loader_type.filename">
                   <term>
-                    <property>kiwi.defaults.shim_loader_type.filename</property>
+                    <literal>kiwi.defaults.shim_loader_type.filename</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -14296,7 +14496,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.unit_type.byte">
                   <term>
-                    <property>kiwi.defaults.unit_type.byte</property>
+                    <literal>kiwi.defaults.unit_type.byte</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -14306,7 +14506,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.unit_type.gb">
                   <term>
-                    <property>kiwi.defaults.unit_type.gb</property>
+                    <literal>kiwi.defaults.unit_type.gb</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -14316,7 +14516,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.unit_type.kb">
                   <term>
-                    <property>kiwi.defaults.unit_type.kb</property>
+                    <literal>kiwi.defaults.unit_type.kb</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -14326,7 +14526,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.unit_type.mb">
                   <term>
-                    <property>kiwi.defaults.unit_type.mb</property>
+                    <literal>kiwi.defaults.unit_type.mb</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -16836,6 +17036,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.mount_manager.MountManager.overlay_mount">
+                  <term>
+                    <property>kiwi.mount_manager.MountManager.overlay_mount</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.mount_manager.MountManager.tmpfs_mount">
                   <term>
                     <property>kiwi.mount_manager.MountManager.tmpfs_mount</property>
@@ -17091,6 +17301,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             </listitem>
                             <listitem>
                               <para><literal>path</literal> () – path name below root</para>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.path.Path.rename">
+                  <term>
+                    <property>kiwi.path.Path.rename</property>
+                  </term>
+                  <listitem>
+                    <para>Move path from cur name to new name</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Parameters</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>cur</literal> () – current path name</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>new</literal> () – new path name</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -17644,7 +17879,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.dracut_module_type.min_version">
                   <term>
-                    <property>kiwi.runtime_checker.dracut_module_type.min_version</property>
+                    <literal>kiwi.runtime_checker.dracut_module_type.min_version</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -17654,7 +17889,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.dracut_module_type.package">
                   <term>
-                    <property>kiwi.runtime_checker.dracut_module_type.package</property>
+                    <literal>kiwi.runtime_checker.dracut_module_type.package</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -17868,6 +18103,44 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     </variablelist>
                     <para>if no or invalid configuration exists the default tool category
                                 from the Defaults class is returned</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>A name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>str</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.runtime_config.RuntimeConfig.get_mapper_tool">
+                  <term>
+                    <property>kiwi.runtime_config.RuntimeConfig.get_mapper_tool</property>
+                  </term>
+                  <listitem>
+                    <para>Return partition mapper tool</para>
+                    <variablelist>
+                      <varlistentry>
+                        <term>mapper:</term>
+                        <listitem>
+                          <itemizedlist>
+                            <listitem>
+                              <para>part_mapper: partx</para>
+                            </listitem>
+                          </itemizedlist>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                    <para>if no configuration exists the default tool from the
+                                Defaults class is returned</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Returns</term>
@@ -18743,6 +19016,47 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_bootloader_config_options">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_bootloader_config_options</property>
+                  </term>
+                  <listitem>
+                    <para>List of custom options used in the bootloader configuration</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_bootloader_install_options">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_bootloader_install_options</property>
+                  </term>
+                  <listitem>
+                    <para>List of custom options used in the bootloader installation</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_bootloader_options">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_bootloader_options</property>
+                  </term>
+                  <listitem>
+                    <para>List of custom options used in the process to
+                                run bootloader setup workloads</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_bootloader_shim_options">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_bootloader_shim_options</property>
+                  </term>
+                  <listitem>
+                    <para>List of custom options used in the process to setup secure boot</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.XMLState.get_bootstrap_archives">
                   <term>
                     <property>kiwi.xml_state.XMLState.get_bootstrap_archives</property>
@@ -19025,6 +19339,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Return type</term>
                         <listitem>
                           <para>str</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bootloader_settings_section">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bootloader_settings_section</property>
+                  </term>
+                  <listitem>
+                    <para>First bootloadersettings section from the build
+                                type bootloader section</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>&lt;bootloadersettings&gt; section reference</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>xml_parse::bootloadersettings</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -20060,6 +20399,30 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Return type</term>
                         <listitem>
                           <para>bool</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_oemconfig_oem_systemsize">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_oemconfig_oem_systemsize</property>
+                  </term>
+                  <listitem>
+                    <para>State value to retrieve root partition size</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>Content of &lt;oem-systemsize&gt; section value</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>int</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -21360,7 +21723,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.description_type.author">
                   <term>
-                    <property>kiwi.xml_state.description_type.author</property>
+                    <literal>kiwi.xml_state.description_type.author</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -21370,7 +21733,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.description_type.contact">
                   <term>
-                    <property>kiwi.xml_state.description_type.contact</property>
+                    <literal>kiwi.xml_state.description_type.contact</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -21380,7 +21743,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.description_type.specification">
                   <term>
-                    <property>kiwi.xml_state.description_type.specification</property>
+                    <literal>kiwi.xml_state.description_type.specification</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -21400,7 +21763,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.package_type.package_section">
                   <term>
-                    <property>kiwi.xml_state.package_type.package_section</property>
+                    <literal>kiwi.xml_state.package_type.package_section</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -21410,7 +21773,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.package_type.packages_section">
                   <term>
-                    <property>kiwi.xml_state.package_type.packages_section</property>
+                    <literal>kiwi.xml_state.package_type.packages_section</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -21430,7 +21793,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.size_type.additive">
                   <term>
-                    <property>kiwi.xml_state.size_type.additive</property>
+                    <literal>kiwi.xml_state.size_type.additive</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -21440,7 +21803,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.size_type.mbytes">
                   <term>
-                    <property>kiwi.xml_state.size_type.mbytes</property>
+                    <literal>kiwi.xml_state.size_type.mbytes</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -21460,7 +21823,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.attributes">
                   <term>
-                    <property>kiwi.xml_state.volume_type.attributes</property>
+                    <literal>kiwi.xml_state.volume_type.attributes</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 6</para>
@@ -21470,7 +21833,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.fullsize">
                   <term>
-                    <property>kiwi.xml_state.volume_type.fullsize</property>
+                    <literal>kiwi.xml_state.volume_type.fullsize</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 4</para>
@@ -21480,7 +21843,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.is_root_volume">
                   <term>
-                    <property>kiwi.xml_state.volume_type.is_root_volume</property>
+                    <literal>kiwi.xml_state.volume_type.is_root_volume</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 7</para>
@@ -21490,7 +21853,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.label">
                   <term>
-                    <property>kiwi.xml_state.volume_type.label</property>
+                    <literal>kiwi.xml_state.volume_type.label</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 5</para>
@@ -21500,7 +21863,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.mountpoint">
                   <term>
-                    <property>kiwi.xml_state.volume_type.mountpoint</property>
+                    <literal>kiwi.xml_state.volume_type.mountpoint</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -21510,7 +21873,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.name">
                   <term>
-                    <property>kiwi.xml_state.volume_type.name</property>
+                    <literal>kiwi.xml_state.volume_type.name</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -21520,7 +21883,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.realpath">
                   <term>
-                    <property>kiwi.xml_state.volume_type.realpath</property>
+                    <literal>kiwi.xml_state.volume_type.realpath</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -21530,7 +21893,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.size">
                   <term>
-                    <property>kiwi.xml_state.volume_type.size</property>
+                    <literal>kiwi.xml_state.volume_type.size</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -21885,7 +22248,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                           <para>
                             <screen language="python">boot_names_type(
     kernel_name='INSTALLED_KERNEL',
-    initrd_name='DRACUT_OUTPUT_NAME'
+    initrd_name='DRACUT_OUTPUT_NAME',
+    kernel_version='KERNEL_VERSION',
+    kernel_filename='KERNEL_FILE_NAME'
 )</screen>
                           </para>
                         </listitem>
@@ -22135,7 +22500,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.initrd_name">
                   <term>
-                    <property>kiwi.boot.image.base.boot_names_type.initrd_name</property>
+                    <literal>kiwi.boot.image.base.boot_names_type.initrd_name</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -22143,12 +22508,32 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.kernel_filename">
+                  <term>
+                    <literal>kiwi.boot.image.base.boot_names_type.kernel_filename</literal>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 3</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.kernel_name">
                   <term>
-                    <property>kiwi.boot.image.base.boot_names_type.kernel_name</property>
+                    <literal>kiwi.boot.image.base.boot_names_type.kernel_name</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.kernel_version">
+                  <term>
+                    <literal>kiwi.boot.image.base.boot_names_type.kernel_version</literal>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 2</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -22601,7 +22986,17 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>boot_device</literal> () – boot device node</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>boot_device</literal> () – boot device node. If no extra boot device exists
+                                                    then boot device equals root device. In case of
+                                                    an overlay setup the boot device equals the
+                                                    readonly root device</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>write_device</literal> () – optional overlay write device node</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -23149,6 +23544,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>root_device</literal> () – root device node</para>
                             </listitem>
                             <listitem>
+                              <para><literal>write_device</literal> () – overlay root write device node</para>
+                            </listitem>
+                            <listitem>
                               <para><literal>boot_options</literal> () – kernel options as string</para>
                             </listitem>
                           </itemizedlist>
@@ -23418,6 +23816,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                           <itemizedlist>
                             <listitem>
                               <para><literal>root_device</literal> () – root device node</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>write_device</literal> () – overlay root write device node</para>
                             </listitem>
                             <listitem>
                               <para><literal>boot_options</literal> () – kernel options as string</para>
@@ -25042,6 +25443,12 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             </listitem>
                             <listitem>
                               <para><literal>base_image</literal> () – archive used as a base image</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>ensure_empty_tmpdirs</literal> () – exclude system tmp directories</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>compress_archive</literal> () – compress container archive</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -27183,7 +27590,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>root_bind</literal> () – unused</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>root_bind</literal> () – unused</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>delta_root</literal> () – unused</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -27621,7 +28035,14 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                       <varlistentry>
                         <term>Parameters</term>
                         <listitem>
-                          <para><literal>root_bind</literal> () – unused</para>
+                          <itemizedlist>
+                            <listitem>
+                              <para><literal>root_bind</literal> () – unused</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>delta_root</literal> () – unused</para>
+                            </listitem>
+                          </itemizedlist>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -30265,7 +30686,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.clone">
                   <term>
-                    <property>kiwi.storage.disk.ptable_entry_type.clone</property>
+                    <literal>kiwi.storage.disk.ptable_entry_type.clone</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -30275,7 +30696,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.filesystem">
                   <term>
-                    <property>kiwi.storage.disk.ptable_entry_type.filesystem</property>
+                    <literal>kiwi.storage.disk.ptable_entry_type.filesystem</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 5</para>
@@ -30285,7 +30706,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.mbsize">
                   <term>
-                    <property>kiwi.storage.disk.ptable_entry_type.mbsize</property>
+                    <literal>kiwi.storage.disk.ptable_entry_type.mbsize</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -30295,7 +30716,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.mountpoint">
                   <term>
-                    <property>kiwi.storage.disk.ptable_entry_type.mountpoint</property>
+                    <literal>kiwi.storage.disk.ptable_entry_type.mountpoint</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 4</para>
@@ -30305,7 +30726,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.partition_name">
                   <term>
-                    <property>kiwi.storage.disk.ptable_entry_type.partition_name</property>
+                    <literal>kiwi.storage.disk.ptable_entry_type.partition_name</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -30315,7 +30736,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.partition_type">
                   <term>
-                    <property>kiwi.storage.disk.ptable_entry_type.partition_type</property>
+                    <literal>kiwi.storage.disk.ptable_entry_type.partition_type</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -32637,7 +33058,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.kernel_type.filename">
                   <term>
-                    <property>kiwi.system.kernel.kernel_type.filename</property>
+                    <literal>kiwi.system.kernel.kernel_type.filename</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -32647,7 +33068,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.kernel_type.name">
                   <term>
-                    <property>kiwi.system.kernel.kernel_type.name</property>
+                    <literal>kiwi.system.kernel.kernel_type.name</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -32657,7 +33078,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.kernel_type.version">
                   <term>
-                    <property>kiwi.system.kernel.kernel_type.version</property>
+                    <literal>kiwi.system.kernel.kernel_type.version</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -32677,7 +33098,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.xen_hypervisor_type.filename">
                   <term>
-                    <property>kiwi.system.kernel.xen_hypervisor_type.filename</property>
+                    <literal>kiwi.system.kernel.xen_hypervisor_type.filename</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -32687,7 +33108,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.xen_hypervisor_type.name">
                   <term>
-                    <property>kiwi.system.kernel.xen_hypervisor_type.name</property>
+                    <literal>kiwi.system.kernel.xen_hypervisor_type.name</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -33261,7 +33682,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_file_type.compress">
                   <term>
-                    <property>kiwi.system.result.result_file_type.compress</property>
+                    <literal>kiwi.system.result.result_file_type.compress</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -33271,7 +33692,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_file_type.filename">
                   <term>
-                    <property>kiwi.system.result.result_file_type.filename</property>
+                    <literal>kiwi.system.result.result_file_type.filename</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -33281,7 +33702,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_file_type.shasum">
                   <term>
-                    <property>kiwi.system.result.result_file_type.shasum</property>
+                    <literal>kiwi.system.result.result_file_type.shasum</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -33291,7 +33712,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_file_type.use_for_bundle">
                   <term>
-                    <property>kiwi.system.result.result_file_type.use_for_bundle</property>
+                    <literal>kiwi.system.result.result_file_type.use_for_bundle</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -33311,7 +33732,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.A">
                   <term>
-                    <property>kiwi.system.result.result_name_tags.A</property>
+                    <literal>kiwi.system.result.result_name_tags.A</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -33321,7 +33742,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.I">
                   <term>
-                    <property>kiwi.system.result.result_name_tags.I</property>
+                    <literal>kiwi.system.result.result_name_tags.I</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -33331,7 +33752,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.M">
                   <term>
-                    <property>kiwi.system.result.result_name_tags.M</property>
+                    <literal>kiwi.system.result.result_name_tags.M</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 5</para>
@@ -33341,7 +33762,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.N">
                   <term>
-                    <property>kiwi.system.result.result_name_tags.N</property>
+                    <literal>kiwi.system.result.result_name_tags.N</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -33351,7 +33772,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.P">
                   <term>
-                    <property>kiwi.system.result.result_name_tags.P</property>
+                    <literal>kiwi.system.result.result_name_tags.P</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -33361,7 +33782,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.T">
                   <term>
-                    <property>kiwi.system.result.result_name_tags.T</property>
+                    <literal>kiwi.system.result.result_name_tags.T</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 4</para>
@@ -33371,7 +33792,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.m">
                   <term>
-                    <property>kiwi.system.result.result_name_tags.m</property>
+                    <literal>kiwi.system.result.result_name_tags.m</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 6</para>
@@ -33381,7 +33802,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.p">
                   <term>
-                    <property>kiwi.system.result.result_name_tags.p</property>
+                    <literal>kiwi.system.result.result_name_tags.p</literal>
                   </term>
                   <listitem>
                     <para>Alias for field number 7</para>
@@ -33640,6 +34061,26 @@ end</screen>
                         <para><literal>root_dir</literal> () – root directory path name</para>
                       </listitem>
                     </itemizedlist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.setup.SystemSetup.call_config_host_overlay_script">
+                  <term>
+                    <property>kiwi.system.setup.SystemSetup.call_config_host_overlay_script</property>
+                  </term>
+                  <listitem>
+                    <para>Call config-host-overlay.sh script _NON_ chrooted</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.setup.SystemSetup.call_config_overlay_script">
+                  <term>
+                    <property>kiwi.system.setup.SystemSetup.call_config_overlay_script</property>
+                  </term>
+                  <listitem>
+                    <para>Call config-overlay.sh script chrooted</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -34566,6 +35007,16 @@ end</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.system.uri.Uri.print_sensitive">
+                  <term>
+                    <property>kiwi.system.uri.Uri.print_sensitive</property>
+                  </term>
+                  <listitem>
+                    <para/>
                   </listitem>
                 </varlistentry>
               </variablelist>
