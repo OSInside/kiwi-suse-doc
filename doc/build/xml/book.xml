@@ -3,12 +3,12 @@
       type="application/relax-ng-compact-syntax"
      ?>
 <book xmlns="http://docbook.org/ns/docbook" xml:lang="en" version="5.1" xml:id="building-linux-system-appliances-with-kiwi-next-generation-kiwi-ng-version">
-  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.24.59</title>
+  <title>Building Linux System Appliances with KIWI Next Generation (KIWI NG) 9.25.12</title>
   <info/>
   <preface>
     <title>Preface</title>
     <note>
-      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.24.59- the command line
+      <para>This documentation covers KIWI Next Generation (KIWI NG) 9.25.12- the command line
                 utility to build Linux system appliances. KIWI NG is stable and all
                 new features, bugfixes, and improvements will be developed here.
                 Versions older or equal to v7.x.x are out of maintenance and do
@@ -205,7 +205,7 @@
       <para>This document provides a conceptual overview about the steps
                 of creating an image with KIWI NG. It also explains the terminology
                 regarding the concept and process when building system images
-                with KIWI NG 9.24.59.</para>
+                with KIWI NG 9.25.12.</para>
     </note>
     <section xml:id="basic-workflow" xml:base="overview/workflow">
       <title>Basic Workflow</title>
@@ -225,7 +225,7 @@
                 complete the system usually reboots and enters a configuration procedure
                 upon start-up. The configuration may be fully automatic or it may include
                 user interaction.</para>
-        <para>This description applies for version 9.24.59.</para>
+        <para>This description applies for version 9.25.12.</para>
       </note>
       <para>A system image (usually called “image”), is a <emphasis>complete installation</emphasis> of a Linux
             system within a file. The image represents an operational system and,
@@ -497,6 +497,37 @@ $ sudo dnf install python3-kiwi</screen>
         </varlistentry>
       </variablelist>
     </section>
+    <section xml:id="installation-for-suse-linux-enterprise">
+      <title>Installation for SUSE Linux Enterprise</title>
+      <para>KIWI NG is available and supported for SUSE Linux Enterprise (SLE).
+                The recommended and supported way is to install KIWI NG by using zypper.</para>
+      <para>However, if you rely on some plugins for KIWI NG, either the plugin
+                itself or any dependencies might not be available for your service pack.</para>
+      <para>If you want to proceed anyway, keep these things in mind:</para>
+      <itemizedlist>
+        <listitem>
+          <para>Plugins that are not provided by SLE are not supported.</para>
+        </listitem>
+        <listitem>
+          <para>You probably need to install dependencies via <command>pip</command>.
+                        The <command>pip</command> command installs these dependencies from PyPI
+                        (the Python Package Index).
+                        However, this approach will not update the RPM database.</para>
+        </listitem>
+        <listitem>
+          <para>Depending on your security concerns, installing Python packages
+                        outside the secured SLE installation may not be desirable.</para>
+        </listitem>
+        <listitem>
+          <para>Python packages installed from PyPI won’t contain any SUSE
+                        customizations.</para>
+        </listitem>
+        <listitem>
+          <para>Depending on your extension and its dependencies, you might even need
+                        a more recent Python version.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
     <section xml:id="example-descriptions">
       <title>Example Appliance Descriptions</title>
       <para>There are two places for example appliance descriptions:</para>
@@ -535,7 +566,7 @@ $ tree -L 3 kiwi/build-tests</screen>
       </para>
       <para>This document describes how to start working with KIWI NG,
                 an OS appliance builder. This description applies for
-                version 9.24.59.</para>
+                version 9.25.12.</para>
     </note>
     <section xml:id="before-you-start">
       <title>Before you start</title>
@@ -600,7 +631,7 @@ $ tree -L 3 kiwi/build-tests</screen>
     <title>Working from the Command Line</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) commands
-                for version 9.24.59.</para>
+                for version 9.25.12.</para>
     </note>
     <section xml:id="kiwi-ng" xml:base="commands/kiwi">
       <title>kiwi-ng</title>
@@ -1149,10 +1180,10 @@ kiwi-ng system prepare help</screen>
                   <para>
                     <emphasis role="bold">alias</emphasis>
                   </para>
-                  <para>An alias name for the repository. If not specified kiwi calculates
-                                    an alias name as result from a sha sum. The sha sum is used to uniquely
-                                    identify the repository, but not very expressive. We recommend to
-                                    set an expressive and uniq alias name.</para>
+                  <para>An alias name for the repository. If not specified kiwi generate
+                                    an alias name as result of hex representation from uuid4. The hex
+                                    is used to uniquely identify the repository, but not very expressive.
+                                    We recommend to set an expressive and uniq alias name.</para>
                 </listitem>
                 <listitem>
                   <para>
@@ -1487,10 +1518,10 @@ kiwi-ng system build help</screen>
                   <para>
                     <emphasis role="bold">alias</emphasis>
                   </para>
-                  <para>An alias name for the repository. If not specified kiwi calculates
-                                    an alias name as result from a sha sum. The sha sum is used to uniquely
-                                    identify the repository, but not very expressive. We recommend to
-                                    set an expressive and uniq alias name.</para>
+                  <para>An alias name for the repository. If not specified kiwi generate
+                                    an alias name as result of hex representation from uuid4. The hex
+                                    is used to uniquely identify the repository, but not very expressive.
+                                    We recommend to set an expressive and uniq alias name.</para>
                 </listitem>
                 <listitem>
                   <para>
@@ -2096,7 +2127,7 @@ kiwi-ng image info help</screen>
     <title>KIWI Plugins</title>
     <note>
       <para>This document provides a list of the existing KIWI Next Generation (KIWI NG) plugins
-                which provides extended functionality for version 9.24.59.</para>
+                which provides extended functionality for version 9.25.12.</para>
     </note>
     <section xml:id="self-contained" xml:base="plugins/self_contained">
       <title>Building in a Self-Contained Environment</title>
@@ -2434,7 +2465,7 @@ $ vi container_to_VM_layer/config.kiwi</screen>
         <emphasis role="bold">Abstract</emphasis>
       </para>
       <para>The following sections describe the concept and general workflow
-                of building appliances with KIWI NG 9.24.59.</para>
+                of building appliances with KIWI NG 9.25.12.</para>
     </note>
     <section xml:id="systemdeps" xml:base="concept_and_workflow/systemdeps">
       <title>Host Requirements To Build Images</title>
@@ -2473,11 +2504,25 @@ $ vi container_to_VM_layer/config.kiwi</screen>
           <listitem>
             <itemizedlist>
               <listitem>
-                <para>Supports building <literal>docker</literal> and <literal>appx</literal> image types.</para>
+                <para>Supports building <literal>OCI</literal> image types used with <literal>docker</literal>, <literal>podman</literal>.</para>
               </listitem>
               <listitem>
                 <para>Installs the distribution specific tool chain to build OCI
-                                compliant and WSL container images.</para>
+                                compliant container images.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><literal>kiwi-systemdeps-containers-wsl</literal>:</term>
+          <listitem>
+            <itemizedlist>
+              <listitem>
+                <para>Supports building <literal>appx</literal> image types.</para>
+              </listitem>
+              <listitem>
+                <para>Installs the distribution specific tool chain to build
+                                WSL compliant container images on Windows systems.</para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -2650,9 +2695,8 @@ $ vi container_to_VM_layer/config.kiwi</screen>
           <listitem>
             <para><literal>alias</literal>: Name to be used for this repository, it will appear as the
                         repository’s name in the image, which is visible via <literal>zypper repos</literal> or
-                        <literal>dnf repolist</literal>. KIWI NG will construct an alias from the path in the
-                        <literal>source</literal> child element (replacing each <literal>/</literal> with a <literal>_</literal>), if no value is
-                        given.</para>
+                        <literal>dnf repolist</literal>. KIWI NG will construct an alias name as result of hex
+                        representation from uuid4, if no value is given.</para>
           </listitem>
           <listitem>
             <para><literal>repository_gpgcheck</literal>: Specify whether or not this specific repository is
@@ -4151,13 +4195,13 @@ $ kiwi-ng system create $ARGS</screen>
     <title>Image Description</title>
     <note>
       <para>This document explains the toplevel structure of the
-                KIWI NG image description document for version 9.24.59</para>
+                KIWI NG image description document for version 9.25.12</para>
     </note>
     <section xml:id="image-description-elements" xml:base="image_description/elements">
       <title>Image Description Elements</title>
       <note>
         <para>This document provides a reference for the elements
-                and attributes of the KIWI NG XML document in version 9.24.59</para>
+                and attributes of the KIWI NG XML document in version 9.25.12</para>
       </note>
       <section xml:id="sec-image">
         <title>&lt;image&gt;</title>
@@ -4323,7 +4367,7 @@ $ kiwi-ng system create $ARGS</screen>
                     <para>RedHat</para>
                   </entry>
                   <entry>
-                    <para>dnf</para>
+                    <para>dnf4 / dnf5</para>
                   </entry>
                 </row>
                 <row>
@@ -4439,7 +4483,7 @@ $ kiwi-ng system create $ARGS</screen>
                     manager to define the distribution release.</para>
           <note>
             <para>The release version information is currently
-                        used in dnf and microdnf package managers only. It might
+                        used in dnf/dnf5 and microdnf package managers only. It might
                         happen that it gets applied to the other package manager
                         backends as well. This will happen on demand though.</para>
           </note>
@@ -4591,6 +4635,30 @@ $ kiwi-ng system create $ARGS</screen>
               <listitem>
                 <para>Boolean parameter to activate filesystem quotas if
                                 the filesystem is <literal>btrfs</literal>. By default quotas are inactive.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>btrfs_set_default_volume=”true|false”:</term>
+              <listitem>
+                <para>Tell kiwi to explicitly make a volume the default volume
+                                This can be either <literal>/</literal> or the root subvolume or the root
+                                snapshot depending on the specified btrfs configuration
+                                attributes. By default btrfs_set_default_volume is set to: true
+                                If no default volume should be set, this attribute can be
+                                used to turn it off</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>btrfs_root_is_subvolume=”true|false”:</term>
+              <listitem>
+                <para>Tell kiwi to create a root volume to host (/) inside.
+                                The name of this subvolume is by default set to: <literal>@</literal>.
+                                The name of the subvolume can be changed via a volume entry
+                                of the form:</para>
+                <screen language="xml">&lt;systemdisk&gt;
+  &lt;volume name="@root=TOPLEVEL_NAME"/&gt;
+&lt;/systemdisk&gt;</screen>
+                <para>By default the creation of a toplevel volume is set to: <literal>true</literal></para>
               </listitem>
             </varlistentry>
             <varlistentry>
@@ -5695,7 +5763,7 @@ $ kiwi-ng system create $ARGS</screen>
 &lt;/repository&gt;</screen>
         <para>The mandatory repository element specifies the location and type of a
                 repository to be used by the package manager as a package installation
-                source. KIWI NG supports apt, dnf, pacman and zypper as package managers,
+                source. KIWI NG supports apt, dnf4, dnf5, pacman and zypper as package managers,
                 specified with the packagemanager element. The repository element has
                 the following optional attributes:</para>
         <variablelist>
@@ -5991,8 +6059,9 @@ $ kiwi-ng system create $ARGS</screen>
             <para>Collections on RedHat</para>
             <para>On RedHat based distributions collections are called <literal>groups</literal> and are
                         extra metadata. To get the names of these groups type the following
-                        command: <literal>$ dnf group list</literal>. Please note that group names are allowed
-                        to contain whitespace characters.</para>
+                        command: <literal>$ dnf group list -v</literal>. Please note that since KIWI NG v9.23.39,
+                        group IDs are allowed only, e.g.:
+                        &lt;namedCollection name=”minimal-environment”/&gt;</para>
           </note>
         </section>
         <section xml:id="packages-collectionmodule">
@@ -8043,12 +8112,12 @@ scp kiwi-test-image-disk.x86_64-1.15.3.config.bootoptions PXE_SERVER_IP:/srv/tft
           <para>Be sure to set the path to the ISO image, you can set your own menu name.
                     The drive identification for Grub2 can be checked at boot time
                     by pressing the ‘c’ key and typing ‘ls’.</para>
-          <screen language="bash">menuentry "Boot from openSUSE ISO" {
+          <screen language="bash">submenu "Boot from openSUSE ISO" {
      iso_path="(hd0,gpt2)/path/to/openSUSE.iso"
      export iso_path
      loopback loop "$iso_path"
      root=(loop)
-     configfile /boot/grub2/loopback.cfg
+     source /boot/grub2/loopback.cfg
      loopback --delete loop
 }</screen>
         </step>
@@ -9912,7 +9981,7 @@ touch /var/lib/YaST2/reconfig_system</screen>
           <emphasis role="bold">Abstract</emphasis>
         </para>
         <para>This document gives a brief overview how to build images with
-                KIWI NG in version 9.24.59 inside of the Open Build Service.
+                KIWI NG in version 9.25.12 inside of the Open Build Service.
                 A tutorial on the Open Buildservice itself can be found here:
                 <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://en.opensuse.org/openSUSE:Build_Service_Tutorial"/></para>
       </note>
@@ -10328,7 +10397,7 @@ osc ci</screen>
       </para>
       <para>This document describes the development process of KIWI NG
                 and how you can be part of it. This description applies
-                to version 9.24.59.</para>
+                to version 9.25.12.</para>
     </note>
     <section xml:id="using-kiwi-ng-in-a-python-project" xml:base="contributing/kiwi_from_python">
       <title>Using KIWI NG in a Python Project</title>
@@ -10338,7 +10407,7 @@ osc ci</screen>
         </para>
         <para>KIWI NG is provided as python module under the <emphasis role="bold">kiwi</emphasis> namespace.
                 It is available for the python 3 version. The following
-                description applies for KIWI NG version 9.24.59.</para>
+                description applies for KIWI NG version 9.25.12.</para>
       </note>
       <para>KIWI NG can also function as a module for other Python projects.
             The following example demonstrates how to read an existing image
@@ -10582,7 +10651,7 @@ def test_RmWorks(container_per_test):
         <para>Depending on the demand for custom plugins, the interface
                 to hook in code into other parts of the KIWI NG processing
                 needs to be extended.</para>
-        <para>This description applies for version 9.24.59.</para>
+        <para>This description applies for version 9.25.12.</para>
       </note>
       <section xml:id="the-extension-section">
         <title>The &lt;extension&gt; Section</title>
@@ -10711,7 +10780,25 @@ $ git remote add upstream https://github.com/OSInside/kiwi.git</screen>
     <section xml:id="install-required-operating-system-packages">
       <title>Install Required Operating System Packages</title>
       <para>KIWI NG requires the following additional packages which are not provided by
-                <command>pip</command>:</para>
+                <command>pip</command>. Those will be installed by calling the
+                <literal>install_devel_packages.sh</literal> helper script from the checked out Git
+                repository as follows:</para>
+      <screen language="shell-session">$ sudo helper/install_devel_packages.sh</screen>
+      <note>
+        <para>The helper script checks for the package managers <literal>zypper</literal> and
+                    <literal>dnf</literal> and associates a distribution with it. If you use a
+                    distribution that does not use one of those package managers
+                    the script will not install any packages and exit with an
+                    error message. In this case we recommend to take a look at
+                    the package list encoded in the script and adapt to your
+                    distribution and package manager as needed. Because distributions
+                    also changes on a regular basis it might happen that the
+                    <literal>install_devel_packages</literal> helper is not 100% accurate or outdated
+                    depending on your host system. In this case the following
+                    list describes the needed components and we are happy to
+                    received feedback or patches to make <literal>install_devel_packages</literal>
+                    a better experience.</para>
+      </note>
       <variablelist>
         <varlistentry>
           <term>XML processing libraries</term>
@@ -10722,7 +10809,8 @@ $ git remote add upstream https://github.com/OSInside/kiwi.git</screen>
         <varlistentry>
           <term>Python header files, GCC compiler and glibc-devel header files</term>
           <listitem>
-            <para>Required for python modules that hooks into shared library context</para>
+            <para>Required for python modules that hooks into shared library context
+                            and often named similar to: <literal>python3-devel</literal></para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -10737,12 +10825,9 @@ $ git remote add upstream https://github.com/OSInside/kiwi.git</screen>
             <para><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="https://github.com/koalaman/shellcheck">ShellCheck</link> script linter.</para>
           </listitem>
         </varlistentry>
-        <varlistentry>
-          <term>ISO creation program</term>
-          <listitem>
-            <para>One of <literal>xorriso</literal> (preferred) or <literal>genisoimage</literal>.</para>
-          </listitem>
-        </varlistentry>
+      </variablelist>
+      <para>ISO creation program <literal>xorriso</literal>.</para>
+      <variablelist>
         <varlistentry>
           <term>LaTeX documentation build environment</term>
           <listitem>
@@ -10753,31 +10838,24 @@ $ git remote add upstream https://github.com/OSInside/kiwi.git</screen>
         <varlistentry>
           <term>Host Requirements To Build Images</term>
           <listitem>
-            <para>A full set of tools needed to build images and provided by
+            <para>A set of tools needed to build images and provided by
                             the <literal>kiwi-systemdeps</literal> package</para>
           </listitem>
         </varlistentry>
       </variablelist>
-      <para>The above mentioned system packages will be installed by calling the
-                <literal>install_devel_packages.sh</literal> helper script from the checked out Git
-                repository as follows:</para>
-      <screen language="shell-session">$ sudo helper/install_devel_packages.sh</screen>
-      <note>
-        <para>The helper script checks for the package managers <literal>zypper</literal> and
-                    <literal>dnf</literal> and associates a distribution with it. If you use a
-                    distribution that does not use one of those package managers
-                    the script will not install any packages and exit with an
-                    error message. In this case we recommend to take a look at
-                    the package list encoded in the script and adapt to your
-                    distribution and package manager as needed.</para>
-      </note>
     </section>
     <section xml:id="create-a-python-virtual-development-environment">
       <title>Create a Python Virtual Development Environment</title>
       <para>The following commands initializes and activates a development
                 environment for Python 3:</para>
+      <note>
+        <para>KIWI NG uses tox to create a devel environment and to run
+                    tests, linters and other tasks in the tox generated environment.
+                    A tox version &gt;= 3.3 is required for this setup process. On your
+                    host a python version &gt;= 3.7 is required for tox to work.</para>
+      </note>
       <screen language="shell-session">$ tox -e devel
-$ source .tox/3/bin/activate</screen>
+$ source .tox/devel/bin/activate</screen>
       <para>The commands above automatically creates the application script
                 called <command>kiwi-ng</command>, which allows you to run KIWI NG from the
                 Python sources inside the virtual environment:</para>
@@ -10786,12 +10864,12 @@ $ source .tox/3/bin/activate</screen>
         <para>The virtualenv’s <literal>$PATH</literal> will not be taken into account when calling
                     KIWI NG via <command>sudo</command>! Use the absolute path to the KIWI NG executable
                     to run an actual build using your local changes:</para>
-        <screen language="shell-session">$ sudo $PWD/.tox/3/bin/kiwi-ng system build ...</screen>
+        <screen language="shell-session">$ sudo $PWD/.tox/devel/bin/kiwi-ng system build ...</screen>
       </warning>
       <para>To leave the development mode, run:</para>
       <screen language="shell-session">$ deactivate</screen>
       <para>To resume your work, <command>cd</command> into your local Git repository and call:</para>
-      <screen language="shell-session">$ source .tox/3/bin/activate</screen>
+      <screen language="shell-session">$ source .tox/devel/bin/activate</screen>
       <para>Alternatively, you can launch single commands inside the virtualenv without
                 sourcing it directly:</para>
       <screen language="shell-session">$ tox -e devel -- kiwi-ng --version</screen>
@@ -10807,7 +10885,7 @@ $ source .tox/3/bin/activate</screen>
       <para>We also include <literal>pytest-xdist</literal> in the development virtualenv which allows
                 to run the unit tests in parallel. It is turned off by default but can be
                 enabled via:</para>
-      <screen language="shell-session">$ tox "-n NUMBER_OF_PROCESSES"</screen>
+      <screen language="shell-session">$ tox -- "-n NUMBER_OF_PROCESSES"</screen>
       <para>where you can insert an arbitrary number as <literal>NUMBER_OF_PROCESSES</literal> (or a
                 shell command like <literal>$(nproc)</literal>). Note that the double quotes around <literal>-n
 NUMBER_OF_PROCESSES</literal> are required (otherwise <command>tox</command> will consume
@@ -10818,8 +10896,8 @@ NUMBER_OF_PROCESSES</literal> are required (otherwise <command>tox</command> wil
                 <command>tox</command> print a list of them:</para>
       <screen language="shell-session">$ tox -l</screen>
       <para>To only run a special target, use the <literal>-e</literal> option. The following
-                example runs the test cases for the Python 3.6 interpreter only:</para>
-      <screen language="shell-session">$ tox -e unit_py3_6</screen>
+                example runs the test cases for the Python 3.11 interpreter only:</para>
+      <screen language="shell-session">$ tox -e unit_py3_11</screen>
     </section>
     <section xml:id="create-a-branch-for-each-feature-or-bugfix">
       <title>Create a Branch for each Feature or Bugfix</title>
@@ -11004,7 +11082,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
   <chapter xml:id="api" xml:base="api">
     <title>Python API</title>
     <note>
-      <para>This API documentation covers KIWI NG 9.24.59</para>
+      <para>This API documentation covers KIWI NG 9.25.12</para>
     </note>
     <section xml:id="kiwi-package" xml:base="api/kiwi">
       <title>kiwi Package</title>
@@ -11341,7 +11419,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.error">
                   <term>
-                    <literal>kiwi.command.command_call_type.error</literal>
+                    <property>kiwi.command.command_call_type.error</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -11351,7 +11429,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.error_available">
                   <term>
-                    <literal>kiwi.command.command_call_type.error_available</literal>
+                    <property>kiwi.command.command_call_type.error_available</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -11361,7 +11439,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.output">
                   <term>
-                    <literal>kiwi.command.command_call_type.output</literal>
+                    <property>kiwi.command.command_call_type.output</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -11371,7 +11449,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.output_available">
                   <term>
-                    <literal>kiwi.command.command_call_type.output_available</literal>
+                    <property>kiwi.command.command_call_type.output_available</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -11381,7 +11459,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_call_type.process">
                   <term>
-                    <literal>kiwi.command.command_call_type.process</literal>
+                    <property>kiwi.command.command_call_type.process</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 4</para>
@@ -11401,7 +11479,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_type.error">
                   <term>
-                    <literal>kiwi.command.command_type.error</literal>
+                    <property>kiwi.command.command_type.error</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -11411,7 +11489,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_type.output">
                   <term>
-                    <literal>kiwi.command.command_type.output</literal>
+                    <property>kiwi.command.command_type.output</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -11421,7 +11499,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.command.command_type.returncode">
                   <term>
-                    <literal>kiwi.command.command_type.returncode</literal>
+                    <property>kiwi.command.command_type.returncode</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -13894,8 +13972,8 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Provides shim signed grub loader file path</para>
-                    <para>Searches distribution specific locations to find grub.efi
-                                below the given root path</para>
+                    <para>Searches distribution specific locations to find a grub
+                                EFI binary within the given root path</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Parameters</term>
@@ -14088,8 +14166,8 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Provides unsigned grub efi loader file path</para>
-                    <para>Searches distribution specific locations to find grub.efi
-                                below the given root path</para>
+                    <para>Searches distribution specific locations to find a distro
+                                grub EFI binary within the given root path</para>
                     <variablelist role="field_list">
                       <varlistentry>
                         <term>Parameters</term>
@@ -14436,7 +14514,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.grub_loader_type.binaryname">
                   <term>
-                    <literal>kiwi.defaults.grub_loader_type.binaryname</literal>
+                    <property>kiwi.defaults.grub_loader_type.binaryname</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -14446,7 +14524,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.grub_loader_type.filename">
                   <term>
-                    <literal>kiwi.defaults.grub_loader_type.filename</literal>
+                    <property>kiwi.defaults.grub_loader_type.filename</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -14466,7 +14544,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.shim_loader_type.binaryname">
                   <term>
-                    <literal>kiwi.defaults.shim_loader_type.binaryname</literal>
+                    <property>kiwi.defaults.shim_loader_type.binaryname</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -14476,7 +14554,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.shim_loader_type.filename">
                   <term>
-                    <literal>kiwi.defaults.shim_loader_type.filename</literal>
+                    <property>kiwi.defaults.shim_loader_type.filename</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -14496,7 +14574,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.unit_type.byte">
                   <term>
-                    <literal>kiwi.defaults.unit_type.byte</literal>
+                    <property>kiwi.defaults.unit_type.byte</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -14506,7 +14584,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.unit_type.gb">
                   <term>
-                    <literal>kiwi.defaults.unit_type.gb</literal>
+                    <property>kiwi.defaults.unit_type.gb</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -14516,7 +14594,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.unit_type.kb">
                   <term>
-                    <literal>kiwi.defaults.unit_type.kb</literal>
+                    <property>kiwi.defaults.unit_type.kb</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -14526,7 +14604,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.defaults.unit_type.mb">
                   <term>
-                    <literal>kiwi.defaults.unit_type.mb</literal>
+                    <property>kiwi.defaults.unit_type.mb</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -16982,6 +17060,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     </varlistentry>
                   </variablelist>
                 </listitem>
+                <listitem>
+                  <variablelist role="field_list">
+                    <varlistentry>
+                      <term>param dict attributes</term>
+                      <listitem>
+                        <para>optional attributes to store</para>
+                      </listitem>
+                    </varlistentry>
+                  </variablelist>
+                </listitem>
               </itemizedlist>
               <variablelist>
                 <varlistentry xml:id="kiwi.mount_manager.MountManager.bind_mount">
@@ -16990,6 +17078,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   </term>
                   <listitem>
                     <para>Bind mount the device to the mountpoint</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.mount_manager.MountManager.get_attributes">
+                  <term>
+                    <property>kiwi.mount_manager.MountManager.get_attributes</property>
+                  </term>
+                  <listitem>
+                    <para>Return attributes dict for this mount manager</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -17879,7 +17977,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.dracut_module_type.min_version">
                   <term>
-                    <literal>kiwi.runtime_checker.dracut_module_type.min_version</literal>
+                    <property>kiwi.runtime_checker.dracut_module_type.min_version</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -17889,7 +17987,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.runtime_checker.dracut_module_type.package">
                   <term>
-                    <literal>kiwi.runtime_checker.dracut_module_type.package</literal>
+                    <property>kiwi.runtime_checker.dracut_module_type.package</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -19438,6 +19536,31 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         <term>Return type</term>
                         <listitem>
                           <para>str</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.XMLState.get_build_type_bootloader_use_disk_password">
+                  <term>
+                    <property>kiwi.xml_state.XMLState.get_build_type_bootloader_use_disk_password</property>
+                  </term>
+                  <listitem>
+                    <para>Indicate whether the bootloader configuration should use the
+                                password protecting the encrypted root volume.</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>True|False</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>bool</para>
                         </listitem>
                       </varlistentry>
                     </variablelist>
@@ -21389,6 +21512,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             <screen language="python">[
     volume_type(
         name=volume_name,
+        parent=volume_parent,
         size=volume_size,
         realpath=path,
         mountpoint=path,
@@ -21723,7 +21847,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.description_type.author">
                   <term>
-                    <literal>kiwi.xml_state.description_type.author</literal>
+                    <property>kiwi.xml_state.description_type.author</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -21733,7 +21857,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.description_type.contact">
                   <term>
-                    <literal>kiwi.xml_state.description_type.contact</literal>
+                    <property>kiwi.xml_state.description_type.contact</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -21743,7 +21867,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.description_type.specification">
                   <term>
-                    <literal>kiwi.xml_state.description_type.specification</literal>
+                    <property>kiwi.xml_state.description_type.specification</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -21763,7 +21887,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.package_type.package_section">
                   <term>
-                    <literal>kiwi.xml_state.package_type.package_section</literal>
+                    <property>kiwi.xml_state.package_type.package_section</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -21773,7 +21897,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.package_type.packages_section">
                   <term>
-                    <literal>kiwi.xml_state.package_type.packages_section</literal>
+                    <property>kiwi.xml_state.package_type.packages_section</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -21793,7 +21917,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.size_type.additive">
                   <term>
-                    <literal>kiwi.xml_state.size_type.additive</literal>
+                    <property>kiwi.xml_state.size_type.additive</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -21803,7 +21927,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.size_type.mbytes">
                   <term>
-                    <literal>kiwi.xml_state.size_type.mbytes</literal>
+                    <property>kiwi.xml_state.size_type.mbytes</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -21823,27 +21947,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.attributes">
                   <term>
-                    <literal>kiwi.xml_state.volume_type.attributes</literal>
-                  </term>
-                  <listitem>
-                    <para>Alias for field number 6</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.xml_state.volume_type.fullsize">
-                  <term>
-                    <literal>kiwi.xml_state.volume_type.fullsize</literal>
-                  </term>
-                  <listitem>
-                    <para>Alias for field number 4</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-              <variablelist>
-                <varlistentry xml:id="kiwi.xml_state.volume_type.is_root_volume">
-                  <term>
-                    <literal>kiwi.xml_state.volume_type.is_root_volume</literal>
+                    <property>kiwi.xml_state.volume_type.attributes</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 7</para>
@@ -21851,9 +21955,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.xml_state.volume_type.label">
+                <varlistentry xml:id="kiwi.xml_state.volume_type.fullsize">
                   <term>
-                    <literal>kiwi.xml_state.volume_type.label</literal>
+                    <property>kiwi.xml_state.volume_type.fullsize</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 5</para>
@@ -21861,19 +21965,39 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.xml_state.volume_type.mountpoint">
+                <varlistentry xml:id="kiwi.xml_state.volume_type.is_root_volume">
                   <term>
-                    <literal>kiwi.xml_state.volume_type.mountpoint</literal>
+                    <property>kiwi.xml_state.volume_type.is_root_volume</property>
                   </term>
                   <listitem>
-                    <para>Alias for field number 3</para>
+                    <para>Alias for field number 8</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.label">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.label</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 6</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.mountpoint">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.mountpoint</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 4</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.name">
                   <term>
-                    <literal>kiwi.xml_state.volume_type.name</literal>
+                    <property>kiwi.xml_state.volume_type.name</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -21881,22 +22005,32 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.xml_state.volume_type.realpath">
+                <varlistentry xml:id="kiwi.xml_state.volume_type.parent">
                   <term>
-                    <literal>kiwi.xml_state.volume_type.realpath</literal>
+                    <property>kiwi.xml_state.volume_type.parent</property>
                   </term>
                   <listitem>
-                    <para>Alias for field number 2</para>
+                    <para>Alias for field number 1</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.xml_state.volume_type.realpath">
+                  <term>
+                    <property>kiwi.xml_state.volume_type.realpath</property>
+                  </term>
+                  <listitem>
+                    <para>Alias for field number 3</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
               <variablelist>
                 <varlistentry xml:id="kiwi.xml_state.volume_type.size">
                   <term>
-                    <literal>kiwi.xml_state.volume_type.size</literal>
+                    <property>kiwi.xml_state.volume_type.size</property>
                   </term>
                   <listitem>
-                    <para>Alias for field number 1</para>
+                    <para>Alias for field number 2</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -22500,7 +22634,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.initrd_name">
                   <term>
-                    <literal>kiwi.boot.image.base.boot_names_type.initrd_name</literal>
+                    <property>kiwi.boot.image.base.boot_names_type.initrd_name</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -22510,7 +22644,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.kernel_filename">
                   <term>
-                    <literal>kiwi.boot.image.base.boot_names_type.kernel_filename</literal>
+                    <property>kiwi.boot.image.base.boot_names_type.kernel_filename</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -22520,7 +22654,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.kernel_name">
                   <term>
-                    <literal>kiwi.boot.image.base.boot_names_type.kernel_name</literal>
+                    <property>kiwi.boot.image.base.boot_names_type.kernel_name</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -22530,7 +22664,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.boot.image.base.boot_names_type.kernel_version">
                   <term>
-                    <literal>kiwi.boot.image.base.boot_names_type.kernel_version</literal>
+                    <property>kiwi.boot.image.base.boot_names_type.kernel_version</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -23664,7 +23798,10 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
     'root_device': string,
     'boot_device': string,
     'efi_device': string,
-    'system_volumes': volume_manager_instance.get_volumes()
+    'system_volumes':
+        volume_manager_instance.get_volumes(),
+    'system_root_volume':
+        volume_manager_instance.get_root_volume_name()
 }</screen>
                   </listitem>
                 </varlistentry>
@@ -24201,6 +24338,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                             <screen language="python">{
     'target_removable': bool,
     'system_volumes': list_of_volumes,
+    'system_root_volume': root volume name if required
     'firmware': FirmWare_instance,
     'efi_device': string,
     'boot_device': string,
@@ -24221,6 +24359,16 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                   <listitem>
                     <para>Run shim-install in self.device for secure boots</para>
                     <para>Implementation in specialized bootloader install class required</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.bootloader.install.grub2.BootLoaderInstallGrub2.set_disk_password">
+                  <term>
+                    <property>kiwi.bootloader.install.grub2.BootLoaderInstallGrub2.set_disk_password</property>
+                  </term>
+                  <listitem>
+                    <para/>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -24737,6 +24885,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                     <itemizedlist>
                       <listitem>
                         <para>image=”tbz”</para>
+                      </listitem>
+                      <listitem>
+                        <para>image=”cpio”</para>
                       </listitem>
                     </itemizedlist>
                     <variablelist role="field_list">
@@ -25388,7 +25539,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <literal>kiwi.container.oci.ContainerImageOCI</literal>
             </term>
             <listitem>
-              <para>Bases: <literal>object</literal></para>
+              <para>Bases: <literal>ContainerImageBase</literal></para>
               <para>Create oci container from a root directory</para>
               <variablelist role="field_list">
                 <varlistentry>
@@ -25454,6 +25605,146 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                         </listitem>
                       </varlistentry>
                     </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+        <variablelist>
+          <varlistentry xml:id="kiwi.container.oci.OciConfig">
+            <term>
+              <literal>kiwi.container.oci.OciConfig</literal>
+            </term>
+            <listitem>
+              <para>Bases: <literal>TypedDict</literal></para>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.additional_names">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.additional_names</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.container_name">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.container_name</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.container_tag">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.container_tag</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.entry_command">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.entry_command</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.entry_subcommand">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.entry_subcommand</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.environment">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.environment</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.expose_ports">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.expose_ports</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.history">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.history</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.labels">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.labels</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.maintainer">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.maintainer</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.user">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.user</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.volumes">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.volumes</property>
+                  </term>
+                  <listitem>
+                    <para/>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry xml:id="kiwi.container.oci.OciConfig.workingdir">
+                  <term>
+                    <property>kiwi.container.oci.OciConfig.workingdir</property>
+                  </term>
+                  <listitem>
+                    <para/>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -27442,12 +27733,12 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
       </section>
-      <section xml:id="module-kiwi.package_manager.dnf_kiwi-package-manager-dnf-module">
-        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.package_manager.dnf"><literal>kiwi.package_manager.dnf</literal></link> Module</title>
+      <section xml:id="module-kiwi.package_manager.dnf4_kiwi-package-manager-dnf4-module">
+        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.package_manager.dnf4"><literal>kiwi.package_manager.dnf4</literal></link> Module</title>
         <variablelist>
-          <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf">
+          <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4">
             <term>
-              <literal>kiwi.package_manager.dnf.PackageManagerDnf</literal>
+              <literal>kiwi.package_manager.dnf4.PackageManagerDnf4</literal>
             </term>
             <listitem>
               <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.package_manager.base.PackageManagerBase"><literal>PackageManagerBase</literal></link></para>
@@ -27472,9 +27763,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.clean_leftovers">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.clean_leftovers">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.clean_leftovers</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.clean_leftovers</property>
                   </term>
                   <listitem>
                     <para>Cleans package manager related data not needed in the
@@ -27483,9 +27774,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.match_package_deleted">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.match_package_deleted">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.match_package_deleted</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.match_package_deleted</property>
                   </term>
                   <listitem>
                     <para>Match expression to indicate a package has been deleted</para>
@@ -27520,9 +27811,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.match_package_installed">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.match_package_installed">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.match_package_installed</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.match_package_installed</property>
                   </term>
                   <listitem>
                     <para>Match expression to indicate a package has been installed</para>
@@ -27561,9 +27852,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.post_init">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.post_init">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.post_init</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.post_init</property>
                   </term>
                   <listitem>
                     <para>Post initialization method</para>
@@ -27579,9 +27870,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.post_process_install_requests_bootstrap">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.post_process_install_requests_bootstrap">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.post_process_install_requests_bootstrap</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.post_process_install_requests_bootstrap</property>
                   </term>
                   <listitem>
                     <para>Move the rpm database to the place as it is expected by the
@@ -27605,9 +27896,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.process_delete_requests">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.process_delete_requests">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.process_delete_requests</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.process_delete_requests</property>
                   </term>
                   <listitem>
                     <para>Process package delete requests (chroot)</para>
@@ -27642,9 +27933,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.process_install_requests">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.process_install_requests">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.process_install_requests</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.process_install_requests</property>
                   </term>
                   <listitem>
                     <para>Process package install requests for image phase (chroot)</para>
@@ -27666,9 +27957,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.process_install_requests_bootstrap">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.process_install_requests_bootstrap">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.process_install_requests_bootstrap</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.process_install_requests_bootstrap</property>
                   </term>
                   <listitem>
                     <para>Process package install requests for bootstrap phase (no chroot)</para>
@@ -27703,9 +27994,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.process_only_required">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.process_only_required">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.process_only_required</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.process_only_required</property>
                   </term>
                   <listitem>
                     <para>Setup package processing only for required packages</para>
@@ -27713,9 +28004,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.process_plus_recommended">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.process_plus_recommended">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.process_plus_recommended</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.process_plus_recommended</property>
                   </term>
                   <listitem>
                     <para>Setup package processing to also include recommended dependencies.</para>
@@ -27723,9 +28014,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.request_collection">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.request_collection">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.request_collection</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.request_collection</property>
                   </term>
                   <listitem>
                     <para>Queue a collection request</para>
@@ -27741,9 +28032,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.request_package">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.request_package">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.request_package</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.request_package</property>
                   </term>
                   <listitem>
                     <para>Queue a package request</para>
@@ -27759,9 +28050,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.request_package_exclusion">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.request_package_exclusion">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.request_package_exclusion</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.request_package_exclusion</property>
                   </term>
                   <listitem>
                     <para>Queue a package exclusion(skip) request</para>
@@ -27777,9 +28068,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.request_product">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.request_product">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.request_product</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.request_product</property>
                   </term>
                   <listitem>
                     <para>Queue a product request</para>
@@ -27796,9 +28087,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.setup_repository_modules">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.setup_repository_modules">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.setup_repository_modules</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.setup_repository_modules</property>
                   </term>
                   <listitem>
                     <para>Setup repository modules and streams</para>
@@ -27825,9 +28116,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.package_manager.dnf.PackageManagerDnf.update">
+                <varlistentry xml:id="kiwi.package_manager.dnf4.PackageManagerDnf4.update">
                   <term>
-                    <property>kiwi.package_manager.dnf.PackageManagerDnf.update</property>
+                    <property>kiwi.package_manager.dnf4.PackageManagerDnf4.update</property>
                   </term>
                   <listitem>
                     <para>Process package update requests (chroot)</para>
@@ -29152,12 +29443,12 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
           </varlistentry>
         </variablelist>
       </section>
-      <section xml:id="module-kiwi.repository.dnf_kiwi-repository-dnf-module">
-        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.repository.dnf"><literal>kiwi.repository.dnf</literal></link> Module</title>
+      <section xml:id="module-kiwi.repository.dnf4_kiwi-repository-dnf4-module">
+        <title><link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#module-kiwi.repository.dnf4"><literal>kiwi.repository.dnf4</literal></link> Module</title>
         <variablelist>
-          <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf">
+          <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4">
             <term>
-              <literal>kiwi.repository.dnf.RepositoryDnf</literal>
+              <literal>kiwi.repository.dnf4.RepositoryDnf4</literal>
             </term>
             <listitem>
               <para>Bases: <link xmlns:xl="http://www.w3.org/1999/xlink" xl:href="#kiwi.repository.base.RepositoryBase"><literal>RepositoryBase</literal></link></para>
@@ -29187,9 +29478,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.add_repo">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.add_repo">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.add_repo</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.add_repo</property>
                   </term>
                   <listitem>
                     <para>Add dnf repository</para>
@@ -29248,9 +29539,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.cleanup_unused_repos">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.cleanup_unused_repos">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.cleanup_unused_repos</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.cleanup_unused_repos</property>
                   </term>
                   <listitem>
                     <para>Delete unused dnf repositories</para>
@@ -29261,9 +29552,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.delete_all_repos">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.delete_all_repos">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.delete_all_repos</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.delete_all_repos</property>
                   </term>
                   <listitem>
                     <para>Delete all dnf repositories</para>
@@ -29271,9 +29562,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.delete_repo">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.delete_repo">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.delete_repo</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.delete_repo</property>
                   </term>
                   <listitem>
                     <para>Delete dnf repository</para>
@@ -29289,9 +29580,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.delete_repo_cache">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.delete_repo_cache">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.delete_repo_cache</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.delete_repo_cache</property>
                   </term>
                   <listitem>
                     <para>Delete dnf repository cache</para>
@@ -29312,9 +29603,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.import_trusted_keys">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.import_trusted_keys">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.import_trusted_keys</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.import_trusted_keys</property>
                   </term>
                   <listitem>
                     <para>Imports trusted keys into the image</para>
@@ -29330,9 +29621,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.post_init">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.post_init">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.post_init</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.post_init</property>
                   </term>
                   <listitem>
                     <para>Post initialization method</para>
@@ -29350,9 +29641,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.runtime_config">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.runtime_config">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.runtime_config</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.runtime_config</property>
                   </term>
                   <listitem>
                     <para>dnf runtime configuration and environment</para>
@@ -29374,9 +29665,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.setup_package_database_configuration">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.setup_package_database_configuration">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.setup_package_database_configuration</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.setup_package_database_configuration</property>
                   </term>
                   <listitem>
                     <para>Setup rpm macros for bootstrapping and image building</para>
@@ -29395,9 +29686,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                 </varlistentry>
               </variablelist>
               <variablelist>
-                <varlistentry xml:id="kiwi.repository.dnf.RepositoryDnf.use_default_location">
+                <varlistentry xml:id="kiwi.repository.dnf4.RepositoryDnf4.use_default_location">
                   <term>
-                    <property>kiwi.repository.dnf.RepositoryDnf.use_default_location</property>
+                    <property>kiwi.repository.dnf4.RepositoryDnf4.use_default_location</property>
                   </term>
                   <listitem>
                     <para>Setup dnf repository operations to store all data
@@ -30686,7 +30977,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.clone">
                   <term>
-                    <literal>kiwi.storage.disk.ptable_entry_type.clone</literal>
+                    <property>kiwi.storage.disk.ptable_entry_type.clone</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -30696,7 +30987,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.filesystem">
                   <term>
-                    <literal>kiwi.storage.disk.ptable_entry_type.filesystem</literal>
+                    <property>kiwi.storage.disk.ptable_entry_type.filesystem</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 5</para>
@@ -30706,7 +30997,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.mbsize">
                   <term>
-                    <literal>kiwi.storage.disk.ptable_entry_type.mbsize</literal>
+                    <property>kiwi.storage.disk.ptable_entry_type.mbsize</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -30716,7 +31007,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.mountpoint">
                   <term>
-                    <literal>kiwi.storage.disk.ptable_entry_type.mountpoint</literal>
+                    <property>kiwi.storage.disk.ptable_entry_type.mountpoint</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 4</para>
@@ -30726,7 +31017,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.partition_name">
                   <term>
-                    <literal>kiwi.storage.disk.ptable_entry_type.partition_name</literal>
+                    <property>kiwi.storage.disk.ptable_entry_type.partition_name</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -30736,7 +31027,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.storage.disk.ptable_entry_type.partition_type">
                   <term>
-                    <literal>kiwi.storage.disk.ptable_entry_type.partition_type</literal>
+                    <property>kiwi.storage.disk.ptable_entry_type.partition_type</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -30887,7 +31178,7 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>passphrase</literal> () – credentials</para>
                             </listitem>
                             <listitem>
-                              <para><literal>os</literal> () – distribution name to match distribution specific
+                              <para><literal>osname</literal> () – distribution name to match distribution specific
                                                     options for cryptsetup</para>
                             </listitem>
                             <listitem>
@@ -30897,6 +31188,9 @@ uid                 [ultimate] YOU &lt;$YOUR_EMAIL&gt;</screen>
                               <para><literal>keyfile</literal> () – file path name
                                                     file path name which contains an alternative key
                                                     to unlock the luks device</para>
+                            </listitem>
+                            <listitem>
+                              <para><literal>root_dir</literal> () – root dir path</para>
                             </listitem>
                           </itemizedlist>
                         </listitem>
@@ -33058,7 +33352,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.kernel_type.filename">
                   <term>
-                    <literal>kiwi.system.kernel.kernel_type.filename</literal>
+                    <property>kiwi.system.kernel.kernel_type.filename</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -33068,7 +33362,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.kernel_type.name">
                   <term>
-                    <literal>kiwi.system.kernel.kernel_type.name</literal>
+                    <property>kiwi.system.kernel.kernel_type.name</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -33078,7 +33372,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.kernel_type.version">
                   <term>
-                    <literal>kiwi.system.kernel.kernel_type.version</literal>
+                    <property>kiwi.system.kernel.kernel_type.version</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -33098,7 +33392,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.xen_hypervisor_type.filename">
                   <term>
-                    <literal>kiwi.system.kernel.xen_hypervisor_type.filename</literal>
+                    <property>kiwi.system.kernel.xen_hypervisor_type.filename</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -33108,7 +33402,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.kernel.xen_hypervisor_type.name">
                   <term>
-                    <literal>kiwi.system.kernel.xen_hypervisor_type.name</literal>
+                    <property>kiwi.system.kernel.xen_hypervisor_type.name</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -33682,7 +33976,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_file_type.compress">
                   <term>
-                    <literal>kiwi.system.result.result_file_type.compress</literal>
+                    <property>kiwi.system.result.result_file_type.compress</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -33692,7 +33986,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_file_type.filename">
                   <term>
-                    <literal>kiwi.system.result.result_file_type.filename</literal>
+                    <property>kiwi.system.result.result_file_type.filename</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -33702,7 +33996,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_file_type.shasum">
                   <term>
-                    <literal>kiwi.system.result.result_file_type.shasum</literal>
+                    <property>kiwi.system.result.result_file_type.shasum</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -33712,7 +34006,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_file_type.use_for_bundle">
                   <term>
-                    <literal>kiwi.system.result.result_file_type.use_for_bundle</literal>
+                    <property>kiwi.system.result.result_file_type.use_for_bundle</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -33732,7 +34026,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.A">
                   <term>
-                    <literal>kiwi.system.result.result_name_tags.A</literal>
+                    <property>kiwi.system.result.result_name_tags.A</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 2</para>
@@ -33742,7 +34036,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.I">
                   <term>
-                    <literal>kiwi.system.result.result_name_tags.I</literal>
+                    <property>kiwi.system.result.result_name_tags.I</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 3</para>
@@ -33752,7 +34046,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.M">
                   <term>
-                    <literal>kiwi.system.result.result_name_tags.M</literal>
+                    <property>kiwi.system.result.result_name_tags.M</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 5</para>
@@ -33762,7 +34056,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.N">
                   <term>
-                    <literal>kiwi.system.result.result_name_tags.N</literal>
+                    <property>kiwi.system.result.result_name_tags.N</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 0</para>
@@ -33772,7 +34066,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.P">
                   <term>
-                    <literal>kiwi.system.result.result_name_tags.P</literal>
+                    <property>kiwi.system.result.result_name_tags.P</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 1</para>
@@ -33782,7 +34076,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.T">
                   <term>
-                    <literal>kiwi.system.result.result_name_tags.T</literal>
+                    <property>kiwi.system.result.result_name_tags.T</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 4</para>
@@ -33792,7 +34086,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.m">
                   <term>
-                    <literal>kiwi.system.result.result_name_tags.m</literal>
+                    <property>kiwi.system.result.result_name_tags.m</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 6</para>
@@ -33802,7 +34096,7 @@ end</screen>
               <variablelist>
                 <varlistentry xml:id="kiwi.system.result.result_name_tags.p">
                   <term>
-                    <literal>kiwi.system.result.result_name_tags.p</literal>
+                    <property>kiwi.system.result.result_name_tags.p</property>
                   </term>
                   <listitem>
                     <para>Alias for field number 7</para>
@@ -34892,7 +35186,7 @@ end</screen>
                     <property>kiwi.system.uri.Uri.alias</property>
                   </term>
                   <listitem>
-                    <para>Create hexdigest from URI as alias</para>
+                    <para>Create hex representation of uuid4</para>
                     <para>If the repository definition from the XML description does
                                 not provide an alias, kiwi creates one for you. However it’s
                                 better to assign a human readable alias in the XML
@@ -34901,7 +35195,7 @@ end</screen>
                       <varlistentry>
                         <term>Returns</term>
                         <listitem>
-                          <para>alias name as hexdigest</para>
+                          <para>alias name as hex representation of uuid4</para>
                         </listitem>
                       </varlistentry>
                       <varlistentry>
@@ -36410,6 +36704,32 @@ target
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.volume_manager.base.VolumeManagerBase.get_root_volume_name">
+                  <term>
+                    <property>kiwi.volume_manager.base.VolumeManagerBase.get_root_volume_name</property>
+                  </term>
+                  <listitem>
+                    <para>Provides name of the root volume</para>
+                    <para>This is by default set to ‘/’. Volume Managers that supports
+                                the concept of sub-volumes overrides this method</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>directory path name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.volume_manager.base.VolumeManagerBase.get_volume_mbsize">
                   <term>
                     <property>kiwi.volume_manager.base.VolumeManagerBase.get_volume_mbsize</property>
@@ -36708,6 +37028,30 @@ target
                 </varlistentry>
               </variablelist>
               <variablelist>
+                <varlistentry xml:id="kiwi.volume_manager.btrfs.VolumeManagerBtrfs.get_root_volume_name">
+                  <term>
+                    <property>kiwi.volume_manager.btrfs.VolumeManagerBtrfs.get_root_volume_name</property>
+                  </term>
+                  <listitem>
+                    <para>Provides name of the root volume</para>
+                    <variablelist role="field_list">
+                      <varlistentry>
+                        <term>Returns</term>
+                        <listitem>
+                          <para>directory path name</para>
+                        </listitem>
+                      </varlistentry>
+                      <varlistentry>
+                        <term>Return type</term>
+                        <listitem>
+                          <para>string</para>
+                        </listitem>
+                      </varlistentry>
+                    </variablelist>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
                 <varlistentry xml:id="kiwi.volume_manager.btrfs.VolumeManagerBtrfs.get_volumes">
                   <term>
                     <property>kiwi.volume_manager.btrfs.VolumeManagerBtrfs.get_volumes</property>
@@ -36777,9 +37121,9 @@ target
                   </term>
                   <listitem>
                     <para>Setup btrfs volume management</para>
-                    <para>In case of btrfs a toplevel(@) subvolume is created and marked
+                    <para>In case of btrfs an optional toplevel subvolume is created and marked
                                 as default volume. If snapshots are activated via the custom_args
-                                the setup method also created the @/.snapshots/1/snapshot
+                                the setup method also creates the .snapshots/1/snapshot
                                 subvolumes. There is no concept of a volume manager name, thus
                                 the name argument is not used for btrfs</para>
                     <variablelist role="field_list">
